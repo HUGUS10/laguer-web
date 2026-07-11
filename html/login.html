@@ -3,17 +3,208 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Login · LAGUER</title>
+  <title>Iniciar sesión · LAGUER</title>
   <link rel="icon" href="../image/favicon-laguer.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="stylesheet" href="../css/style.css" />
-  <link rel="stylesheet" href="../css/header.css" />
-  <link rel="stylesheet" href="../css/footer.css" />
-  <link rel="stylesheet" href="../css/responsive.css" />
+
   <style>
-    .login-wrapper {
+    /* ===== VARIABLES ===== */
+    :root {
+      --bg: #05070b;
+      --bg-soft: #0b1017;
+      --surface: #121a24;
+      --surface-2: #1a2531;
+      --line: rgba(255,255,255,.08);
+      --red: #ee1d25;
+      --red-dark: #a5141a;
+      --green: #39b54a;
+      --green-dark: #1f7b2c;
+      --blue: #189ee0;
+      --blue-dark: #0f6ca3;
+      --white: #f5f8fb;
+      --muted: #8fa0b3;
+      --radius: 16px;
+      --bottom-nav-height: 70px;
+    }
+
+    /* ===== RESET ===== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      padding-bottom: calc(var(--bottom-nav-height) + 20px);
+    }
+    h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; border: none; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+    /* ===== BEAM ===== */
+    .beam-rule {
+      height: 3px;
+      width: 100%;
+      background: linear-gradient(90deg, var(--red) 0 33%, var(--green) 33% 66%, var(--blue) 66% 100%);
+      opacity: .9;
+    }
+
+    /* ===== TOPBAR ===== */
+    .topbar {
+      background: #020406;
+      font-size: 12.5px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 36px;
+    }
+    .topbar-links { display: flex; gap: 20px; }
+    .topbar-links b { color: var(--white); }
+
+    /* ===== HEADER ===== */
+    header.site {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(5,7,11,.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 60px;
+    }
+    .logo-mark { height: 32px; flex-shrink: 0; }
+    .logo-mark img { height: 100%; width: auto; }
+
+    .main-nav {
+      display: flex;
+      gap: 20px;
+      flex: 0 0 auto;
+    }
+    .main-nav a {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--white);
+      opacity: .85;
+      position: relative;
+      padding: 4px 2px;
+    }
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--red), var(--green), var(--blue));
+      transition: width .25s ease;
+    }
+    .main-nav a:hover { opacity: 1; }
+    .main-nav a:hover::after { width: 100%; }
+
+    .search-box {
+      flex: 1;
+      max-width: 300px;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 14px;
+      transition: border-color .2s;
+    }
+    .search-box:focus-within { border-color: var(--blue); }
+    .search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--white);
+      font-size: 14px;
+      width: 100%;
+      font-family: inherit;
+    }
+    .search-box input::placeholder { color: var(--muted); }
+    .search-box i { opacity: .7; }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .icon-btn {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      transition: .2s;
+      color: var(--white);
+    }
+    .icon-btn:hover { border-color: var(--green); background: var(--surface-2); }
+    .cart-count, .fav-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--bg);
+    }
+    .fav-count { background: var(--blue); }
+    .burger { display: none; }
+
+    /* ===== CATEGORÍAS (solo PC) ===== */
+    .cat-strip {
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--line);
+    }
+    .cat-strip .wrap {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding: 10px 20px;
+    }
+    .cat-chip {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .cat-chip:hover { color: var(--white); }
+    .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ===== LOGIN ===== */
+    .login-section {
       display: flex;
       justify-content: center;
       align-items: center;
@@ -28,21 +219,20 @@
       max-width: 420px;
       width: 100%;
     }
-    .login-card .logo-mini {
+    .login-card .login-header {
       text-align: center;
       margin-bottom: 24px;
     }
-    .login-card .logo-mini img {
+    .login-card .login-header img {
       height: 48px;
+      margin-bottom: 12px;
     }
-    .login-card h2 {
-      text-align: center;
-      margin-bottom: 8px;
+    .login-card .login-header h2 {
+      font-size: 24px;
+      margin-bottom: 4px;
     }
-    .login-card p.sub {
-      text-align: center;
+    .login-card .login-header p {
       color: var(--muted);
-      margin-bottom: 24px;
       font-size: 14px;
     }
     .form-group {
@@ -68,6 +258,19 @@
       outline: none;
       border-color: var(--blue);
     }
+    .form-group .input-icon {
+      position: relative;
+    }
+    .form-group .input-icon i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+    .form-group .input-icon input {
+      padding-left: 40px;
+    }
     .login-btn {
       width: 100%;
       padding: 14px;
@@ -88,72 +291,228 @@
     .login-btn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
+      transform: none;
     }
-    .error-msg {
+    .login-error {
       color: var(--red);
       font-size: 13px;
       margin-top: 12px;
       text-align: center;
       min-height: 20px;
     }
-    .register-link {
+    .login-links {
       text-align: center;
       margin-top: 20px;
       font-size: 14px;
       color: var(--muted);
     }
-    .register-link a {
+    .login-links a {
       color: var(--blue);
       font-weight: 600;
     }
-    .user-info {
-      text-align: center;
+    .login-links a:hover { text-decoration: underline; }
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 20px 0;
     }
-    .user-info .avatar {
-      font-size: 60px;
-      color: var(--blue);
-      margin-bottom: 12px;
+    .login-divider::before,
+    .login-divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
     }
-    .user-info .name {
-      font-size: 24px;
-      font-weight: 700;
-    }
-    .user-info .email {
+    .login-divider span {
       color: var(--muted);
-      margin-top: 4px;
+      font-size: 13px;
     }
-    .user-info .pedidos-link {
-      display: inline-block;
-      margin-top: 16px;
-      padding: 10px 24px;
+    .social-login {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+    .social-login button {
       background: var(--surface-2);
       border: 1px solid var(--line);
       border-radius: 10px;
+      padding: 10px 16px;
       color: var(--white);
       font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
       transition: 0.2s;
-      text-decoration: none;
+      cursor: pointer;
+      flex: 1;
+      justify-content: center;
     }
-    .user-info .pedidos-link:hover {
+    .social-login button:hover {
       background: var(--blue);
+      transform: translateY(-2px);
     }
-    .logout-btn {
+    .social-login button i { font-size: 18px; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #020406;
+      border-top: 1px solid var(--line);
+      padding: 40px 0 20px;
+    }
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    .foot-logo { height: 30px; margin-bottom: 10px; }
+    .foot-desc { color: var(--muted); font-size: 13px; line-height: 1.6; max-width: 260px; }
+    .pay-icons-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .pay-icons-footer span {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pay-icons-footer span i { font-size: 16px; }
+    .pay-icons-footer span .fa-cc-visa { color: #1a1f71; }
+    .pay-icons-footer span .fa-cc-mastercard { color: #eb001b; }
+    .pay-icons-footer span .fa-cc-amex { color: #2e77bc; }
+    .pay-icons-footer span .fa-cc-diners-club { color: #006633; }
+    .pay-icons-footer span .fa-mobile-alt { color: var(--blue); }
+
+    .footer-social {
       margin-top: 12px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .footer-social span { color: var(--muted); font-weight: 600; font-size: 13px; }
+    .footer-social a { color: var(--muted); font-size: 18px; transition: 0.2s; }
+    .footer-social a:hover { color: var(--white); transform: scale(1.2); }
+    .foot-col h5 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+    .foot-col a {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+      transition: .2s;
+    }
+    .foot-col a:hover { color: var(--white); }
+    .foot-bottom {
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--bottom-nav-height);
+      background: rgba(11,16,23,0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      display: none;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 1000;
+      padding: 0 8px;
+    }
+    .bottom-nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+      padding: 4px 8px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .bottom-nav a i { font-size: 22px; transition: 0.2s; }
+    .bottom-nav a span { font-size: 10px; }
+    .bottom-nav a.active { color: var(--blue); }
+    .bottom-nav a.active i { transform: translateY(-2px); }
+    .bottom-nav a .badge-bottom {
+      position: absolute;
+      top: 0;
+      right: -4px;
       background: var(--red);
       color: #fff;
-      border: none;
-      padding: 10px 24px;
-      border-radius: 10px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: 0.2s;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg);
     }
-    .logout-btn:hover {
-      background: var(--red-dark);
+
+    /* ============================================================ */
+    /* ===== RESPONSIVE ===== */
+    /* ============================================================ */
+    @media (max-width: 980px) {
+      .main-nav, .cat-strip, .burger { display: none !important; }
+      .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
+      .bottom-nav { display: flex; }
+      .search-box {
+        max-width: none;
+        flex: 2;
+        margin-left: 0;
+        padding: 8px 16px;
+      }
+      .search-box input { font-size: 15px; }
+      .header-row { gap: 10px; height: 56px; }
+      .logo-mark { height: 28px; }
+      .icon-btn { width: 34px; height: 34px; }
+      .icon-btn i { font-size: 16px; }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .search-box { padding: 6px 12px; }
+      .search-box input { font-size: 14px; }
+      .bottom-nav a i { font-size: 20px; }
+      .bottom-nav a span { font-size: 9px; }
+      .foot-grid { grid-template-columns: 1fr; gap: 20px; }
+      .login-card { padding: 24px 16px; }
+      .social-login { flex-direction: column; }
     }
   </style>
 </head>
 <body>
+
   <!-- ===== TOPBAR ===== -->
   <div class="topbar">
     <div class="wrap">
@@ -178,11 +537,11 @@
       </nav>
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" placeholder="Buscar productos…" />
+        <input type="text" id="searchInput" placeholder="Buscar productos…" />
       </div>
       <div class="header-icons">
         <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
-        <a href="favoritos.html" class="icon-btn"><i class="fas fa-heart"></i><span class="fav-count">0</span></a>
+        <a href="favoritos.html" class="icon-btn fav-btn-header"><i class="fas fa-heart"></i><span class="fav-count" id="favCount">0</span></a>
         <a href="carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
       </div>
     </div>
@@ -199,12 +558,43 @@
     </div>
   </header>
 
-  <!-- ===== LOGIN / PERFIL ===== -->
-  <section class="login-wrapper">
-    <div class="wrap" style="max-width:420px; width:100%;">
-      <div class="login-card" id="loginCard">
-        <!-- Contenido renderizado por JS -->
-        <div id="loginContent"></div>
+  <!-- ===== LOGIN ===== -->
+  <section class="login-section">
+    <div class="login-card">
+      <div class="login-header">
+        <img src="../image/laguer-logo.png" alt="LAGUER" />
+        <h2>Bienvenido</h2>
+        <p>Inicia sesión para acceder a tu cuenta</p>
+      </div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <div class="input-icon">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="loginEmail" placeholder="tucorreo@ejemplo.com" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Contraseña</label>
+          <div class="input-icon">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="loginPassword" placeholder="••••••••" required />
+          </div>
+        </div>
+        <button type="submit" class="login-btn" id="loginBtn">Iniciar sesión</button>
+        <div id="loginError" class="login-error"></div>
+      </form>
+
+      <div class="login-divider"><span>o continúa con</span></div>
+      <div class="social-login">
+        <button><i class="fab fa-google"></i> Google</button>
+        <button><i class="fab fa-facebook-f"></i> Facebook</button>
+      </div>
+
+      <div class="login-links">
+        <a href="registro.html">¿No tienes cuenta? Regístrate</a><br>
+        <a href="#" style="color:var(--muted); font-size:13px;">¿Olvidaste tu contraseña?</a>
       </div>
     </div>
   </section>
@@ -263,89 +653,126 @@
     </div>
   </footer>
 
+  <!-- ===== BOTTOM NAV (móvil) ===== -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="../index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
+    <a href="productos.html"><i class="fas fa-th-large"></i><span>Productos</span></a>
+    <a href="carrito.html" id="bottomCartLink">
+      <i class="fas fa-shopping-cart"></i><span>Carrito</span>
+      <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
+    </a>
+    <a href="login.html" class="active"><i class="fas fa-user"></i><span>Perfil</span></a>
+  </nav>
+
+  <!-- ============================================================ -->
   <!-- ===== SCRIPTS ===== -->
+  <!-- ============================================================ -->
   <script>
     (function() {
-      // Simular usuario logueado (en producción usar Firebase)
-      // Para probar, cambiar a true y poner datos
-      const isLoggedIn = localStorage.getItem('laguerUser') ? true : false;
-      let userData = JSON.parse(localStorage.getItem('laguerUser')) || null;
+      'use strict';
 
-      const content = document.getElementById('loginContent');
+      // =============================================================
+      // 1. INICIALIZAR USUARIOS (crear admin por defecto si no existe)
+      // =============================================================
+      let users = JSON.parse(localStorage.getItem('laguerUsers')) || [];
 
-      if (isLoggedIn && userData) {
-        // Usuario logueado → mostrar "Hola, buenas" + datos
-        content.innerHTML = `
-          <div class="user-info">
-            <div class="avatar"><i class="fas fa-user-circle"></i></div>
-            <div class="name">Hola, buenas ${userData.nombre || 'Usuario'} 👋</div>
-            <div class="email">${userData.email || 'usuario@ejemplo.com'}</div>
-            <div style="margin-top:12px; color:var(--muted); font-size:14px;">
-              <p><i class="fas fa-shopping-bag"></i> Pedidos: ${userData.pedidos || 0}</p>
-              <p><i class="fas fa-heart"></i> Favoritos: ${userData.favoritos || 0}</p>
-            </div>
-            <a href="pedidos.html" class="pedidos-link"><i class="fas fa-truck"></i> Ver mis pedidos</a>
-            <br>
-            <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</button>
-          </div>
-        `;
-        document.getElementById('logoutBtn')?.addEventListener('click', function() {
-          localStorage.removeItem('laguerUser');
-          window.location.reload();
+      // Verificar si el admin ya existe
+      const adminExists = users.some(u => u.email === 'admin@laguer.com');
+      if (!adminExists) {
+        users.push({
+          nombre: 'Administrador',
+          email: 'admin@laguer.com',
+          password: 'Admin2026!',
+          rol: 'admin'
         });
-      } else {
-        // No logueado → mostrar formulario de login
-        content.innerHTML = `
-          <div class="logo-mini">
-            <img src="../image/laguer-logo.png" alt="LAGUER" />
-          </div>
-          <h2 style="text-align:center;">Iniciar sesión</h2>
-          <p class="sub">Ingresa tus credenciales para acceder a tu cuenta</p>
-          <form id="loginForm">
-            <div class="form-group">
-              <label for="loginEmail">Correo electrónico</label>
-              <input type="email" id="loginEmail" placeholder="admin@laguer.com" required />
-            </div>
-            <div class="form-group">
-              <label for="loginPassword">Contraseña</label>
-              <input type="password" id="loginPassword" placeholder="••••••••" required />
-            </div>
-            <button type="submit" class="login-btn" id="loginBtn">Iniciar sesión</button>
-            <div id="loginError" class="error-msg"></div>
-          </form>
-          <div class="register-link">
-            ¿No tienes cuenta? <a href="registro.html">Regístrate</a>
-          </div>
-        `;
-
-        document.getElementById('loginForm')?.addEventListener('submit', function(e) {
-          e.preventDefault();
-          const email = document.getElementById('loginEmail').value.trim();
-          const password = document.getElementById('loginPassword').value.trim();
-          const error = document.getElementById('loginError');
-
-          // Simulación de login (en producción usar Firebase)
-          if (email === 'admin@laguer.com' && password === 'admin123') {
-            const user = { nombre: 'Administrador', email: email, pedidos: 5, favoritos: 3 };
-            localStorage.setItem('laguerUser', JSON.stringify(user));
-            window.location.reload();
-          } else {
-            error.textContent = '❌ Correo o contraseña incorrectos.';
-          }
-        });
+        localStorage.setItem('laguerUsers', JSON.stringify(users));
+        console.log('🔑 Admin creado por defecto: admin@laguer.com / Admin2026!');
       }
 
-      // Actualizar badges de carrito y favoritos
+      // =============================================================
+      // 2. SI YA HAY SESIÓN ACTIVA, REDIRIGIR SEGÚN ROL
+      // =============================================================
+      const session = JSON.parse(localStorage.getItem('laguerUser'));
+      if (session) {
+        if (session.rol === 'admin') {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'perfil.html';
+        }
+        return;
+      }
+
+      // =============================================================
+      // 3. MANEJAR LOGIN
+      // =============================================================
+      const form = document.getElementById('loginForm');
+      const emailInput = document.getElementById('loginEmail');
+      const passInput = document.getElementById('loginPassword');
+      const errorDiv = document.getElementById('loginError');
+      const loginBtn = document.getElementById('loginBtn');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        const password = passInput.value.trim();
+
+        if (!email || !password) {
+          errorDiv.textContent = 'Por favor, completa todos los campos.';
+          return;
+        }
+
+        // Buscar usuario en la base de datos (localStorage)
+        const users = JSON.parse(localStorage.getItem('laguerUsers')) || [];
+        const user = users.find(u => u.email === email && u.password === password);
+
+        if (!user) {
+          errorDiv.textContent = '❌ Correo o contraseña incorrectos.';
+          return;
+        }
+
+        // Guardar sesión
+        localStorage.setItem('laguerUser', JSON.stringify({
+          nombre: user.nombre,
+          email: user.email,
+          rol: user.rol
+        }));
+
+        // Redirigir según rol
+        if (user.rol === 'admin') {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'perfil.html';
+        }
+      });
+
+      // =============================================================
+      // 4. ACTUALIZAR BADGES DE CARRITO Y FAVORITOS
+      // =============================================================
       const cart = JSON.parse(localStorage.getItem('laguerCart')) || [];
       const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
-      const cartEl = document.getElementById('cartCount');
-      if (cartEl) cartEl.textContent = totalItems;
+      const cartBadge = document.getElementById('cartCount');
+      const bottomBadge = document.getElementById('bottomCartBadge');
+      if (cartBadge) cartBadge.textContent = totalItems;
+      if (bottomBadge) {
+        bottomBadge.textContent = totalItems;
+        bottomBadge.style.display = totalItems === 0 ? 'none' : 'flex';
+      }
 
       const favs = JSON.parse(localStorage.getItem('laguerFavs')) || [];
-      const favEl = document.querySelector('.fav-count');
-      if (favEl) favEl.textContent = favs.length;
+      const favBadge = document.getElementById('favCount');
+      if (favBadge) favBadge.textContent = favs.length;
 
-      console.log('👤 Página de login/perfil LAGUER lista');
+      // =============================================================
+      // 5. BÚSQUEDA (redirige a productos)
+      // =============================================================
+      document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          const term = this.value.trim();
+          if (term) window.location.href = `productos.html?search=${encodeURIComponent(term)}`;
+        }
+      });
+
+      console.log('🔐 Login LAGUER listo');
     })();
   </script>
 </body>
