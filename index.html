@@ -617,6 +617,27 @@
       color: var(--muted);
     }
 
+    /* ===== MEJORA: enlace con ícono en el footer ===== */
+    .foot-col .reclamo-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(238,29,37,0.1);
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: 0.2s;
+      margin-top: 4px;
+    }
+    .foot-col .reclamo-link:hover {
+      border-color: var(--red);
+      background: rgba(238,29,37,0.2);
+    }
+    .foot-col .reclamo-link i {
+      color: var(--red);
+      font-size: 18px;
+    }
+
     .social-bubble {
       position: fixed;
       left: 16px;
@@ -748,7 +769,6 @@
     /* ============================================================ */
     @media (max-width: 980px) {
       .main-nav, .cat-strip, .burger { display: none !important; }
-      /* En móvil: solo mostrar favoritos en el header, ocultar perfil y carrito (están en bottom nav) */
       .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
       .bottom-nav { display: flex; }
       .search-box {
@@ -817,12 +837,9 @@
         <input type="text" id="searchInput" placeholder="Buscar productos…" />
       </div>
       <div class="header-icons">
-        <!-- Perfil solo visible en PC (en móvil se oculta) -->
-        <a href="html/login.html" class="icon-btn" id="headerPerfil"><i class="fas fa-user"></i></a>
-        <!-- Favoritos (visible en PC y móvil) -->
+        <a href="html/login.html" class="icon-btn"><i class="fas fa-user"></i></a>
         <a href="html/favoritos.html" class="icon-btn fav-btn-header"><i class="fas fa-heart"></i><span class="fav-count" id="favCount">0</span></a>
-        <!-- Carrito (visible solo en PC) -->
-        <a href="html/carrito.html" class="icon-btn" id="headerCarrito"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+        <a href="html/carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
       </div>
     </div>
     <div class="cat-strip">
@@ -960,6 +977,10 @@
           <a href="html/contacto.html">Contacto</a>
           <a href="html/terminos.html">Términos</a>
           <a href="html/privacidad.html">Privacidad</a>
+          <!-- Libro de Reclamaciones con ícono visual -->
+          <a href="html/libro-reclamaciones.html" class="reclamo-link">
+            <i class="fas fa-book"></i> Libro de Reclamaciones
+          </a>
         </div>
       </div>
       <div class="beam-rule" style="margin:16px 0;"></div>

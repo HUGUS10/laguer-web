@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Contacto · LAGUER</title>
+  <title>Libro de Reclamaciones · LAGUER</title>
   <link rel="icon" href="../image/favicon-laguer.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -190,7 +190,7 @@
     .cat-chip:hover { color: var(--white); }
     .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-    /* ===== CONTACTO ===== */
+    /* ===== LIBRO DE RECLAMACIONES ===== */
     .page-section { padding: 40px 0; }
     .page-header {
       text-align: center;
@@ -203,28 +203,33 @@
       justify-content: center;
       gap: 12px;
     }
-    .page-header h1 i { color: var(--blue); }
+    .page-header h1 i { color: var(--red); }
     .page-header p { color: var(--muted); margin-top: 6px; }
 
-    .contact-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-    }
-    .contact-form {
+    .reclamo-card {
+      max-width: 800px;
+      margin: 0 auto;
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      padding: 24px;
+      padding: 30px 28px;
     }
-    .contact-form h3 {
-      font-size: 20px;
+    .reclamo-card .badge-top {
+      display: inline-block;
+      background: var(--red);
+      color: #fff;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
       margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
     }
-    .contact-form h3 i { color: var(--blue); }
+    .reclamo-card .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
     .form-group {
       margin-bottom: 16px;
     }
@@ -235,9 +240,13 @@
       margin-bottom: 4px;
       color: var(--muted);
     }
+    .form-group label .required {
+      color: var(--red);
+      margin-left: 2px;
+    }
     .form-group input,
-    .form-group textarea,
-    .form-group select {
+    .form-group select,
+    .form-group textarea {
       width: 100%;
       padding: 10px 14px;
       border-radius: 10px;
@@ -248,6 +257,7 @@
       transition: 0.2s;
     }
     .form-group input:focus,
+    .form-group select:focus,
     .form-group textarea:focus {
       outline: none;
       border-color: var(--blue);
@@ -256,75 +266,58 @@
       resize: vertical;
       min-height: 120px;
     }
+    .form-group .file-upload {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-soft);
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .form-group .file-upload:hover { border-color: var(--blue); }
+    .form-group .file-upload input[type="file"] {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .form-group .file-upload i { font-size: 20px; color: var(--blue); }
+    .form-group .file-upload span { color: var(--muted); font-size: 14px; }
+
     .btn-submit {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       border: none;
       border-radius: 10px;
-      background: linear-gradient(90deg, var(--blue), var(--green));
+      background: linear-gradient(90deg, var(--red), var(--blue));
       color: #fff;
       font-weight: 800;
       font-size: 16px;
       cursor: pointer;
       transition: 0.2s;
-    }
-    .btn-submit:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
-
-    .contact-info {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .contact-info .info-card {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      transition: 0.2s;
-    }
-    .contact-info .info-card:hover { border-color: rgba(255,255,255,0.15); }
-    .contact-info .info-card .icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--bg-soft);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      color: var(--blue);
-      flex-shrink: 0;
-    }
-    .contact-info .info-card .text h4 { font-size: 16px; }
-    .contact-info .info-card .text p { color: var(--muted); font-size: 14px; }
-
-    .contact-social {
-      display: flex;
-      gap: 12px;
       margin-top: 8px;
     }
-    .contact-social a {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--surface);
-      border: 1px solid var(--line);
+    .btn-submit:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .reclamo-footer {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
-      font-size: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
       color: var(--muted);
-      transition: 0.2s;
     }
-    .contact-social a:hover {
-      background: var(--blue);
-      color: #fff;
-      border-color: var(--blue);
-      transform: translateY(-3px);
-    }
+    .reclamo-footer .info i { color: var(--blue); margin-right: 4px; }
 
     /* ===== FOOTER ===== */
     footer {
@@ -468,7 +461,8 @@
       .logo-mark { height: 28px; }
       .icon-btn { width: 34px; height: 34px; }
       .icon-btn i { font-size: 16px; }
-      .contact-grid { grid-template-columns: 1fr; }
+      .reclamo-card { padding: 20px 16px; }
+      .reclamo-card .form-row { grid-template-columns: 1fr; }
       .foot-grid { grid-template-columns: 1fr 1fr; }
     }
 
@@ -478,7 +472,8 @@
       .bottom-nav a i { font-size: 20px; }
       .bottom-nav a span { font-size: 9px; }
       .foot-grid { grid-template-columns: 1fr; gap: 20px; }
-      .contact-info .info-card { flex-direction: column; text-align: center; }
+      .reclamo-card .badge-top { font-size: 11px; }
+      .reclamo-footer { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
@@ -529,85 +524,90 @@
     </div>
   </header>
 
-  <!-- ===== CONTACTO ===== -->
+  <!-- ===== LIBRO DE RECLAMACIONES ===== -->
   <section class="page-section">
     <div class="wrap">
       <div class="page-header">
-        <h1><i class="fas fa-envelope"></i> Contáctanos</h1>
-        <p>Estamos aquí para ayudarte. Escríbenos y te responderemos lo antes posible.</p>
+        <h1><i class="fas fa-book"></i> Libro de Reclamaciones</h1>
+        <p>Déjanos tu reclamo o queja, nos comprometemos a atenderte de manera rápida y eficiente.</p>
       </div>
 
-      <div class="contact-grid">
-        <!-- Formulario -->
-        <div class="contact-form">
-          <h3><i class="fas fa-paper-plane"></i> Envíanos un mensaje</h3>
-          <form id="contactForm">
+      <div class="reclamo-card">
+        <div class="badge-top"><i class="fas fa-exclamation-triangle"></i> Atención al cliente</div>
+
+        <form id="reclamoForm">
+          <div class="form-row">
             <div class="form-group">
-              <label>Nombre completo</label>
-              <input type="text" id="contactNombre" placeholder="Tu nombre" required />
-            </div>
-            <div class="form-group">
-              <label>Correo electrónico</label>
-              <input type="email" id="contactEmail" placeholder="tucorreo@ejemplo.com" required />
-            </div>
-            <div class="form-group">
-              <label>Asunto</label>
-              <select id="contactAsunto">
-                <option>Consulta general</option>
-                <option>Pedido</option>
-                <option>Cambio o devolución</option>
-                <option>Sugerencia</option>
-                <option>Otro</option>
+              <label>Tipo de documento <span class="required">*</span></label>
+              <select id="tipoDoc">
+                <option value="DNI">DNI</option>
+                <option value="Carnet de Extranjería">Carnet de Extranjería</option>
+                <option value="Pasaporte">Pasaporte</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Mensaje</label>
-              <textarea id="contactMensaje" placeholder="Escribe tu mensaje aquí..." required></textarea>
+              <label>Número de documento <span class="required">*</span></label>
+              <input type="text" id="numDoc" placeholder="12345678" required />
             </div>
-            <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Enviar mensaje</button>
-          </form>
-        </div>
+          </div>
 
-        <!-- Información de contacto -->
-        <div class="contact-info">
-          <div class="info-card">
-            <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
-            <div class="text">
-              <h4>Dirección</h4>
-              <p>Av. Principal 123, Lima - Perú</p>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombres completos <span class="required">*</span></label>
+              <input type="text" id="nombre" placeholder="Juan Pérez" required />
+            </div>
+            <div class="form-group">
+              <label>Correo electrónico <span class="required">*</span></label>
+              <input type="email" id="email" placeholder="juan@ejemplo.com" required />
             </div>
           </div>
-          <div class="info-card">
-            <div class="icon"><i class="fas fa-phone"></i></div>
-            <div class="text">
-              <h4>Teléfono</h4>
-              <p>+51 987 654 321</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Teléfono <span class="required">*</span></label>
+              <input type="tel" id="telefono" placeholder="987654321" required />
+            </div>
+            <div class="form-group">
+              <label>Pedido (opcional)</label>
+              <input type="text" id="pedido" placeholder="ORD-000123" />
             </div>
           </div>
-          <div class="info-card">
-            <div class="icon"><i class="fas fa-envelope"></i></div>
-            <div class="text">
-              <h4>Correo</h4>
-              <p>soporte@laguer.com</p>
+
+          <div class="form-group">
+            <label>Tipo de reclamo <span class="required">*</span></label>
+            <select id="tipoReclamo">
+              <option value="">Selecciona...</option>
+              <option value="Producto defectuoso">Producto defectuoso</option>
+              <option value="Demora en la entrega">Demora en la entrega</option>
+              <option value="Producto incorrecto">Producto incorrecto</option>
+              <option value="Problema con el pago">Problema con el pago</option>
+              <option value="Atención al cliente">Atención al cliente</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Descripción del reclamo <span class="required">*</span></label>
+            <textarea id="descripcion" placeholder="Describe detalladamente tu reclamo..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Adjuntar archivo (opcional)</label>
+            <div class="file-upload">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span id="fileLabel">Haz clic para subir tu archivo (imagen o PDF)</span>
+              <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.pdf" />
             </div>
           </div>
-          <div class="info-card">
-            <div class="icon"><i class="fas fa-clock"></i></div>
-            <div class="text">
-              <h4>Horario de atención</h4>
-              <p>Lun - Vie: 9:00 am – 6:00 pm</p>
-            </div>
-          </div>
-          <div>
-            <h4 style="margin-bottom:8px;">Síguenos en redes</h4>
-            <div class="contact-social">
-              <a href="#"><i class="fab fa-facebook-f"></i></a>
-              <a href="#"><i class="fab fa-instagram"></i></a>
-              <a href="#"><i class="fab fa-twitter"></i></a>
-              <a href="#"><i class="fab fa-tiktok"></i></a>
-              <a href="#"><i class="fab fa-youtube"></i></a>
-            </div>
-          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <i class="fas fa-paper-plane"></i> Enviar reclamo
+          </button>
+        </form>
+
+        <div class="reclamo-footer">
+          <div class="info"><i class="fas fa-shield-alt"></i> Tus datos están seguros</div>
+          <div class="info"><i class="fas fa-clock"></i> Tiempo de respuesta: 48h hábiles</div>
         </div>
       </div>
     </div>
@@ -657,6 +657,7 @@
           <a href="contacto.html">Contacto</a>
           <a href="terminos.html">Términos</a>
           <a href="privacidad.html">Privacidad</a>
+          <a href="reclamaciones.html">Libro de Reclamaciones</a>
         </div>
       </div>
       <div class="beam-rule" style="margin:16px 0;"></div>
@@ -686,36 +687,64 @@
       'use strict';
 
       // =============================================================
-      // 1. ENVÍO DEL FORMULARIO DE CONTACTO (simulación)
+      // 1. SUBIDA DE ARCHIVO (simulación)
       // =============================================================
-      document.getElementById('contactForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const nombre = document.getElementById('contactNombre').value.trim();
-        const email = document.getElementById('contactEmail').value.trim();
-        const asunto = document.getElementById('contactAsunto').value;
-        const mensaje = document.getElementById('contactMensaje').value.trim();
+      const fileInput = document.getElementById('fileInput');
+      const fileLabel = document.getElementById('fileLabel');
 
-        if (!nombre || !email || !mensaje) {
+      fileInput.addEventListener('change', function() {
+        if (this.files && this.files.length > 0) {
+          const name = this.files[0].name;
+          fileLabel.innerHTML = `<i class="fas fa-check-circle" style="color:var(--green);"></i> ${name} (${(this.files[0].size / 1024).toFixed(1)} KB)`;
+        } else {
+          fileLabel.innerHTML = 'Haz clic para subir tu archivo (imagen o PDF)';
+        }
+      });
+
+      // =============================================================
+      // 2. ENVÍO DEL FORMULARIO (simulación)
+      // =============================================================
+      const form = document.getElementById('reclamoForm');
+      const submitBtn = document.getElementById('submitBtn');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Validar campos obligatorios
+        const required = ['numDoc', 'nombre', 'email', 'telefono', 'tipoReclamo', 'descripcion'];
+        let valid = true;
+        required.forEach(id => {
+          const el = document.getElementById(id);
+          if (!el.value.trim()) {
+            el.style.borderColor = 'var(--red)';
+            valid = false;
+          } else {
+            el.style.borderColor = 'var(--line)';
+          }
+        });
+
+        if (!valid) {
           alert('❌ Por favor, completa todos los campos obligatorios.');
           return;
         }
 
         // Simular envío
-        const btn = this.querySelector('.btn-submit');
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
-        btn.disabled = true;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
 
         setTimeout(() => {
-          alert('✅ ¡Mensaje enviado exitosamente! Te responderemos a la brevedad.');
-          this.reset();
-          btn.innerHTML = originalText;
-          btn.disabled = false;
-        }, 1500);
+          alert('✅ ¡Tu reclamo ha sido enviado exitosamente! Te contactaremos en un plazo de 48 horas hábiles.');
+          form.reset();
+          fileLabel.innerHTML = 'Haz clic para subir tu archivo (imagen o PDF)';
+          submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar reclamo';
+          submitBtn.disabled = false;
+          // Resetear bordes
+          document.querySelectorAll('input, select, textarea').forEach(el => el.style.borderColor = 'var(--line)');
+        }, 2000);
       });
 
       // =============================================================
-      // 2. BADGES DE CARRITO Y FAVORITOS
+      // 3. BADGES DE CARRITO Y FAVORITOS
       // =============================================================
       const cart = JSON.parse(localStorage.getItem('laguerCart')) || [];
       const favs = JSON.parse(localStorage.getItem('laguerFavs')) || [];
@@ -731,7 +760,7 @@
       }
 
       // =============================================================
-      // 3. BÚSQUEDA DEL HEADER (redirige a productos)
+      // 4. BÚSQUEDA DEL HEADER
       // =============================================================
       document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
@@ -740,7 +769,7 @@
         }
       });
 
-      console.log('📧 Página de contacto LAGUER lista');
+      console.log('📖 Libro de Reclamaciones LAGUER listo');
     })();
   </script>
 </body>
