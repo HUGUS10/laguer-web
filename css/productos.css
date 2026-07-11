@@ -1,0 +1,175 @@
+body {
+/* Márgenes */
+  margin: 0;
+
+  /* Relleno */
+  padding: 0;
+
+  /* Fondos */
+  background: #0d1117;
+
+  /* Tipografía */
+  font-family: Poppins,sans-serif;
+
+  /* Colores y efectos */
+  color: white;}
+
+.header {
+/* Posicionamiento */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  /* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  justify-content: space-between;
+  align-items: center;
+
+  /* Relleno */
+  padding: 15px 40px;
+
+  /* Fondos */
+  background: #111827;}
+
+.logo img {
+/* Dimensiones */
+  height: 50px;}
+
+nav {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  gap: 20px;}
+
+nav a {
+/* Tipografía */
+  text-decoration: none;
+  font-weight: 600;
+
+  /* Colores y efectos */
+  color: white;}
+
+.header-icons {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  gap: 15px;
+
+  /* Tipografía */
+  font-size: 22px;}
+
+.productos-container {
+/* Relleno */
+  padding: 40px;}
+
+.productos-container h1 {
+/* Márgenes */
+  margin-bottom: 30px;
+
+  /* Tipografía */
+  text-align: center;}
+
+.search-box {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  justify-content: center;
+
+  /* Márgenes */
+  margin-bottom: 30px;}
+
+.search-box input {
+/* Dimensiones */
+  width: 400px;
+
+  /* Relleno */
+  padding: 12px;
+
+  /* Bordes */
+  border: none;
+  border-radius: 10px;}
+
+.productos-grid {
+/* Modelo de caja */
+  display: grid;
+
+  /* Flexbox y Grid */
+  gap: 20px;
+
+  /* Otras propiedades */
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));}
+
+.product-card {
+/* Modelo de caja */
+  overflow: hidden;
+
+  /* Bordes */
+  border-radius: 15px;
+
+  /* Fondos */
+  background: #161b22;
+
+  /* Transiciones y animaciones */
+  transition: 0.3s;}
+
+.product-card:hover {
+/* Otras propiedades */
+  transform: translateY(-5px);}
+
+.product-card img {
+/* Dimensiones */
+  width: 100%;
+  height: 250px;
+
+  /* Otras propiedades */
+  object-fit: cover;}
+
+.product-info {
+/* Relleno */
+  padding: 15px;}
+
+.product-name {
+/* Tipografía */
+  font-size: 18px;
+  font-weight: 600;}
+
+.product-price {
+/* Márgenes */
+  margin-top: 10px;
+
+  /* Tipografía */
+  font-size: 20px;
+
+  /* Colores y efectos */
+  color: #00ff95;}
+
+.btn-cart {
+/* Dimensiones */
+  width: 100%;
+
+  /* Márgenes */
+  margin-top: 10px;
+
+  /* Relleno */
+  padding: 12px;
+
+  /* Bordes */
+  border: none;
+  border-radius: 10px;
+
+  /* Fondos */
+  background: #189ee0;
+
+  /* Tipografía */
+  font-weight: 700;
+
+  /* Colores y efectos */
+  color: white;
+
+  /* Interactividad */
+  cursor: pointer;}

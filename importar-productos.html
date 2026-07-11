@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Importar productos</title>
+</head>
+<body>
+  <h1>Importando productos a Firestore...</h1>
+  <div id="status">Cargando...</div>
+
+  <script type="module">
+    // Importa tu configuración de Firebase
+    import { db } from './firebase/firebase.js';
+    import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+
+    // Aquí pega tu JSON (o puedes cargarlo desde un archivo externo)
+    const productos = [
+      {
+        "name": "Polo Deportivo Azul",
+        "category": "deportes",
+        "price": 89.90,
+        "description": "Polo de algodón transpirable, ideal para entrenar.",
+        "images": [
+          "https://firebasestorage.googleapis.com/.../polo-azul.jpg",
+          "https://firebasestorage.googleapis.com/.../polo-rojo.jpg",
+          "https://firebasestorage.googleapis.com/.../polo-negro.jpg"
+        ],
+        "colors": ["#1a73e8", "#ea4335", "#000000"],
+        "sizes": ["S", "M", "L", "XL"],
+        "characteristics": ["100% algodón peinado", "Cuello redondo", "Doble costura", "Estampado resistente"],
+        "discount": 15,
+        "isNew": true,
+        "stock": 50
+      },
+      // ... más productos
+    ];
+
+    const statusDiv = document.getElementById('status');
+
+    async function importarProductos() {
+      try {
+        statusDiv.textContent = '⏳ Subiendo productos...';
+
+        for (const prod of productos) {
+          // Agregar timestamp de creación
+          const data = { ...prod, createdAt: serverTimestamp() };
+          const docRef = await addDoc(collection(db, 'products'), data);
+          console.log(`✅ Producto "${prod.name}" agregado con ID: ${docRef.id}`);
+          statusDiv.innerHTML += `<br>✅ ${prod.name} → ${docRef.id}`;
+        }
+
+        statusDiv.innerHTML += '<br><br>🎉 ¡Todos los productos se importaron correctamente!';
+      } catch (error) {
+        console.error('Error importando:', error);
+        statusDiv.innerHTML = `<br>❌ Error: ${error.message}`;
+      }
+    }
+
+    // Ejecutar
+    importarProductos();
+  </script>
+</body>
+</html>

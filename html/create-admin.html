@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <script type="module">
+    import { auth, db } from '../firebase/firebase.js';
+    import { createUserWithEmailAndPassword } from 'firebase/auth';
+    import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+
+    const adminEmail = 'admin@laguer.com';
+    const adminPassword = 'Admin2026!';
+    const adminName = 'Administrador LAGUER';
+
+    async function createAdmin() {
+      try {
+        // 1. Crear el usuario en Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, adminEmail, adminPassword);
+        const user = userCredential.user;
+
+        // 2. Guardar en Firestore con rol admin
+        await setDoc(doc(db, 'users', user.uid), {
+          email: adminEmail,
+          displayName: adminName,
+          role: 'admin',
+          createdAt: serverTimestamp(),
+          uid: user.uid
+        });
+
+        console.log('✅ Administrador creado exitosamente');
+        console.log('📧 Email:', adminEmail);
+        console.log('🔑 Contraseña:', adminPassword);
+        alert('Admin creado. Ya puedes iniciar sesión.');
+        window.location.href = 'login.html';
+      } catch (error) {
+        console.error('Error creando admin:', error);
+        if (error.code === 'auth/email-already-in-use') {
+          alert('El correo ya está registrado. Ve a Firebase Console y agrega el rol manualmente.');
+        } else {
+          alert('Error: ' + error.message);
+        }
+      }
+    }
+
+    createAdmin();
+  </script>
+</body>
+</html>
