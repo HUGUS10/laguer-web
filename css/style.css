@@ -4,6 +4,26 @@
   --bg-soft: #0b1017;
   --surface: #121a24;
   --surface-2: #1a2531;
+  --line: rgba(255,255,255,.08);
+  --white: #f5f8fb;
+  --muted: #8fa0b3;}
+
+body.light-mode {
+/* Otras propiedades */
+  --bg: #f5f8fb;
+  --bg-soft: #e9edf2;
+  --surface: #ffffff;
+  --surface-2: #f0f2f5;
+  --line: rgba(0,0,0,.08);
+  --white: #1a1a1a;
+  --muted: #555555;}
+
+:root {
+/* Otras propiedades */
+  --bg: #05070b;
+  --bg-soft: #0b1017;
+  --surface: #121a24;
+  --surface-2: #1a2531;
   --line: rgba(255, 255, 255, .08);
   --red: #ee1d25;
   --red-dark: #a5141a;
@@ -1229,3 +1249,158 @@ footer {
 
   /* Colores y efectos */
   color: var(--muted);}
+
+.cookie-banner {
+/* Posicionamiento */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+
+  /* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  /* Relleno */
+  padding: 16px 24px;
+
+  /* Bordes */
+  border-top: 1px solid var(--line);
+
+  /* Fondos */
+  background: var(--surface);
+
+  /* Transiciones y animaciones */
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Otras propiedades */
+  transform: translateY(100%);
+  backdrop-filter: blur(10px);}
+
+.cookie-banner.show {
+/* Otras propiedades */
+  transform: translateY(0);}
+
+.cookie-banner p {
+/* Flexbox y Grid */
+  flex: 1;
+
+  /* Dimensiones */
+  min-width: 200px;
+
+  /* Márgenes */
+  margin: 0;
+
+  /* Tipografía */
+  font-size: 14px;
+
+  /* Colores y efectos */
+  color: var(--muted);}
+
+.cookie-banner p a {
+/* Tipografía */
+  text-decoration: underline;
+
+  /* Colores y efectos */
+  color: var(--blue);}
+
+.cookie-banner .buttons {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  gap: 10px;
+  flex-wrap: wrap;}
+
+.cookie-banner .btn-cookie {
+/* Relleno */
+  padding: 8px 20px;
+
+  /* Bordes */
+  border-radius: 8px;
+  border: none;
+
+  /* Tipografía */
+  font-weight: 700;
+  font-size: 13px;
+
+  /* Transiciones y animaciones */
+  transition: 0.2s;
+
+  /* Interactividad */
+  cursor: pointer;}
+
+.cookie-banner .btn-cookie.accept {
+/* Fondos */
+  background: var(--green);
+
+  /* Colores y efectos */
+  color: #fff;}
+
+.cookie-banner .btn-cookie.accept:hover {
+/* Otras propiedades */
+  transform: scale(1.05);}
+
+.cookie-banner .btn-cookie.reject {
+/* Bordes */
+  border: 1px solid var(--line);
+
+  /* Fondos */
+  background: var(--surface-2);
+
+  /* Colores y efectos */
+  color: var(--muted);}
+
+.cookie-banner .btn-cookie.reject:hover {
+/* Fondos */
+  background: var(--red);
+
+  /* Colores y efectos */
+  color: #fff;}
+
+.cookie-banner .btn-cookie.settings {
+/* Fondos */
+  background: var(--blue);
+
+  /* Colores y efectos */
+  color: #fff;}
+
+.cookie-banner .btn-cookie.settings:hover {
+/* Otras propiedades */
+  transform: scale(1.05);}
+
+.fade-in {
+/* Transiciones y animaciones */
+  animation: fadeIn 0.6s ease forwards;}
+
+.card, .product-card, .offer-card {
+/* Transiciones y animaciones */
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;}
+
+.card:hover, .product-card:hover, .offer-card:hover {
+/* Otras propiedades */
+  transform: translateY(-6px);}
+
+.loading-spinner {
+/* Modelo de caja */
+  display: inline-block;
+
+  /* Dimensiones */
+  width: 40px;
+  height: 40px;
+
+  /* Bordes */
+  border: 3px solid var(--line);
+  border-radius: 50%;
+
+  /* Transiciones y animaciones */
+  animation: spin 0.8s linear infinite;
+
+  /* Otras propiedades */
+  border-top-color: var(--blue);}

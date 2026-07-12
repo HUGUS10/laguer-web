@@ -2,26 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-<<<<<<< HEAD
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-=======
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
   <title>Ofertas · LAGUER</title>
   <link rel="icon" href="../image/favicon-laguer.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-<<<<<<< HEAD
 
   <style>
     /* ===== VARIABLES ===== */
-=======
-  
-  <!-- Estilos globales -->
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     :root {
       --bg: #05070b;
       --bg-soft: #0b1017;
@@ -37,21 +26,16 @@
       --white: #f5f8fb;
       --muted: #8fa0b3;
       --radius: 16px;
-<<<<<<< HEAD
       --bottom-nav-height: 70px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-=======
-    }
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     body {
       background: var(--bg);
       color: var(--white);
       font-family: 'Manrope', sans-serif;
       -webkit-font-smoothing: antialiased;
-<<<<<<< HEAD
       overflow-x: hidden;
       padding-bottom: calc(var(--bottom-nav-height) + 20px);
     }
@@ -62,18 +46,12 @@
     button { font-family: inherit; cursor: pointer; border: none; }
     .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
 
-=======
-    }
-    a { color: inherit; text-decoration: none; }
-    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .beam-rule {
       height: 3px;
       width: 100%;
       background: linear-gradient(90deg, var(--red) 0 33%, var(--green) 33% 66%, var(--blue) 66% 100%);
       opacity: .9;
     }
-<<<<<<< HEAD
     .beam-glow {
       position: absolute;
       inset: 0;
@@ -105,50 +83,27 @@
       font-size: 12.5px;
       color: var(--muted);
       border-bottom: 1px solid var(--line);
-=======
-    .topbar {
-      background: #020406;
-      font-size: 13px;
-      color: var(--muted);
-      border-bottom: 1px solid var(--line);
-      padding: 8px 0;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     }
     .topbar .wrap {
       display: flex;
       justify-content: space-between;
       align-items: center;
-<<<<<<< HEAD
       height: 36px;
     }
     .topbar-links { display: flex; gap: 20px; }
     .topbar-links b { color: var(--white); }
 
-=======
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .topbar-links { display: flex; gap: 20px; flex-wrap: wrap; }
-    .topbar-links b { color: var(--white); }
-
-    /* HEADER (reutilizado) */
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     header.site {
       position: sticky;
       top: 0;
       z-index: 50;
-<<<<<<< HEAD
       background: rgba(5,7,11,.88);
-=======
-      background: rgba(5,7,11,.92);
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
     }
     .header-row {
       display: flex;
       align-items: center;
-<<<<<<< HEAD
       gap: 16px;
       height: 60px;
     }
@@ -161,35 +116,14 @@
       flex: 0 0 auto;
     }
     .main-nav a {
-=======
-      gap: 20px;
-      height: 70px;
-      flex-wrap: wrap;
-    }
-    .logo-mark { height: 38px; }
-    .logo-mark img { height: 100%; width: auto; }
-    nav.main-nav {
-      display: flex;
-      gap: 20px;
-      flex: 1;
-      flex-wrap: wrap;
-    }
-    nav.main-nav a {
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       font-weight: 600;
       font-size: 14px;
       color: var(--white);
       opacity: .85;
       position: relative;
-<<<<<<< HEAD
       padding: 4px 2px;
     }
     .main-nav a::after {
-=======
-      padding: 4px 0;
-    }
-    nav.main-nav a::after {
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       content: "";
       position: absolute;
       left: 0;
@@ -199,7 +133,6 @@
       background: linear-gradient(90deg, var(--red), var(--green), var(--blue));
       transition: width .25s ease;
     }
-<<<<<<< HEAD
     .main-nav a:hover { opacity: 1; }
     .main-nav a:hover::after { width: 100%; }
 
@@ -207,27 +140,16 @@
       flex: 1;
       max-width: 300px;
       margin-left: auto;
-=======
-    nav.main-nav a:hover::after { width: 100%; }
-    .search-box {
-      flex: 1;
-      max-width: 360px;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       display: flex;
       align-items: center;
       gap: 8px;
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 999px;
-<<<<<<< HEAD
       padding: 6px 14px;
       transition: border-color .2s;
     }
     .search-box:focus-within { border-color: var(--blue); }
-=======
-      padding: 8px 16px;
-    }
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .search-box input {
       background: none;
       border: none;
@@ -238,30 +160,18 @@
       font-family: inherit;
     }
     .search-box input::placeholder { color: var(--muted); }
-<<<<<<< HEAD
     .search-box i { opacity: .7; }
 
-=======
-    .search-box i { color: var(--muted); }
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .header-icons {
       display: flex;
       align-items: center;
       gap: 12px;
-<<<<<<< HEAD
       flex-shrink: 0;
     }
     .icon-btn {
       position: relative;
       width: 36px;
       height: 36px;
-=======
-    }
-    .icon-btn {
-      position: relative;
-      width: 38px;
-      height: 38px;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       border-radius: 50%;
       background: var(--surface);
       display: grid;
@@ -286,81 +196,33 @@
       place-items: center;
       border: 2px solid var(--bg);
     }
-<<<<<<< HEAD
     .fav-count { background: var(--blue); }
     .burger { display: none; }
 
     .cat-strip {
       background: var(--bg-soft);
       border-bottom: 1px solid var(--line);
-=======
-    .burger {
-      display: none;
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      background: var(--surface);
-      border: 1px solid var(--line);
-      place-items: center;
-      background: transparent;
-    }
-    .burger span {
-      display: block;
-      width: 20px;
-      height: 2px;
-      background: var(--white);
-      position: relative;
-    }
-    .burger span::before,
-    .burger span::after {
-      content: "";
-      display: block;
-      width: 20px;
-      height: 2px;
-      background: var(--white);
-      position: absolute;
-    }
-    .burger span::before { top: -6px; }
-    .burger span::after { top: 6px; }
-
-    /* Cat strip */
-    .cat-strip {
-      background: var(--bg-soft);
-      border-bottom: 1px solid var(--line);
-      overflow-x: auto;
-      padding: 10px 0;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     }
     .cat-strip .wrap {
       display: flex;
       gap: 24px;
-<<<<<<< HEAD
       overflow-x: auto;
       padding: 10px 20px;
     }
     .cat-chip {
       flex: 0 0 auto;
-=======
-      white-space: nowrap;
-    }
-    .cat-chip {
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       display: flex;
       align-items: center;
       gap: 6px;
       font-size: 13px;
       font-weight: 600;
       color: var(--muted);
-<<<<<<< HEAD
       white-space: nowrap;
-=======
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       transition: color 0.2s;
     }
     .cat-chip:hover { color: var(--white); }
     .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-<<<<<<< HEAD
     /* ===== OFERTAS ===== */
     .section { padding: 30px 0; }
     .ofertas-header {
@@ -386,44 +248,14 @@
     }
     .ofertas-filtros button {
       padding: 6px 16px;
-=======
-    /* ===== SECCIÓN OFERTAS ===== */
-    .ofertas-header {
-      padding: 30px 0 10px;
-      text-align: center;
-    }
-    .ofertas-header h1 {
-      font-size: 32px;
-      font-weight: 700;
-    }
-    .ofertas-header h1 i { color: var(--red); margin-right: 10px; }
-    .ofertas-header p {
-      color: var(--muted);
-      margin-top: 6px;
-    }
-    .ofertas-filtros {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin: 20px 0 30px;
-    }
-    .ofertas-filtros button {
-      padding: 8px 18px;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       border-radius: 999px;
       border: 1px solid var(--line);
       background: var(--surface);
       color: var(--muted);
       font-weight: 600;
       font-size: 13px;
-<<<<<<< HEAD
       transition: 0.2s;
       cursor: pointer;
-=======
-      cursor: pointer;
-      transition: 0.2s;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     }
     .ofertas-filtros button:hover,
     .ofertas-filtros button.active {
@@ -434,14 +266,8 @@
 
     .ofertas-grid {
       display: grid;
-<<<<<<< HEAD
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
-=======
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 24px;
-      padding-bottom: 40px;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     }
     .offer-card {
       background: var(--surface);
@@ -449,10 +275,6 @@
       border-radius: var(--radius);
       overflow: hidden;
       transition: 0.3s;
-<<<<<<< HEAD
-=======
-      position: relative;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       cursor: pointer;
     }
     .offer-card:hover {
@@ -478,7 +300,6 @@
     .offer-card .card-img img:hover { transform: scale(1.05); }
     .offer-card .badge-offer {
       position: absolute;
-<<<<<<< HEAD
       top: 10px;
       left: 10px;
       background: var(--red);
@@ -501,62 +322,25 @@
     }
     .offer-card .card-body .cat {
       font-size: 11px;
-=======
-      top: 12px;
-      left: 12px;
-      background: var(--red);
-      color: #fff;
-      font-weight: 800;
-      font-size: 14px;
-      padding: 4px 14px;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 4px 12px rgba(238,29,37,0.3);
-    }
-    .offer-card .badge-offer i { font-size: 12px; }
-    .offer-card .badge-2x1 {
-      background: var(--blue);
-    }
-    .offer-card .badge-new {
-      background: var(--green);
-    }
-    .offer-card .card-body {
-      padding: 16px;
-    }
-    .offer-card .card-body .cat {
-      font-size: 12px;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
     .offer-card .card-body h3 {
-<<<<<<< HEAD
       font-size: 15px;
-=======
-      font-size: 18px;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       font-weight: 700;
       margin: 4px 0 6px;
     }
     .offer-card .card-body .prices {
       display: flex;
       align-items: baseline;
-<<<<<<< HEAD
       gap: 8px;
       flex-wrap: wrap;
       margin-bottom: 10px;
-=======
-      gap: 10px;
-      margin-bottom: 12px;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     }
     .offer-card .card-body .prices .current {
       font-family: 'Space Grotesk', sans-serif;
       font-weight: 700;
-<<<<<<< HEAD
       font-size: 20px;
       color: var(--green);
     }
@@ -567,23 +351,10 @@
     }
     .offer-card .card-body .prices .percent {
       background: rgba(238,29,37,0.15);
-=======
-      font-size: 22px;
-      color: var(--green);
-    }
-    .offer-card .card-body .prices .old {
-      font-size: 14px;
-      color: var(--muted);
-      text-decoration: line-through;
-    }
-    .offer-card .card-body .prices .discount-percent {
-      background: rgba(238,29,37,0.2);
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       color: var(--red);
       padding: 2px 10px;
       border-radius: 20px;
       font-weight: 700;
-<<<<<<< HEAD
       font-size: 12px;
     }
     .offer-card .add-btn {
@@ -592,27 +363,13 @@
       border-radius: 8px;
       font-weight: 700;
       font-size: 13px;
-=======
-      font-size: 13px;
-    }
-    .offer-card .add-btn {
-      width: 100%;
-      padding: 10px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 14px;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       background: var(--surface-2);
       color: var(--white);
       border: 1px solid var(--line);
       display: flex;
       align-items: center;
       justify-content: center;
-<<<<<<< HEAD
       gap: 6px;
-=======
-      gap: 8px;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       transition: .2s;
       cursor: pointer;
     }
@@ -621,7 +378,6 @@
       border-color: transparent;
     }
 
-<<<<<<< HEAD
     /* ===== FOOTER ===== */
     footer {
       background: #020406;
@@ -641,32 +397,17 @@
       flex-wrap: wrap;
       gap: 8px;
       margin-top: 10px;
-=======
-    /* Stickers de pago en el footer */
-    .pay-icons-footer {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 12px 0;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     }
     .pay-icons-footer span {
       background: var(--surface);
       border: 1px solid var(--line);
-<<<<<<< HEAD
       border-radius: 6px;
       padding: 4px 10px;
       font-size: 12px;
-=======
-      border-radius: 8px;
-      padding: 4px 12px;
-      font-size: 13px;
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       font-weight: 600;
       color: var(--muted);
       display: inline-flex;
       align-items: center;
-<<<<<<< HEAD
       gap: 4px;
     }
     .pay-icons-footer span i { font-size: 16px; }
@@ -819,73 +560,23 @@
       .offer-card .card-body .prices .current { font-size: 18px; }
       .foot-grid { grid-template-columns: 1fr; gap: 20px; }
       .section { padding: 20px 0; }
-=======
-      gap: 6px;
-    }
-    .pay-icons-footer span i { font-size: 18px; }
-    .footer-social {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      margin-top: 10px;
-    }
-    .footer-social a {
-      color: var(--muted);
-      font-size: 20px;
-      transition: 0.2s;
-    }
-    .footer-social a:hover { color: var(--white); transform: scale(1.1); }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      nav.main-nav, .search-box { display: none; }
-      .burger { display: grid; }
-      .header-row { height: 60px; gap: 12px; }
-      .ofertas-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-      .ofertas-header h1 { font-size: 24px; }
-      .offer-card .card-body h3 { font-size: 15px; }
-      .offer-card .card-body .prices .current { font-size: 18px; }
-      .topbar-links { font-size: 12px; gap: 12px; }
-    }
-    @media (max-width: 480px) {
-      .ofertas-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-      .offer-card .badge-offer { font-size: 11px; padding: 2px 10px; }
-      .offer-card .card-body { padding: 10px; }
-      .offer-card .add-btn { font-size: 12px; padding: 8px; }
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     }
   </style>
 </head>
 <body>
 
-<<<<<<< HEAD
   <!-- ===== TOPBAR ===== -->
-=======
-  <!-- TOPBAR -->
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
   <div class="topbar">
     <div class="wrap">
       <div class="topbar-links">
         <span>🚚 <b>Envíos a todo el Perú</b></span>
         <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
       </div>
-<<<<<<< HEAD
-=======
-      <div style="display:flex; gap:10px;">
-        <a href="#"><i class="fab fa-facebook-f"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-tiktok"></i></a>
-      </div>
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     </div>
   </div>
   <div class="beam-rule"></div>
 
-<<<<<<< HEAD
   <!-- ===== HEADER ===== -->
-=======
-  <!-- HEADER -->
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
   <header class="site">
     <div class="wrap header-row">
       <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
@@ -898,22 +589,12 @@
       </nav>
       <div class="search-box">
         <i class="fas fa-search"></i>
-<<<<<<< HEAD
         <input type="text" id="searchInput" placeholder="Buscar ofertas…" />
       </div>
       <div class="header-icons">
         <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
         <a href="favoritos.html" class="icon-btn fav-btn-header"><i class="fas fa-heart"></i><span class="fav-count" id="favCount">0</span></a>
         <a href="carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
-=======
-        <input type="text" id="searchOfertas" placeholder="Buscar ofertas..." />
-      </div>
-      <div class="header-icons">
-        <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
-        <a href="favoritos.html" class="icon-btn"><i class="fas fa-heart"></i><span class="fav-count">0</span></a>
-        <a href="carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
-        <button class="burger" id="burgerBtn"><span></span></button>
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       </div>
     </div>
     <div class="cat-strip">
@@ -930,7 +611,6 @@
   </header>
 
   <!-- ===== OFERTAS ===== -->
-<<<<<<< HEAD
   <section class="section">
     <div class="wrap">
       <div class="ofertas-header">
@@ -965,42 +645,6 @@
         <div>
           <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
           <p class="foot-desc">Tecnología, estilo y calidad en un solo lugar.</p>
-=======
-  <section class="wrap">
-    <div class="ofertas-header">
-      <h1><i class="fas fa-bolt"></i> Ofertas Especiales</h1>
-      <p>Descuentos increíbles por tiempo limitado. ¡Aprovecha!</p>
-    </div>
-
-    <div class="ofertas-filtros" id="filtrosOfertas">
-      <button class="active" data-filter="all">Todos</button>
-      <button data-filter="tecnologia">Tecnología</button>
-      <button data-filter="hogar">Hogar</button>
-      <button data-filter="deportes">Deportes</button>
-      <button data-filter="accesorios">Accesorios</button>
-      <button data-filter="belleza">Belleza</button>
-      <button data-filter="gaming">Gaming</button>
-      <button data-filter="audio">Audio</button>
-    </div>
-
-    <div id="loading" style="text-align:center; padding:40px 0; color:var(--muted);">
-      <i class="fas fa-spinner fa-spin fa-2x"></i>
-      <p>Cargando ofertas...</p>
-    </div>
-
-    <div class="ofertas-grid" id="ofertasGrid">
-      <!-- Las tarjetas se generarán dinámicamente con JavaScript -->
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer style="background:#020406; border-top:1px solid var(--line); padding:40px 0 20px; margin-top:20px;">
-    <div class="wrap">
-      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:30px; margin-bottom:30px;">
-        <div>
-          <img src="../image/laguer-logo.png" alt="LAGUER" style="height:32px; margin-bottom:10px;" />
-          <p style="color:var(--muted); font-size:13px; max-width:260px;">Tecnología, estilo y calidad en un solo lugar.</p>
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
           <div class="pay-icons-footer">
             <span><i class="fab fa-cc-visa"></i> VISA</span>
             <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
@@ -1010,18 +654,13 @@
             <span><i class="fab fa-cc-diners-club"></i> Diners</span>
           </div>
           <div class="footer-social">
-<<<<<<< HEAD
             <span>Síguenos:</span>
-=======
-            <span style="color:var(--muted); font-weight:600;">Síguenos:</span>
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-tiktok"></i></a>
           </div>
         </div>
-<<<<<<< HEAD
         <div class="foot-col">
           <h5>Categorías</h5>
           <a href="productos.html?cat=tecnologia">Tecnología</a>
@@ -1055,38 +694,12 @@
 
       <div class="beam-rule" style="margin:16px 0;"></div>
       <div class="foot-bottom">
-=======
-        <div>
-          <h5 style="color:var(--white); font-size:14px; margin-bottom:10px;">Categorías</h5>
-          <a href="productos.html?cat=tecnologia" style="display:block; color:var(--muted); font-size:13px; margin-bottom:6px;">Tecnología</a>
-          <a href="productos.html?cat=hogar" style="display:block; color:var(--muted); font-size:13px; margin-bottom:6px;">Hogar</a>
-          <a href="productos.html?cat=deportes" style="display:block; color:var(--muted); font-size:13px; margin-bottom:6px;">Deportes</a>
-          <a href="productos.html?cat=accesorios" style="display:block; color:var(--muted); font-size:13px; margin-bottom:6px;">Accesorios</a>
-        </div>
-        <div>
-          <h5 style="color:var(--white); font-size:14px; margin-bottom:10px;">Ayuda</h5>
-          <a href="pedidos.html" style="display:block; color:var(--muted); font-size:13px; margin-bottom:6px;">Rastrear pedido</a>
-          <a href="ayuda.html" style="display:block; color:var(--muted); font-size:13px; margin-bottom:6px;">Cambios y devoluciones</a>
-          <a href="ayuda.html" style="display:block; color:var(--muted); font-size:13px; margin-bottom:6px;">Medios de pago</a>
-        </div>
-        <div>
-          <h5 style="color:var(--white); font-size:14px; margin-bottom:10px;">Nosotros</h5>
-          <a href="nosotros.html" style="display:block; color:var(--muted); font-size:13px; margin-bottom:6px;">Sobre LAGUER</a>
-          <a href="contacto.html" style="display:block; color:var(--muted); font-size:13px; margin-bottom:6px;">Contacto</a>
-          <a href="terminos.html" style="display:block; color:var(--muted); font-size:13px; margin-bottom:6px;">Términos</a>
-          <a href="privacidad.html" style="display:block; color:var(--muted); font-size:13px; margin-bottom:6px;">Privacidad</a>
-        </div>
-      </div>
-      <div class="beam-rule" style="margin:16px 0;"></div>
-      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; color:var(--muted); font-size:12px;">
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
         <span>© 2026 LAGUER. Todos los derechos reservados.</span>
         <span>Hecho con ♥ para todo el Perú</span>
       </div>
     </div>
   </footer>
 
-<<<<<<< HEAD
   <!-- ===== BOTTOM NAV (solo móvil) ===== -->
   <nav class="bottom-nav" id="bottomNav">
     <a href="../index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
@@ -1323,267 +936,6 @@
 
       console.log('🔥 Página de ofertas LAGUER lista');
     })();
-=======
-  <!-- ===== SCRIPTS ===== -->
-  <script>
-    // =========================
-    // DATOS DE EJEMPLO (puedes reemplazar con Firebase)
-    // =========================
-    const productosOferta = [
-      {
-        id: '1',
-        name: 'Smartwatch Deportivo Pro',
-        category: 'tecnologia',
-        price: 199.90,
-        oldPrice: 299.90,
-        discount: 33,
-        image: 'https://via.placeholder.com/400x400/1a2531/ffffff?text=Smartwatch',
-        badge: '🔥 -33%',
-        badgeType: 'discount'
-      },
-      {
-        id: '2',
-        name: 'Audífonos Bluetooth 5.0',
-        category: 'audio',
-        price: 89.90,
-        oldPrice: 149.90,
-        discount: 40,
-        image: 'https://via.placeholder.com/400x400/1a2531/ffffff?text=Audifonos',
-        badge: '🎧 -40%',
-        badgeType: 'discount'
-      },
-      {
-        id: '3',
-        name: 'Mochila Impermeable',
-        category: 'accesorios',
-        price: 129.90,
-        oldPrice: 189.90,
-        discount: 32,
-        image: 'https://via.placeholder.com/400x400/1a2531/ffffff?text=Mochila',
-        badge: '🎒 -32%',
-        badgeType: 'discount'
-      },
-      {
-        id: '4',
-        name: 'Lámpara LED Inteligente',
-        category: 'hogar',
-        price: 79.90,
-        oldPrice: 129.90,
-        discount: 38,
-        image: 'https://via.placeholder.com/400x400/1a2531/ffffff?text=Lampara',
-        badge: '💡 2x1',
-        badgeType: '2x1'
-      },
-      {
-        id: '5',
-        name: 'Camiseta Deportiva Dry-Fit',
-        category: 'deportes',
-        price: 49.90,
-        oldPrice: 79.90,
-        discount: 37,
-        image: 'https://via.placeholder.com/400x400/1a2531/ffffff?text=Camiseta',
-        badge: '⚡ -37%',
-        badgeType: 'discount'
-      },
-      {
-        id: '6',
-        name: 'Set de Organizadores de Hogar',
-        category: 'hogar',
-        price: 149.90,
-        oldPrice: 219.90,
-        discount: 32,
-        image: 'https://via.placeholder.com/400x400/1a2531/ffffff?text=Organizadores',
-        badge: '🏠 -32%',
-        badgeType: 'discount'
-      },
-      {
-        id: '7',
-        name: 'Teclado Mecánico RGB',
-        category: 'gaming',
-        price: 189.90,
-        oldPrice: 259.90,
-        discount: 27,
-        image: 'https://via.placeholder.com/400x400/1a2531/ffffff?text=Teclado',
-        badge: '🎮 -27%',
-        badgeType: 'discount'
-      },
-      {
-        id: '8',
-        name: 'Crema Facial Hidratante',
-        category: 'belleza',
-        price: 39.90,
-        oldPrice: 59.90,
-        discount: 33,
-        image: 'https://via.placeholder.com/400x400/1a2531/ffffff?text=Crema',
-        badge: '✨ -33%',
-        badgeType: 'discount'
-      }
-    ];
-
-    // =========================
-    // RENDERIZAR OFERTAS
-    // =========================
-    const grid = document.getElementById('ofertasGrid');
-    const loading = document.getElementById('loading');
-    const searchInput = document.getElementById('searchOfertas');
-    let productosMostrados = [...productosOferta];
-
-    function renderOfertas(productos) {
-      if (productos.length === 0) {
-        grid.innerHTML = `
-          <div style="grid-column:1/-1; text-align:center; padding:40px 0; color:var(--muted);">
-            <i class="fas fa-search fa-2x"></i>
-            <p>No hay ofertas que coincidan con tu búsqueda.</p>
-          </div>
-        `;
-        return;
-      }
-
-      let html = '';
-      productos.forEach(p => {
-        const badgeClass = p.badgeType === '2x1' ? 'badge-2x1' : p.badgeType === 'new' ? 'badge-new' : '';
-        html += `
-          <div class="offer-card" data-id="${p.id}" data-category="${p.category}">
-            <div class="card-img">
-              <img src="${p.image}" alt="${p.name}" loading="lazy" />
-              <div class="badge-offer ${badgeClass}">
-                <i class="fas fa-tag"></i> ${p.badge}
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="cat">${p.category}</div>
-              <h3>${p.name}</h3>
-              <div class="prices">
-                <span class="current">S/ ${p.price.toFixed(2)}</span>
-                <span class="old">S/ ${p.oldPrice.toFixed(2)}</span>
-                <span class="discount-percent">-${p.discount}%</span>
-              </div>
-              <button class="add-btn" data-id="${p.id}" data-name="${p.name}" data-price="${p.price}">
-                <i class="fas fa-shopping-cart"></i> Agregar al carrito
-              </button>
-            </div>
-          </div>
-        `;
-      });
-      grid.innerHTML = html;
-      loading.style.display = 'none';
-    }
-
-    // =========================
-    // FILTROS Y BÚSQUEDA
-    // =========================
-    const filtrosBtns = document.querySelectorAll('#filtrosOfertas button');
-    let categoriaActual = 'all';
-    let terminoBusqueda = '';
-
-    function filtrarOfertas() {
-      let filtrados = productosOferta;
-      if (categoriaActual !== 'all') {
-        filtrados = filtrados.filter(p => p.category === categoriaActual);
-      }
-      if (terminoBusqueda.trim() !== '') {
-        const term = terminoBusqueda.toLowerCase().trim();
-        filtrados = filtrados.filter(p =>
-          p.name.toLowerCase().includes(term) ||
-          p.category.toLowerCase().includes(term)
-        );
-      }
-      productosMostrados = filtrados;
-      renderOfertas(filtrados);
-    }
-
-    filtrosBtns.forEach(btn => {
-      btn.addEventListener('click', function() {
-        filtrosBtns.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        categoriaActual = this.dataset.filter;
-        filtrarOfertas();
-      });
-    });
-
-    searchInput.addEventListener('input', function(e) {
-      terminoBusqueda = e.target.value;
-      filtrarOfertas();
-    });
-
-    // =========================
-    // CARRITO (localStorage)
-    // =========================
-    let cart = JSON.parse(localStorage.getItem('laguerCart')) || [];
-    const cartCountEl = document.getElementById('cartCount');
-
-    function updateCartCount() {
-      if (cartCountEl) {
-        const total = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
-        cartCountEl.textContent = total;
-      }
-      localStorage.setItem('laguerCart', JSON.stringify(cart));
-    }
-
-    function addToCart(product) {
-      const existing = cart.find(item => item.id === product.id);
-      if (existing) {
-        existing.quantity = (existing.quantity || 1) + 1;
-      } else {
-        cart.push({ ...product, quantity: 1 });
-      }
-      updateCartCount();
-      alert('✅ Producto agregado al carrito');
-    }
-
-    // Delegación de eventos para los botones de agregar (incluye los que se renderizan después)
-    grid.addEventListener('click', function(e) {
-      const btn = e.target.closest('.add-btn');
-      if (btn) {
-        const id = btn.dataset.id;
-        const name = btn.dataset.name;
-        const price = parseFloat(btn.dataset.price);
-        addToCart({ id, name, price });
-      }
-    });
-
-    // =========================
-    // MENÚ MÓVIL
-    // =========================
-    document.getElementById('burgerBtn')?.addEventListener('click', function() {
-      const nav = document.querySelector('nav.main-nav');
-      if (nav.style.display === 'flex') {
-        nav.style.display = 'none';
-      } else {
-        nav.style.display = 'flex';
-        nav.style.position = 'absolute';
-        nav.style.top = '60px';
-        nav.style.left = '0';
-        nav.style.right = '0';
-        nav.style.flexDirection = 'column';
-        nav.style.background = '#0b1017';
-        nav.style.padding = '18px 28px';
-        nav.style.borderBottom = '1px solid var(--line)';
-        nav.style.zIndex = '999';
-      }
-    });
-
-    // =========================
-    // INICIALIZAR
-    // =========================
-    renderOfertas(productosOferta);
-    updateCartCount();
-
-    // Simular carga de Firebase (si quieres, descomenta y conecta)
-    /*
-    import { db } from '../firebase/firebase.js';
-    import { collection, getDocs } from 'firebase/firestore';
-    async function cargarDesdeFirebase() {
-      try {
-        const snapshot = await getDocs(collection(db, 'ofertas'));
-        const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        productosOferta = data;
-        renderOfertas(productosOferta);
-      } catch(e) { console.error(e); }
-    }
-    cargarDesdeFirebase();
-    */
->>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
   </script>
 </body>
 </html>
