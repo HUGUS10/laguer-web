@@ -1,25 +1,1412 @@
-<section class="section">
-  <div class="wrap">
-    <h1>Finalizar compra</h1>
-    <div style="display:grid; grid-template-columns:2fr 1fr; gap:30px; margin-top:30px;">
-      <div>
-        <h3>Datos de envío</h3>
-        <form style="display:flex; flex-direction:column; gap:16px;">
-          <input type="text" placeholder="Nombre completo" style="padding:12px; border-radius:10px; background:var(--surface); border:1px solid var(--line); color:#fff;">
-          <input type="text" placeholder="Dirección" style="padding:12px; border-radius:10px; background:var(--surface); border:1px solid var(--line); color:#fff;">
-          <input type="text" placeholder="Distrito / Ciudad" style="padding:12px; border-radius:10px; background:var(--surface); border:1px solid var(--line); color:#fff;">
-        </form>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Finalizar compra · LAGUER</title>
+  <link rel="icon" href="../image/favicon-laguer.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ============================================================
+       VARIABLES (TEMA OSCURO POR DEFECTO)
+       ============================================================ */
+    :root {
+      --bg: #05070b;
+      --bg-soft: #0b1017;
+      --surface: #121a24;
+      --surface-2: #1a2531;
+      --line: rgba(255,255,255,.08);
+      --line-2: rgba(255,255,255,.14);
+      --red: #ee1d25;
+      --red-dark: #a5141a;
+      --green: #39b54a;
+      --green-dark: #1f7b2c;
+      --blue: #189ee0;
+      --blue-dark: #0f6ca3;
+      --amber: #f1c40f;
+      --white: #f5f8fb;
+      --muted: #8fa0b3;
+      --radius: 16px;
+      --bottom-nav-height: 70px;
+    }
+
+    /* ============================================================
+       TEMA CLARO
+       ============================================================ */
+    body.light-mode {
+      --bg: #f4f6f9;
+      --bg-soft: #eef1f5;
+      --surface: #ffffff;
+      --surface-2: #f0f2f5;
+      --line: rgba(0,0,0,.08);
+      --line-2: rgba(0,0,0,.14);
+      --white: #1a1a1a;
+      --muted: #555555;
+    }
+
+    /* ============================================================
+       RESET Y BASE
+       ============================================================ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      padding-bottom: calc(var(--bottom-nav-height) + 20px);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; border: none; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+    /* ============================================================
+       BEAM
+       ============================================================ */
+    .beam-rule {
+      height: 3px;
+      width: 100%;
+      background: linear-gradient(90deg, var(--red) 0 33%, var(--green) 33% 66%, var(--blue) 66% 100%);
+      opacity: .9;
+    }
+
+    /* ============================================================
+       TOPBAR
+       ============================================================ */
+    .topbar {
+      background: #020406;
+      font-size: 12.5px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    body.light-mode .topbar {
+      background: #eef1f5 !important;
+      border-bottom-color: var(--line);
+    }
+    body.light-mode .topbar .topbar-links a { color: var(--muted); }
+    body.light-mode .topbar .topbar-links b { color: var(--white); }
+    body.light-mode .topbar #languageSelector {
+      color: var(--white);
+      border-color: var(--line);
+    }
+
+    .topbar .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 36px;
+    }
+    .topbar-links { display: flex; gap: 20px; }
+    .topbar-links b { color: var(--white); }
+
+    /* ============================================================
+       HEADER
+       ============================================================ */
+    header.site {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(5,7,11,.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      transition: background 0.3s ease;
+    }
+    body.light-mode header.site { background: rgba(255,255,255,.92); }
+
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 60px;
+    }
+    .logo-mark { height: 32px; flex-shrink: 0; }
+    .logo-mark img { height: 100%; width: auto; }
+
+    .main-nav {
+      display: flex;
+      gap: 20px;
+      flex: 0 0 auto;
+    }
+    .main-nav a {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--white);
+      opacity: .85;
+      position: relative;
+      padding: 4px 2px;
+    }
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--red), var(--green), var(--blue));
+      transition: width .25s ease;
+    }
+    .main-nav a:hover { opacity: 1; }
+    .main-nav a:hover::after { width: 100%; }
+
+    .search-box {
+      flex: 1;
+      max-width: 300px;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 14px;
+      transition: border-color .2s, background 0.3s;
+    }
+    .search-box:focus-within { border-color: var(--blue); }
+    .search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--white);
+      font-size: 14px;
+      width: 100%;
+      font-family: inherit;
+    }
+    .search-box input::placeholder { color: var(--muted); }
+    .search-box i { opacity: .7; }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .icon-btn {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      transition: .2s;
+      color: var(--white);
+    }
+    .icon-btn:hover { border-color: var(--green); background: var(--surface-2); }
+    .cart-count, .fav-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--bg);
+    }
+    .fav-count { background: var(--blue); }
+
+    /* ============================================================
+       TOGGLES: TEMA E IDIOMA
+       ============================================================ */
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: 6px;
+    }
+    .theme-toggle, .lang-toggle {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 4px 6px;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      cursor: pointer;
+      transition: border-color .2s, background 0.3s;
+      color: var(--white);
+      font-size: 13px;
+    }
+    body.light-mode .theme-toggle, body.light-mode .lang-toggle {
+      background: var(--surface);
+      border-color: var(--line);
+    }
+    .theme-toggle:hover, .lang-toggle:hover { border-color: var(--blue); }
+    .theme-toggle .tog-icon, .lang-toggle .lang-opt {
+      padding: 4px 6px;
+      border-radius: 20px;
+      font-size: 13px;
+      transition: background .2s, color .2s;
+    }
+    .theme-toggle .tog-icon.active,
+    .lang-toggle .lang-opt.active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    /* ============================================================
+       CATEGORÍAS (solo PC)
+       ============================================================ */
+    .cat-strip {
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--line);
+      transition: background 0.3s, border-color 0.3s;
+    }
+    body.light-mode .cat-strip { background: var(--bg-soft); border-bottom-color: var(--line); }
+    .cat-strip .wrap {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding: 10px 20px;
+    }
+    .cat-chip {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .cat-chip:hover { color: var(--white); }
+    .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ============================================================
+       CHECKOUT (CONTENIDO PRINCIPAL)
+       ============================================================ */
+    .checkout-section {
+      padding: 40px 0;
+    }
+    .checkout-section h1 {
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .checkout-section h1 i {
+      color: var(--blue);
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    /* ===== FORMULARIO ===== */
+    .checkout-form {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .checkout-form h3 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .checkout-form h3 i {
+      color: var(--blue);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: var(--muted);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      color: var(--white);
+      font-family: inherit;
+      transition: 0.2s, background 0.3s, border-color 0.3s;
+      font-size: 14px;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ===== RESUMEN ===== */
+    .checkout-resumen {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: background 0.3s, border-color 0.3s;
+      height: fit-content;
+      position: sticky;
+      top: 80px;
+    }
+    .checkout-resumen h3 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .checkout-resumen h3 i {
+      color: var(--blue);
+    }
+
+    .resumen-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 14px;
+    }
+    .resumen-item:last-child {
+      border-bottom: none;
+    }
+    .resumen-item .qty {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .resumen-total {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 2px solid var(--line);
+    }
+    .resumen-total .line {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 14px;
+    }
+    .resumen-total .line.total {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+    .resumen-total .line.total .amount {
+      color: var(--blue);
+    }
+
+    .btn-confirmar {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 16px;
+    }
+    .btn-confirmar:hover {
+      transform: scale(1.02);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .btn-confirmar:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* ===== CHECKOUT VACÍO ===== */
+    .checkout-empty {
+      display: none;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    .checkout-empty.active {
+      display: block;
+    }
+    .checkout-empty i {
+      font-size: 60px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .checkout-empty h2 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    .checkout-empty p {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .checkout-empty a {
+      display: inline-block;
+      padding: 12px 30px;
+      border-radius: 10px;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 700;
+      transition: 0.2s;
+    }
+    .checkout-empty a:hover {
+      transform: scale(1.05);
+    }
+
+    /* ============================================================
+       TOASTS
+       ============================================================ */
+    .toast-container {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 360px;
+    }
+    .toast {
+      background: var(--surface);
+      border: 1px solid var(--line-2);
+      border-left: 4px solid var(--blue);
+      border-radius: 10px;
+      padding: 14px 18px;
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      animation: slideIn 0.4s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast.success { border-left-color: var(--green); }
+    .toast.error { border-left-color: var(--red); }
+    .toast.info { border-left-color: var(--blue); }
+    .toast .toast-icon { font-size: 20px; }
+    .toast.success .toast-icon { color: var(--green); }
+    .toast.error .toast-icon { color: var(--red); }
+    .toast.info .toast-icon { color: var(--blue); }
+    .toast.hide { animation: slideOut 0.4s ease forwards; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideOut { to { opacity: 0; transform: translateX(50px); } }
+
+    /* ============================================================
+       COOKIES BANNER
+       ============================================================ */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      padding: 16px 24px;
+      z-index: 9999;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+    .cookie-banner.show { transform: translateY(0); }
+    .cookie-banner p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+      min-width: 200px;
+    }
+    .cookie-banner p a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+    .cookie-banner .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .cookie-banner .btn-cookie {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cookie-banner .btn-cookie.accept {
+      background: var(--green);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.accept:hover { transform: scale(1.05); }
+    .cookie-banner .btn-cookie.reject {
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .cookie-banner .btn-cookie.reject:hover {
+      background: var(--red);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings {
+      background: var(--blue);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings:hover { transform: scale(1.05); }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
+    footer {
+      background: #020406;
+      border-top: 1px solid var(--line);
+      padding: 40px 0 20px;
+      transition: background 0.3s ease;
+    }
+    body.light-mode footer { background: #e9edf2; }
+
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    .foot-logo { height: 30px; margin-bottom: 10px; }
+    .foot-desc { color: var(--muted); font-size: 13px; line-height: 1.6; max-width: 260px; }
+    .pay-icons-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .pay-icons-footer span {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pay-icons-footer span i { font-size: 16px; }
+    .pay-icons-footer span .fa-cc-visa { color: #1a1f71; }
+    .pay-icons-footer span .fa-cc-mastercard { color: #eb001b; }
+    .pay-icons-footer span .fa-cc-amex { color: #2e77bc; }
+    .pay-icons-footer span .fa-cc-diners-club { color: #006633; }
+    .pay-icons-footer span .fa-mobile-alt { color: var(--blue); }
+
+    .footer-social {
+      margin-top: 12px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .footer-social span { color: var(--muted); font-weight: 600; font-size: 13px; }
+    .footer-social a { color: var(--muted); font-size: 18px; transition: 0.2s; }
+    .footer-social a:hover { color: var(--white); transform: scale(1.2); }
+
+    .foot-col h5 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+    .foot-col a {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+      transition: .2s;
+    }
+    .foot-col a:hover { color: var(--white); }
+    .foot-bottom {
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .libro-reclamos-final {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 26px 0;
+    }
+    .libro-reclamos-final a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      opacity: .95;
+    }
+    .libro-reclamos-final a:hover { transform: translateY(-2px); opacity: 1; }
+    .libro-reclamos-final img { height: 62px; width: auto; display: block; }
+
+    /* ============================================================
+       BOTTOM NAV (móvil)
+       ============================================================ */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--bottom-nav-height);
+      background: rgba(11,16,23,0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      display: none;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 1000;
+      padding: 0 8px;
+    }
+    .bottom-nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+      padding: 4px 8px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .bottom-nav a i { font-size: 22px; transition: 0.2s; }
+    .bottom-nav a span { font-size: 10px; }
+    .bottom-nav a.active { color: var(--blue); }
+    .bottom-nav a.active i { transform: translateY(-2px); }
+    .bottom-nav a .badge-bottom {
+      position: absolute;
+      top: 0;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg);
+    }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 980px) {
+      .main-nav, .cat-strip { display: none !important; }
+      .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
+      .bottom-nav { display: flex; }
+      .search-box {
+        max-width: none;
+        flex: 2;
+        margin-left: 0;
+        padding: 8px 16px;
+      }
+      .search-box input { font-size: 15px; }
+      .header-row { gap: 10px; height: 56px; }
+      .logo-mark { height: 28px; }
+      .icon-btn { width: 34px; height: 34px; }
+      .icon-btn i { font-size: 16px; }
+      .checkout-grid { grid-template-columns: 1fr; }
+      .checkout-resumen { position: static; }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+      .cookie-banner { flex-direction: column; text-align: center; padding: 16px; }
+      .cookie-banner .buttons { justify-content: center; }
+    }
+
+    @media (max-width: 600px) {
+      .search-box { padding: 6px 12px; }
+      .search-box input { font-size: 14px; }
+      .bottom-nav a i { font-size: 20px; }
+      .bottom-nav a span { font-size: 9px; }
+      .foot-grid { grid-template-columns: 1fr; gap: 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      .checkout-form { padding: 16px; }
+      .checkout-resumen { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       TOPBAR
+       ============================================================ -->
+  <div class="topbar" id="topbar">
+    <div class="wrap">
+      <div class="topbar-links">
+        <span class="topbar-msg">🚚 <b data-i18n="topbar_envios">Envíos a todo el Perú</b></span>
+        <a href="pedidos.html" style="color:var(--muted);" data-i18n="topbar_rastrear">Rastrea tu pedido</a>
       </div>
-      <div>
-        <h3>Resumen</h3>
-        <div class="card" style="padding:20px;">
-          <p>Subtotal: S/ 299</p>
-          <p>Envío: S/ 20</p>
-          <hr style="border-color:var(--line); margin:12px 0;">
-          <h3>Total: S/ 319</h3>
-          <button class="add-btn" style="margin-top:16px;">Confirmar pedido</button>
+      <div class="header-controls">
+        <div class="theme-toggle" id="themeToggle" title="Cambiar tema">
+          <span class="tog-icon active" data-theme="dark"><i class="fas fa-moon"></i></span>
+          <span class="tog-icon" data-theme="light"><i class="fas fa-sun"></i></span>
+        </div>
+        <div class="lang-toggle" id="langToggle" title="Cambiar idioma">
+          <span class="lang-opt active" data-lang="es">ES</span>
+          <span class="lang-opt" data-lang="en">EN</span>
         </div>
       </div>
     </div>
   </div>
-</section>
+  <div class="beam-rule"></div>
+
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
+  <header class="site">
+    <div class="wrap header-row">
+      <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
+      <nav class="main-nav">
+        <a href="productos.html?cat=tecnologia" data-i18n="menu_tecnologia">Tecnología</a>
+        <a href="productos.html?cat=hogar" data-i18n="menu_hogar">Hogar</a>
+        <a href="productos.html?cat=deportes" data-i18n="menu_deportes">Deportes</a>
+        <a href="productos.html?cat=accesorios" data-i18n="menu_accesorios">Accesorios</a>
+        <a href="ofertas.html" data-i18n="menu_ofertas">Ofertas</a>
+      </nav>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Buscar productos…" data-i18n-placeholder="buscar" />
+      </div>
+      <div class="header-icons">
+        <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
+        <a href="favoritos.html" class="icon-btn fav-btn-header"><i class="fas fa-heart"></i><span class="fav-count" id="favCount">0</span></a>
+        <a href="carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+      </div>
+    </div>
+    <div class="cat-strip">
+      <div class="wrap">
+        <a href="productos.html?cat=tecnologia" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Tecnología</a>
+        <a href="productos.html?cat=hogar" class="cat-chip"><span class="cat-dot" style="background:var(--green)"></span>Hogar</a>
+        <a href="productos.html?cat=deportes" class="cat-chip"><span class="cat-dot" style="background:var(--blue)"></span>Deportes</a>
+        <a href="productos.html?cat=accesorios" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Accesorios</a>
+        <a href="productos.html?cat=belleza" class="cat-chip"><span class="cat-dot" style="background:var(--green)"></span>Belleza</a>
+        <a href="productos.html?cat=gaming" class="cat-chip"><span class="cat-dot" style="background:var(--blue)"></span>Gaming</a>
+        <a href="productos.html?cat=audio" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Audio</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       CHECKOUT
+       ============================================================ -->
+  <section class="checkout-section">
+    <div class="wrap">
+      <h1><i class="fas fa-shopping-cart"></i> <span data-i18n="checkout_titulo">Finalizar compra</span></h1>
+
+      <!-- Carrito vacío -->
+      <div class="checkout-empty" id="checkoutEmpty">
+        <i class="fas fa-shopping-basket"></i>
+        <h2 data-i18n="checkout_vacio_tit">Tu carrito está vacío</h2>
+        <p data-i18n="checkout_vacio_desc">Agrega productos antes de finalizar la compra.</p>
+        <a href="productos.html" data-i18n="checkout_vacio_btn">Ver productos</a>
+      </div>
+
+      <!-- Contenido del checkout -->
+      <div class="checkout-grid" id="checkoutContent">
+        <!-- Formulario de envío -->
+        <div class="checkout-form">
+          <h3><i class="fas fa-truck"></i> <span data-i18n="checkout_envio_tit">Datos de envío</span></h3>
+          <form id="checkoutForm">
+            <div class="form-group">
+              <label data-i18n="checkout_nombre">Nombre completo</label>
+              <input type="text" id="nombre" placeholder="Juan Pérez" data-i18n-placeholder="checkout_nombre_ph" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="checkout_direccion">Dirección</label>
+              <input type="text" id="direccion" placeholder="Av. Javier Prado 1234" data-i18n-placeholder="checkout_direccion_ph" required />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label data-i18n="checkout_ciudad">Ciudad</label>
+                <input type="text" id="ciudad" placeholder="Lima" data-i18n-placeholder="checkout_ciudad_ph" required />
+              </div>
+              <div class="form-group">
+                <label data-i18n="checkout_distrito">Distrito</label>
+                <input type="text" id="distrito" placeholder="San Isidro" data-i18n-placeholder="checkout_distrito_ph" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label data-i18n="checkout_telefono">Teléfono</label>
+              <input type="tel" id="telefono" placeholder="999 888 777" data-i18n-placeholder="checkout_telefono_ph" required />
+            </div>
+            <div class="form-group">
+              <label data-i18n="checkout_notas">Notas adicionales (opcional)</label>
+              <textarea id="notas" rows="2" placeholder="Ej. Dejar en conserjería" data-i18n-placeholder="checkout_notas_ph"></textarea>
+            </div>
+          </form>
+        </div>
+
+        <!-- Resumen -->
+        <div class="checkout-resumen">
+          <h3><i class="fas fa-receipt"></i> <span data-i18n="checkout_resumen_tit">Resumen</span></h3>
+          <div id="resumenItems"></div>
+          <div class="resumen-total">
+            <div class="line">
+              <span data-i18n="checkout_subtotal">Subtotal</span>
+              <span id="subtotal">S/ 0.00</span>
+            </div>
+            <div class="line">
+              <span data-i18n="checkout_envio">Envío</span>
+              <span id="envio">S/ 0.00</span>
+            </div>
+            <div class="line total">
+              <span data-i18n="checkout_total">Total</span>
+              <span class="amount" id="total">S/ 0.00</span>
+            </div>
+            <button class="btn-confirmar" id="confirmarBtn" data-i18n="checkout_confirmar">Confirmar pedido</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
+          <p class="foot-desc" data-i18n="footer_desc">Tecnología, estilo y calidad en un solo lugar.</p>
+          <div class="pay-icons-footer">
+            <span><i class="fab fa-cc-visa"></i> VISA</span>
+            <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
+            <span><i class="fas fa-mobile-alt"></i> Yape</span>
+            <span><i class="fas fa-mobile-alt"></i> Plin</span>
+            <span><i class="fab fa-cc-amex"></i> Amex</span>
+            <span><i class="fab fa-cc-diners-club"></i> Diners</span>
+          </div>
+          <div class="footer-social">
+            <span data-i18n="siguenos">Síguenos:</span>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+          </div>
+        </div>
+        <div class="foot-col">
+          <h5 data-i18n="categorias">Categorías</h5>
+          <a href="productos.html?cat=tecnologia" data-i18n="tecnologia">Tecnología</a>
+          <a href="productos.html?cat=hogar" data-i18n="hogar">Hogar</a>
+          <a href="productos.html?cat=deportes" data-i18n="deportes">Deportes</a>
+          <a href="productos.html?cat=accesorios" data-i18n="accesorios">Accesorios</a>
+          <a href="categorias.html" data-i18n="ver_todas">Ver todas</a>
+        </div>
+        <div class="foot-col">
+          <h5 data-i18n="ayuda">Ayuda</h5>
+          <a href="pedidos.html" data-i18n="rastrear">Rastrear pedido</a>
+          <a href="ayuda.html" data-i18n="cambios">Cambios y devoluciones</a>
+          <a href="ayuda.html" data-i18n="medios_pago">Medios de pago</a>
+          <a href="ayuda.html" data-i18n="preguntas">Preguntas frecuentes</a>
+        </div>
+        <div class="foot-col">
+          <h5 data-i18n="nosotros">Nosotros</h5>
+          <a href="nosotros.html" data-i18n="sobre">Sobre LAGUER</a>
+          <a href="contacto.html" data-i18n="contacto">Contacto</a>
+          <a href="terminos.html" data-i18n="terminos">Términos</a>
+          <a href="privacidad.html" data-i18n="privacidad">Privacidad</a>
+        </div>
+      </div>
+      <div class="libro-reclamos-final">
+        <a href="libro-reclamaciones.html" aria-label="Libro de Reclamaciones">
+          <img src="../image/libro-recla.jfif" alt="Libro de Reclamaciones" loading="lazy" />
+        </a>
+      </div>
+      <div class="beam-rule" style="margin:16px 0;"></div>
+      <div class="foot-bottom">
+        <span>© 2026 LAGUER. Todos los derechos reservados.</span>
+        <span data-i18n="hecho_con">Hecho con ♥ para todo el Perú</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       BOTTOM NAV (móvil)
+       ============================================================ -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="../index.html"><i class="fas fa-home"></i><span data-i18n="inicio">Inicio</span></a>
+    <a href="productos.html"><i class="fas fa-th-large"></i><span data-i18n="productos">Productos</span></a>
+    <a href="carrito.html" id="bottomCartLink">
+      <i class="fas fa-shopping-cart"></i><span data-i18n="carrito">Carrito</span>
+      <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
+    </a>
+    <a href="login.html"><i class="fas fa-user"></i><span data-i18n="perfil">Perfil</span></a>
+  </nav>
+
+  <!-- ============================================================
+       COOKIES BANNER
+       ============================================================ -->
+  <div class="cookie-banner" id="cookieBanner">
+    <p>
+      <span data-i18n="cookies_texto">Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra</span>
+      <a href="privacidad.html" data-i18n="politica_privacidad">política de privacidad</a>.
+    </p>
+    <div class="buttons">
+      <button class="btn-cookie reject" id="cookieReject" data-i18n="rechazar">Rechazar</button>
+      <button class="btn-cookie settings" id="cookieSettings" data-i18n="configurar">Configurar</button>
+      <button class="btn-cookie accept" id="cookieAccept" data-i18n="aceptar">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOAST CONTAINER
+       ============================================================ -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // =============================================================
+      // 1. TRADUCCIONES (ES / EN)
+      // =============================================================
+      const translations = {
+        es: {
+          'topbar_envios': 'Envíos a todo el Perú',
+          'topbar_rastrear': 'Rastrea tu pedido',
+          'menu_tecnologia': 'Tecnología',
+          'menu_hogar': 'Hogar',
+          'menu_deportes': 'Deportes',
+          'menu_accesorios': 'Accesorios',
+          'menu_ofertas': 'Ofertas',
+          'buscar': 'Buscar productos…',
+          'cookies_texto': 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra',
+          'politica_privacidad': 'política de privacidad',
+          'rechazar': 'Rechazar',
+          'configurar': 'Configurar',
+          'aceptar': 'Aceptar',
+          'footer_desc': 'Tecnología, estilo y calidad en un solo lugar.',
+          'siguenos': 'Síguenos:',
+          'categorias': 'Categorías',
+          'ayuda': 'Ayuda',
+          'nosotros': 'Nosotros',
+          'rastrear': 'Rastrear pedido',
+          'cambios': 'Cambios y devoluciones',
+          'medios_pago': 'Medios de pago',
+          'preguntas': 'Preguntas frecuentes',
+          'sobre': 'Sobre LAGUER',
+          'contacto': 'Contacto',
+          'terminos': 'Términos',
+          'privacidad': 'Privacidad',
+          'inicio': 'Inicio',
+          'productos': 'Productos',
+          'carrito': 'Carrito',
+          'perfil': 'Perfil',
+          'hecho_con': 'Hecho con ♥ para todo el Perú',
+          'ver_todas': 'Ver todas',
+          'tecnologia': 'Tecnología',
+          'hogar': 'Hogar',
+          'deportes': 'Deportes',
+          'accesorios': 'Accesorios',
+          'checkout_titulo': 'Finalizar compra',
+          'checkout_vacio_tit': 'Tu carrito está vacío',
+          'checkout_vacio_desc': 'Agrega productos antes de finalizar la compra.',
+          'checkout_vacio_btn': 'Ver productos',
+          'checkout_envio_tit': 'Datos de envío',
+          'checkout_nombre': 'Nombre completo',
+          'checkout_nombre_ph': 'Juan Pérez',
+          'checkout_direccion': 'Dirección',
+          'checkout_direccion_ph': 'Av. Javier Prado 1234',
+          'checkout_ciudad': 'Ciudad',
+          'checkout_ciudad_ph': 'Lima',
+          'checkout_distrito': 'Distrito',
+          'checkout_distrito_ph': 'San Isidro',
+          'checkout_telefono': 'Teléfono',
+          'checkout_telefono_ph': '999 888 777',
+          'checkout_notas': 'Notas adicionales (opcional)',
+          'checkout_notas_ph': 'Ej. Dejar en conserjería',
+          'checkout_resumen_tit': 'Resumen',
+          'checkout_subtotal': 'Subtotal',
+          'checkout_envio': 'Envío',
+          'checkout_total': 'Total',
+          'checkout_confirmar': 'Confirmar pedido',
+          'checkout_error_campos': '❌ Por favor, completa todos los campos del formulario.',
+          'checkout_exito': '✅ ¡Pedido confirmado! Gracias por tu compra.',
+          'checkout_carrito_vacio': '❌ No hay productos en el carrito.'
+        },
+        en: {
+          'topbar_envios': 'Shipping to all Peru',
+          'topbar_rastrear': 'Track your order',
+          'menu_tecnologia': 'Technology',
+          'menu_hogar': 'Home',
+          'menu_deportes': 'Sports',
+          'menu_accesorios': 'Accessories',
+          'menu_ofertas': 'Offers',
+          'buscar': 'Search products…',
+          'cookies_texto': 'We use cookies to improve your experience. By continuing, you accept our',
+          'politica_privacidad': 'privacy policy',
+          'rechazar': 'Reject',
+          'configurar': 'Settings',
+          'aceptar': 'Accept',
+          'footer_desc': 'Technology, style and quality in one place.',
+          'siguenos': 'Follow us:',
+          'categorias': 'Categories',
+          'ayuda': 'Help',
+          'nosotros': 'About',
+          'rastrear': 'Track order',
+          'cambios': 'Returns & exchanges',
+          'medios_pago': 'Payment methods',
+          'preguntas': 'FAQ',
+          'sobre': 'About LAGUER',
+          'contacto': 'Contact',
+          'terminos': 'Terms',
+          'privacidad': 'Privacy',
+          'inicio': 'Home',
+          'productos': 'Products',
+          'carrito': 'Cart',
+          'perfil': 'Profile',
+          'hecho_con': 'Made with ♥ for all Peru',
+          'ver_todas': 'View all',
+          'tecnologia': 'Technology',
+          'hogar': 'Home',
+          'deportes': 'Sports',
+          'accesorios': 'Accessories',
+          'checkout_titulo': 'Checkout',
+          'checkout_vacio_tit': 'Your cart is empty',
+          'checkout_vacio_desc': 'Add products before checking out.',
+          'checkout_vacio_btn': 'View products',
+          'checkout_envio_tit': 'Shipping details',
+          'checkout_nombre': 'Full name',
+          'checkout_nombre_ph': 'John Doe',
+          'checkout_direccion': 'Address',
+          'checkout_direccion_ph': 'Av. Javier Prado 1234',
+          'checkout_ciudad': 'City',
+          'checkout_ciudad_ph': 'Lima',
+          'checkout_distrito': 'District',
+          'checkout_distrito_ph': 'San Isidro',
+          'checkout_telefono': 'Phone',
+          'checkout_telefono_ph': '999 888 777',
+          'checkout_notas': 'Additional notes (optional)',
+          'checkout_notas_ph': 'E.g. Leave at concierge',
+          'checkout_resumen_tit': 'Summary',
+          'checkout_subtotal': 'Subtotal',
+          'checkout_envio': 'Shipping',
+          'checkout_total': 'Total',
+          'checkout_confirmar': 'Confirm order',
+          'checkout_error_campos': '❌ Please fill in all required fields.',
+          'checkout_exito': '✅ Order confirmed! Thank you for your purchase.',
+          'checkout_carrito_vacio': '❌ Your cart is empty.'
+        }
+      };
+
+      // =============================================================
+      // 2. IDIOMA
+      // =============================================================
+      let currentLang = localStorage.getItem('laguer_lang') || 'es';
+      const langToggle = document.getElementById('langToggle');
+      const langOpts = langToggle.querySelectorAll('.lang-opt');
+
+      function applyLanguage(lang) {
+        currentLang = lang;
+        langOpts.forEach(opt => opt.classList.toggle('active', opt.dataset.lang === lang));
+        const t = translations[lang];
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.dataset.i18n;
+          if (t[key] !== undefined) el.innerHTML = t[key];
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+          const key = el.dataset.i18nPlaceholder;
+          if (t[key] !== undefined) el.placeholder = t[key];
+        });
+        localStorage.setItem('laguer_lang', lang);
+        // Actualizar el texto de la topbar
+        document.querySelector('.topbar-msg').innerHTML = t.topbar_envios;
+        document.querySelector('.topbar-track').textContent = t.topbar_rastrear;
+        // Actualizar los placeholders de inputs específicos
+        document.querySelector('.search-box input').placeholder = t.buscar;
+      }
+
+      langToggle.addEventListener('click', function() {
+        const newLang = currentLang === 'es' ? 'en' : 'es';
+        applyLanguage(newLang);
+      });
+
+      // =============================================================
+      // 3. TEMA OSCURO / CLARO
+      // =============================================================
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcons = themeToggle.querySelectorAll('.tog-icon');
+      let currentTheme = localStorage.getItem('laguer_theme') || 'dark';
+
+      function applyTheme(theme) {
+        if (theme === 'light') {
+          document.body.classList.add('light-mode');
+          themeIcons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'light'));
+        } else {
+          document.body.classList.remove('light-mode');
+          themeIcons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'dark'));
+        }
+        localStorage.setItem('laguer_theme', theme);
+      }
+
+      themeToggle.addEventListener('click', function() {
+        const isLight = document.body.classList.contains('light-mode');
+        applyTheme(isLight ? 'dark' : 'light');
+      });
+      applyTheme(currentTheme);
+
+      // =============================================================
+      // 4. TOASTS
+      // =============================================================
+      function showToast(message, type) {
+        type = type || 'info';
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        const icons = {
+          success: 'fa-check-circle',
+          error: 'fa-times-circle',
+          info: 'fa-info-circle'
+        };
+        const toast = document.createElement('div');
+        toast.className = 'toast ' + type;
+        toast.innerHTML = `<span class="toast-icon"><i class="fas ${icons[type] || icons.info}"></i></span> <span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.classList.add('hide');
+          setTimeout(() => toast.remove(), 400);
+        }, 4000);
+      }
+
+      // =============================================================
+      // 5. COOKIES
+      // =============================================================
+      (function() {
+        const COOKIE_KEY = 'laguer_cookie_consent';
+        const banner = document.getElementById('cookieBanner');
+        if (!banner) return;
+
+        function getCookieConsent() { return localStorage.getItem(COOKIE_KEY); }
+        function setCookieConsent(value) {
+          localStorage.setItem(COOKIE_KEY, value);
+          banner.classList.remove('show');
+        }
+
+        if (!getCookieConsent()) {
+          setTimeout(() => banner.classList.add('show'), 500);
+        }
+
+        document.getElementById('cookieAccept').addEventListener('click', function() {
+          setCookieConsent('accepted');
+          showToast('🍪 Cookies aceptadas.', 'success');
+        });
+        document.getElementById('cookieReject').addEventListener('click', function() {
+          setCookieConsent('rejected');
+          showToast('🍪 Cookies rechazadas.', 'info');
+        });
+        document.getElementById('cookieSettings').addEventListener('click', function() {
+          showToast('⚙️ Configuración de cookies.', 'info');
+        });
+      })();
+
+      // =============================================================
+      // 6. CARRITO Y FAVORITOS (badges)
+      // =============================================================
+      const CART_KEY = 'laguerCart';
+      const FAV_KEY = 'laguerFavs';
+
+      function updateBadges() {
+        const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        const total = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+        document.querySelectorAll('.cart-count, #cartCount').forEach(el => el.textContent = total);
+        const bottomBadge = document.getElementById('bottomCartBadge');
+        if (bottomBadge) {
+          bottomBadge.textContent = total;
+          bottomBadge.style.display = total === 0 ? 'none' : 'flex';
+        }
+        const favs = JSON.parse(localStorage.getItem(FAV_KEY)) || [];
+        document.querySelectorAll('.fav-count, #favCount').forEach(el => el.textContent = favs.length);
+      }
+
+      // =============================================================
+      // 7. RENDERIZAR CHECKOUT
+      // =============================================================
+      const emptyDiv = document.getElementById('checkoutEmpty');
+      const contentDiv = document.getElementById('checkoutContent');
+      const resumenItems = document.getElementById('resumenItems');
+      const subtotalEl = document.getElementById('subtotal');
+      const envioEl = document.getElementById('envio');
+      const totalEl = document.getElementById('total');
+      const confirmarBtn = document.getElementById('confirmarBtn');
+      const form = document.getElementById('checkoutForm');
+
+      const COSTO_ENVIO = 20; // fijo
+
+      function renderCheckout() {
+        const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        if (!cart.length) {
+          emptyDiv.classList.add('active');
+          contentDiv.style.display = 'none';
+          return;
+        }
+        emptyDiv.classList.remove('active');
+        contentDiv.style.display = 'grid';
+
+        let subtotal = 0;
+        let html = '';
+        cart.forEach(item => {
+          const price = Number(item.price) || 0;
+          const qty = Number(item.quantity) || 1;
+          const totalItem = price * qty;
+          subtotal += totalItem;
+          html += `
+            <div class="resumen-item">
+              <span>${item.name} <span class="qty">x${qty}</span></span>
+              <span>${formatMoney(totalItem)}</span>
+            </div>
+          `;
+        });
+        resumenItems.innerHTML = html;
+
+        const envio = cart.length > 0 ? COSTO_ENVIO : 0;
+        const total = subtotal + envio;
+
+        subtotalEl.textContent = formatMoney(subtotal);
+        envioEl.textContent = formatMoney(envio);
+        totalEl.textContent = formatMoney(total);
+      }
+
+      function formatMoney(amount) {
+        return 'S/ ' + Number(amount).toLocaleString('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      }
+
+      // =============================================================
+      // 8. CONFIRMAR PEDIDO
+      // =============================================================
+      confirmarBtn.addEventListener('click', function() {
+        const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        if (!cart.length) {
+          showToast(translations[currentLang].checkout_carrito_vacio, 'error');
+          return;
+        }
+
+        // Validar formulario
+        const nombre = document.getElementById('nombre').value.trim();
+        const direccion = document.getElementById('direccion').value.trim();
+        const ciudad = document.getElementById('ciudad').value.trim();
+        const distrito = document.getElementById('distrito').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
+
+        if (!nombre || !direccion || !ciudad || !distrito || !telefono) {
+          showToast(translations[currentLang].checkout_error_campos, 'error');
+          return;
+        }
+
+        // Simular confirmación
+        const btn = this;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '⏳ Procesando...';
+        btn.disabled = true;
+
+        setTimeout(() => {
+          // Guardar pedido en historial (opcional)
+          const pedidos = JSON.parse(localStorage.getItem('laguerOrders') || '[]');
+          const nuevoPedido = {
+            id: 'ORD-' + Date.now().toString().slice(-6),
+            cliente: nombre,
+            direccion: direccion + ', ' + distrito + ', ' + ciudad,
+            telefono: telefono,
+            total: cart.reduce((acc, item) => acc + (Number(item.price) || 0) * (Number(item.quantity) || 1), 0) + COSTO_ENVIO,
+            estado: 'pending',
+            fecha: new Date().toISOString(),
+            items: cart.map(item => ({ nombre: item.name, cantidad: item.quantity, precio: item.price }))
+          };
+          pedidos.unshift(nuevoPedido);
+          localStorage.setItem('laguerOrders', JSON.stringify(pedidos));
+
+          // Vaciar carrito
+          localStorage.setItem(CART_KEY, JSON.stringify([]));
+          updateBadges();
+          renderCheckout();
+
+          showToast(translations[currentLang].checkout_exito, 'success');
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+          // Redirigir después de 2 segundos
+          setTimeout(() => {
+            window.location.href = '../index.html';
+          }, 2000);
+        }, 1500);
+      });
+
+      // =============================================================
+      // 9. BÚSQUEDA DEL HEADER
+      // =============================================================
+      document.getElementById('searchInput').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          const term = this.value.trim();
+          if (term) window.location.href = `productos.html?search=${encodeURIComponent(term)}`;
+        }
+      });
+
+      // =============================================================
+      // 10. INICIALIZAR
+      // =============================================================
+      document.addEventListener('DOMContentLoaded', function() {
+        applyLanguage(currentLang);
+        updateBadges();
+        renderCheckout();
+        // Marcar enlace activo en bottom nav
+        const currentPath = window.location.pathname.split('/').pop() || 'checkout.html';
+        document.querySelectorAll('.bottom-nav a').forEach(a => {
+          const href = a.getAttribute('href');
+          if (href === currentPath) a.classList.add('active');
+        });
+      });
+
+      // Exponer funciones para debug
+      window.renderCheckout = renderCheckout;
+      console.log('🛒 Página de checkout LAGUER lista');
+    })();
+  </script>
+</body>
+</html>

@@ -90,12 +90,30 @@
     }
     @media (prefers-reduced-motion: reduce) { .beam-glow span { animation: none; } }
 
+    /* ===== TOPBAR (fondo negro por defecto) ===== */
     .topbar {
       background: #020406;
       font-size: 12.5px;
       color: var(--muted);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
+    /* Modo claro: fondo blanco */
+    body.light-mode .topbar {
+      background: #eef1f5 !important;
+      border-bottom-color: var(--line);
+    }
+    body.light-mode .topbar .topbar-links a {
+      color: var(--muted);
+    }
+    body.light-mode .topbar .topbar-links b {
+      color: var(--white);
+    }
+    body.light-mode .topbar #languageSelector {
+      color: var(--white);
+      border-color: var(--line);
+    }
+
     .topbar .wrap {
       display: flex;
       justify-content: space-between;
@@ -567,7 +585,9 @@
       font-weight: 800;
       color: #fff;
       background: linear-gradient(90deg, var(--red), var(--blue));
+      transition: 0.2s;
     }
+    .promo-form button:hover { transform: scale(1.05); }
 
     footer {
       background: #020406;
@@ -779,6 +799,50 @@
       transform: rotate(90deg);
     }
 
+    /* ===== TOAST NOTIFICATIONS ===== */
+    .toast-container {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 360px;
+    }
+    .toast {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--blue);
+      border-radius: 10px;
+      padding: 14px 18px;
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      animation: slideIn 0.4s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast.success { border-left-color: var(--green); }
+    .toast.error { border-left-color: var(--red); }
+    .toast.info { border-left-color: var(--blue); }
+    .toast .toast-icon { font-size: 20px; }
+    .toast.success .toast-icon { color: var(--green); }
+    .toast.error .toast-icon { color: var(--red); }
+    .toast.info .toast-icon { color: var(--blue); }
+    .toast.hide {
+      animation: slideOut 0.4s ease forwards;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideOut {
+      to { opacity: 0; transform: translateX(50px); }
+    }
+
     /* ===== SHARE BUTTONS ===== */
     .share-buttons {
       display: flex;
@@ -981,11 +1045,11 @@
 <body>
 
   <!-- ===== TOPBAR ===== -->
-  <div class="topbar">
+  <div class="topbar" id="topbar">
     <div class="wrap">
       <div class="topbar-links">
-        <span>🚚 <b>Envíos a todo el Perú</b></span>
-        <a href="html/pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
+        <span>🚚 <b data-i18n="topbar_envios">Envíos a todo el Perú</b></span>
+        <a href="html/pedidos.html" style="color:var(--muted);" data-i18n="topbar_rastrear">Rastrea tu pedido</a>
       </div>
       <div style="display:flex; gap:10px; align-items:center;">
         <!-- Selector de idioma -->
@@ -1100,16 +1164,17 @@
     </div>
   </section>
 
-  <!-- ===== NEWSLETTER ===== -->
+  <!-- ===== NEWSLETTER (CON TOAST) ===== -->
   <section class="section" style="padding:20px 0 40px;">
     <div class="wrap">
       <div class="promo">
         <h3 data-i18n="newsletter_titulo">¡Suscríbete y ahorra!</h3>
         <p data-i18n="newsletter_desc">Recibe ofertas exclusivas por correo.</p>
         <form class="promo-form" id="newsletterForm">
-          <input type="email" placeholder="tucorreo@ejemplo.com" required data-i18n-placeholder="email_placeholder" />
+          <input type="email" id="newsletterEmail" placeholder="tucorreo@ejemplo.com" required data-i18n-placeholder="email_placeholder" />
           <button type="submit" data-i18n="suscribirme">Suscribirme</button>
         </form>
+        <div id="newsletterMessage" style="margin-top:12px; font-size:14px; font-weight:600; min-height:24px;"></div>
       </div>
     </div>
   </section>
@@ -1219,12 +1284,80 @@
     <img class="lightbox-img" id="lightboxImg" src="" alt="Zoom" />
   </div>
 
+  <!-- ===== TOAST CONTAINER ===== -->
+  <div class="toast-container" id="toastContainer"></div>
+
   <!-- ============================================================ -->
   <!-- ===== SCRIPTS ===== -->
   <!-- ============================================================ -->
   <script>
     (function() {
       'use strict';
+
+      // =======================================================================
+      // TOAST SYSTEM
+      // =======================================================================
+      function showToast(message, type) {
+        type = type || 'info';
+        const container = document.getElementById('toastContainer');
+        const icons = {
+          success: 'fa-check-circle',
+          error: 'fa-times-circle',
+          info: 'fa-info-circle'
+        };
+        const toast = document.createElement('div');
+        toast.className = 'toast ' + type;
+        toast.innerHTML = `<span class="toast-icon"><i class="fas ${icons[type] || icons.info}"></i></span> <span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.classList.add('hide');
+          setTimeout(() => toast.remove(), 400);
+        }, 4000);
+      }
+
+      // =======================================================================
+      // NEWSLETTER (con toast y localStorage)
+      // =======================================================================
+      const newsletterForm = document.getElementById('newsletterForm');
+      const newsletterEmail = document.getElementById('newsletterEmail');
+      const newsletterMsg = document.getElementById('newsletterMessage');
+
+      newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = newsletterEmail.value.trim();
+        if (!email || !email.includes('@')) {
+          showToast('❌ Por favor, ingresa un correo válido.', 'error');
+          return;
+        }
+
+        // Guardar en localStorage (lista de suscriptores)
+        const subscribers = JSON.parse(localStorage.getItem('laguer_newsletter_emails') || '[]');
+        if (subscribers.includes(email)) {
+          showToast('ℹ️ Ya estás suscrito a nuestro newsletter.', 'info');
+          newsletterMsg.textContent = 'ℹ️ Ya estás suscrito.';
+          newsletterMsg.style.color = 'var(--blue)';
+          return;
+        }
+        subscribers.push(email);
+        localStorage.setItem('laguer_newsletter_emails', JSON.stringify(subscribers));
+
+        // Mostrar éxito
+        showToast('✅ ¡Te has suscrito exitosamente!', 'success');
+        newsletterMsg.textContent = '✅ ¡Gracias por suscribirte!';
+        newsletterMsg.style.color = 'var(--green)';
+        newsletterEmail.value = '';
+
+        // Cambiar botón temporalmente
+        const btn = this.querySelector('button');
+        const orig = btn.textContent;
+        btn.textContent = '¡Listo! 🎉';
+        btn.disabled = true;
+        setTimeout(() => {
+          btn.textContent = orig;
+          btn.disabled = false;
+          newsletterMsg.textContent = '';
+        }, 3000);
+      });
 
       // =======================================================================
       // PRODUCTOS
@@ -1368,14 +1501,13 @@
           cart.push({ ...product, quantity: 1 });
         }
         updateCartUI();
-        const btn = document.querySelector(`[data-product-id="${product.id}"] .add-to-cart`);
-        if (btn) {
+        showToast(`✅ "${product.name}" agregado al carrito.`, 'success');
+        // Cambiar texto del botón temporalmente
+        document.querySelectorAll(`[data-product-id="${product.id}"] .add-to-cart`).forEach(btn => {
           const orig = btn.innerHTML;
           btn.innerHTML = '✅ Agregado';
           setTimeout(() => btn.innerHTML = orig, 1200);
-        } else {
-          alert('✅ Producto agregado al carrito');
-        }
+        });
       }
 
       function updateFavUI() {
@@ -1395,6 +1527,7 @@
               btnElement.style.color = 'var(--red)';
               btnElement.classList.add('active');
             }
+            showToast('❤️ Agregado a favoritos.', 'info');
           }
         } else {
           favs.splice(index, 1);
@@ -1403,6 +1536,7 @@
             btnElement.style.color = 'var(--white)';
             btnElement.classList.remove('active');
           }
+          showToast('💔 Eliminado de favoritos.', 'info');
         }
         updateFavUI();
       }
@@ -1573,12 +1707,14 @@
 
         document.getElementById('cookieAccept')?.addEventListener('click', function() {
           setCookieConsent('accepted');
+          showToast('🍪 Cookies aceptadas.', 'success');
         });
         document.getElementById('cookieReject')?.addEventListener('click', function() {
           setCookieConsent('rejected');
+          showToast('🍪 Cookies rechazadas.', 'info');
         });
         document.getElementById('cookieSettings')?.addEventListener('click', function() {
-          alert('Configuración de cookies: aquí puedes gestionar tus preferencias.');
+          showToast('⚙️ Configuración de cookies (puedes gestionarlas aquí).', 'info');
         });
       })();
 
@@ -1599,6 +1735,7 @@
           const isLight = document.body.classList.contains('light-mode');
           this.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
           localStorage.setItem('laguer_theme', isLight ? 'light' : 'dark');
+          // Actualizar topbar automáticamente (por CSS)
         });
       })();
 
@@ -1660,7 +1797,9 @@
             'rechazar': 'Rechazar',
             'configurar': 'Configurar',
             'aceptar': 'Aceptar',
-            'ver_todas': 'Ver todas'
+            'ver_todas': 'Ver todas',
+            'topbar_envios': 'Envíos a todo el Perú',
+            'topbar_rastrear': 'Rastrea tu pedido'
           },
           en: {
             'menu_tecnologia': 'Technology',
@@ -1715,7 +1854,9 @@
             'rechazar': 'Reject',
             'configurar': 'Settings',
             'aceptar': 'Accept',
-            'ver_todas': 'View all'
+            'ver_todas': 'View all',
+            'topbar_envios': 'Shipping to all Peru',
+            'topbar_rastrear': 'Track your order'
           }
         };
 
@@ -1752,7 +1893,6 @@
         const lightboxImg = document.getElementById('lightboxImg');
         const closeBtn = document.getElementById('lightboxClose');
 
-        // Delegación de eventos para imágenes de productos (las que se agreguen dinámicamente)
         document.addEventListener('click', function(e) {
           const img = e.target.closest('.card-media img, .mini-item img');
           if (img && img.src && !img.closest('.fav-btn') && !img.closest('.add-btn')) {
@@ -1773,9 +1913,8 @@
       })();
 
       // =======================================================================
-      // COMPARTIR EN REDES (ejemplo en index)
+      // COMPARTIR EN REDES
       // =======================================================================
-      // (Los botones de compartir se añadirían en producto.html, pero aquí dejamos la función global)
       window.shareProduct = function(network) {
         const url = encodeURIComponent(window.location.href);
         const title = encodeURIComponent(document.title);
@@ -1792,7 +1931,7 @@
             break;
           case 'copy':
             navigator.clipboard.writeText(window.location.href).then(() => {
-              alert('✅ Enlace copiado al portapapeles');
+              showToast('✅ Enlace copiado al portapapeles', 'success');
             });
             return;
         }
@@ -1806,13 +1945,6 @@
         document.getElementById('socialBubble').classList.toggle('hidden');
       });
 
-      document.getElementById('newsletterForm')?.addEventListener('submit', function(e) {
-        e.preventDefault();
-        const btn = this.querySelector('button');
-        btn.textContent = '¡Listo! 🎉';
-        setTimeout(() => btn.textContent = 'Suscribirme', 3000);
-      });
-
       // =======================================================================
       // INICIALIZAR
       // =======================================================================
@@ -1824,10 +1956,12 @@
         updateCartUI();
         updateFavUI();
         document.querySelector('.bottom-nav a[href="index.html"]')?.classList.add('active');
+        console.log('🚀 LAGUER · index actualizado: topbar claro, newsletter con toast, todo funcional');
       });
 
+      // Exponer funciones globales para uso en consola (opcional)
       window.addToCart = addToCart;
-      console.log('🚀 LAGUER · index listo con todas las mejoras (cookies, tema, idioma, lightbox, compartir)');
+      window.showToast = showToast;
     })();
   </script>
 </body>

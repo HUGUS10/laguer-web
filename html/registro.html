@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
-    /* ===== VARIABLES ===== */
+    /* ===== VARIABLES (TEMA OSCURO POR DEFECTO) ===== */
     :root {
       --bg: #05070b;
       --bg-soft: #0b1017;
@@ -29,6 +29,17 @@
       --bottom-nav-height: 70px;
     }
 
+    /* ===== TEMA CLARO ===== */
+    body.light-mode {
+      --bg: #f4f6f9;
+      --bg-soft: #eef1f5;
+      --surface: #ffffff;
+      --surface-2: #f0f2f5;
+      --line: rgba(0,0,0,.08);
+      --white: #1a1f2a;
+      --muted: #5a6a7e;
+    }
+
     /* ===== RESET ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -39,6 +50,7 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
       padding-bottom: calc(var(--bottom-nav-height) + 20px);
+      transition: background 0.3s, color 0.3s;
     }
     h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
     a { color: inherit; text-decoration: none; }
@@ -61,7 +73,10 @@
       font-size: 12.5px;
       color: var(--muted);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s, border-color 0.3s;
     }
+    body.light-mode .topbar { background: #eef1f5; border-bottom-color: var(--line); }
+    body.light-mode .topbar .topbar-links a { color: var(--muted); }
     .topbar .wrap {
       display: flex;
       justify-content: space-between;
@@ -79,7 +94,9 @@
       background: rgba(5,7,11,.88);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s, border-color 0.3s;
     }
+    body.light-mode header.site { background: rgba(244,246,249,.88); }
     .header-row {
       display: flex;
       align-items: center;
@@ -126,7 +143,7 @@
       border: 1px solid var(--line);
       border-radius: 999px;
       padding: 6px 14px;
-      transition: border-color .2s;
+      transition: border-color .2s, background 0.3s, border-color 0.3s;
     }
     .search-box:focus-within { border-color: var(--blue); }
     .search-box input {
@@ -159,6 +176,7 @@
       transition: .2s;
       color: var(--white);
     }
+    body.light-mode .icon-btn { background: var(--surface); border-color: var(--line); color: var(--white); }
     .icon-btn:hover { border-color: var(--green); background: var(--surface-2); }
     .cart-count, .fav-count {
       position: absolute;
@@ -176,13 +194,40 @@
       border: 2px solid var(--bg);
     }
     .fav-count { background: var(--blue); }
-    .burger { display: none; }
+
+    /* ===== TOGGLE TEMA ===== */
+    .theme-toggle {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 4px 6px;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      cursor: pointer;
+      transition: border-color .2s, background 0.3s;
+      color: var(--white);
+    }
+    body.light-mode .theme-toggle { background: var(--surface); border-color: var(--line); }
+    .theme-toggle:hover { border-color: var(--blue); }
+    .theme-toggle .tog-icon {
+      padding: 4px 6px;
+      border-radius: 20px;
+      font-size: 14px;
+      transition: background .2s, color .2s;
+    }
+    .theme-toggle .tog-icon.active {
+      background: var(--blue);
+      color: #fff;
+    }
 
     /* ===== CATEGORÍAS (solo PC) ===== */
     .cat-strip {
       background: var(--bg-soft);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s, border-color 0.3s;
     }
+    body.light-mode .cat-strip { background: var(--bg-soft); border-bottom-color: var(--line); }
     .cat-strip .wrap {
       display: flex;
       gap: 24px;
@@ -218,7 +263,9 @@
       padding: 40px 32px;
       max-width: 440px;
       width: 100%;
+      transition: background 0.3s, border-color 0.3s;
     }
+    body.light-mode .register-card { background: var(--surface); border-color: var(--line); }
     .register-card .register-header {
       text-align: center;
       margin-bottom: 24px;
@@ -252,8 +299,9 @@
       border: 1px solid var(--line);
       color: var(--white);
       font-family: inherit;
-      transition: 0.2s;
+      transition: 0.2s, background 0.3s, border-color 0.3s;
     }
+    body.light-mode .form-group input { background: var(--bg-soft); border-color: var(--line); color: var(--white); }
     .form-group input:focus {
       outline: none;
       border-color: var(--blue);
@@ -341,7 +389,9 @@
       background: #020406;
       border-top: 1px solid var(--line);
       padding: 40px 0 20px;
+      transition: background 0.3s, border-color 0.3s;
     }
+    body.light-mode footer { background: #eef1f5; border-top-color: var(--line); }
     .foot-grid {
       display: grid;
       grid-template-columns: 1.4fr 1fr 1fr 1fr;
@@ -368,6 +418,7 @@
       align-items: center;
       gap: 4px;
     }
+    body.light-mode .pay-icons-footer span { background: var(--surface); border-color: var(--line); color: var(--muted); }
     .pay-icons-footer span i { font-size: 16px; }
     .pay-icons-footer span .fa-cc-visa { color: #1a1f71; }
     .pay-icons-footer span .fa-cc-mastercard { color: #eb001b; }
@@ -425,7 +476,9 @@
       justify-content: space-around;
       z-index: 1000;
       padding: 0 8px;
+      transition: background 0.3s, border-color 0.3s;
     }
+    body.light-mode .bottom-nav { background: rgba(238,241,245,0.95); border-top-color: var(--line); }
     .bottom-nav a {
       display: flex;
       flex-direction: column;
@@ -500,6 +553,13 @@
       <div class="topbar-links">
         <span>🚚 <b>Envíos a todo el Perú</b></span>
         <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span style="font-size:11px;color:var(--muted);">🌙 <span id="themeStatus">Oscuro</span></span>
+        <div class="theme-toggle" id="themeToggle">
+          <span class="tog-icon active" data-theme="dark"><i class="fas fa-moon"></i></span>
+          <span class="tog-icon" data-theme="light"><i class="fas fa-sun"></i></span>
+        </div>
       </div>
     </div>
   </div>
@@ -662,7 +722,40 @@
       'use strict';
 
       // =============================================================
-      // 1. SI YA HAY SESIÓN ACTIVA, REDIRIGIR
+      // 1. TEMA OSCURO/CLARO
+      // =============================================================
+      const settings = JSON.parse(localStorage.getItem('laguerSettings') || '{}');
+      const savedTheme = settings.theme || 'dark';
+      const body = document.body;
+      const themeStatus = document.getElementById('themeStatus');
+      const toggleBtn = document.getElementById('themeToggle');
+      const icons = toggleBtn.querySelectorAll('.tog-icon');
+
+      function applyTheme(theme) {
+        if (theme === 'light') {
+          body.classList.add('light-mode');
+          themeStatus.textContent = 'Claro';
+          icons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'light'));
+        } else {
+          body.classList.remove('light-mode');
+          themeStatus.textContent = 'Oscuro';
+          icons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'dark'));
+        }
+        // Guardar en settings (para mantener consistencia con el dashboard)
+        const currentSettings = JSON.parse(localStorage.getItem('laguerSettings') || '{}');
+        currentSettings.theme = theme;
+        localStorage.setItem('laguerSettings', JSON.stringify(currentSettings));
+      }
+
+      applyTheme(savedTheme);
+
+      toggleBtn.addEventListener('click', function() {
+        const current = body.classList.contains('light-mode') ? 'dark' : 'light';
+        applyTheme(current);
+      });
+
+      // =============================================================
+      // 2. SI YA HAY SESIÓN ACTIVA, REDIRIGIR
       // =============================================================
       const session = JSON.parse(localStorage.getItem('laguerUser'));
       if (session) {
@@ -675,7 +768,7 @@
       }
 
       // =============================================================
-      // 2. INICIALIZAR USUARIOS (crear admin por defecto si no existe)
+      // 3. INICIALIZAR USUARIOS (crear admin por defecto si no existe)
       // =============================================================
       let users = JSON.parse(localStorage.getItem('laguerUsers')) || [];
       const adminExists = users.some(u => u.email === 'admin@laguer.com');
@@ -691,7 +784,7 @@
       }
 
       // =============================================================
-      // 3. MANEJAR REGISTRO
+      // 4. MANEJAR REGISTRO
       // =============================================================
       const form = document.getElementById('registerForm');
       const nombre = document.getElementById('regNombre');
@@ -712,7 +805,6 @@
         const pass = password.value.trim();
         const conf = confirm.value.trim();
 
-        // Validaciones
         if (!nom || !mail || !pass || !conf) {
           errorDiv.textContent = '❌ Por favor, completa todos los campos.';
           return;
@@ -728,7 +820,6 @@
           return;
         }
 
-        // Verificar si el email ya está registrado
         const users = JSON.parse(localStorage.getItem('laguerUsers')) || [];
         if (users.some(u => u.email === mail)) {
           errorDiv.textContent = '❌ Este correo ya está registrado. Por favor, inicia sesión.';
@@ -751,7 +842,6 @@
           rol: 'user'
         }));
 
-        // Mostrar éxito y redirigir
         successDiv.textContent = '✅ ¡Cuenta creada exitosamente! Redirigiendo...';
         registerBtn.disabled = true;
         registerBtn.textContent = 'Registrando...';
@@ -762,7 +852,7 @@
       });
 
       // =============================================================
-      // 4. ACTUALIZAR BADGES DE CARRITO Y FAVORITOS
+      // 5. ACTUALIZAR BADGES DE CARRITO Y FAVORITOS
       // =============================================================
       const cart = JSON.parse(localStorage.getItem('laguerCart')) || [];
       const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
@@ -779,7 +869,7 @@
       if (favBadge) favBadge.textContent = favs.length;
 
       // =============================================================
-      // 5. BÚSQUEDA (redirige a productos)
+      // 6. BÚSQUEDA (redirige a productos)
       // =============================================================
       document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
@@ -788,7 +878,7 @@
         }
       });
 
-      console.log('📝 Registro LAGUER listo');
+      console.log('📝 Registro LAGUER con modo oscuro/claro listo');
     })();
   </script>
 </body>

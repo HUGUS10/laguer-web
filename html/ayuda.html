@@ -10,26 +10,46 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
-    /* ===== VARIABLES ===== */
+    /* ============================================================
+       VARIABLES (TEMA OSCURO POR DEFECTO)
+       ============================================================ */
     :root {
       --bg: #05070b;
       --bg-soft: #0b1017;
       --surface: #121a24;
       --surface-2: #1a2531;
       --line: rgba(255,255,255,.08);
+      --line-2: rgba(255,255,255,.14);
       --red: #ee1d25;
       --red-dark: #a5141a;
       --green: #39b54a;
       --green-dark: #1f7b2c;
       --blue: #189ee0;
       --blue-dark: #0f6ca3;
+      --amber: #f1c40f;
       --white: #f5f8fb;
       --muted: #8fa0b3;
       --radius: 16px;
       --bottom-nav-height: 70px;
     }
 
-    /* ===== RESET ===== */
+    /* ============================================================
+       TEMA CLARO
+       ============================================================ */
+    body.light-mode {
+      --bg: #f4f6f9;
+      --bg-soft: #eef1f5;
+      --surface: #ffffff;
+      --surface-2: #f0f2f5;
+      --line: rgba(0,0,0,.08);
+      --line-2: rgba(0,0,0,.14);
+      --white: #1a1a1a;
+      --muted: #555555;
+    }
+
+    /* ============================================================
+       RESET Y BASE
+       ============================================================ */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -39,6 +59,7 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
       padding-bottom: calc(var(--bottom-nav-height) + 20px);
+      transition: background 0.3s ease, color 0.3s ease;
     }
     h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
     a { color: inherit; text-decoration: none; }
@@ -47,7 +68,9 @@
     button { font-family: inherit; cursor: pointer; border: none; }
     .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
 
-    /* ===== BEAM ===== */
+    /* ============================================================
+       BEAM
+       ============================================================ */
     .beam-rule {
       height: 3px;
       width: 100%;
@@ -55,13 +78,27 @@
       opacity: .9;
     }
 
-    /* ===== TOPBAR ===== */
+    /* ============================================================
+       TOPBAR
+       ============================================================ */
     .topbar {
       background: #020406;
       font-size: 12.5px;
       color: var(--muted);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
+    body.light-mode .topbar {
+      background: #eef1f5 !important;
+      border-bottom-color: var(--line);
+    }
+    body.light-mode .topbar .topbar-links a { color: var(--muted); }
+    body.light-mode .topbar .topbar-links b { color: var(--white); }
+    body.light-mode .topbar #languageSelector {
+      color: var(--white);
+      border-color: var(--line);
+    }
+
     .topbar .wrap {
       display: flex;
       justify-content: space-between;
@@ -71,7 +108,9 @@
     .topbar-links { display: flex; gap: 20px; }
     .topbar-links b { color: var(--white); }
 
-    /* ===== HEADER ===== */
+    /* ============================================================
+       HEADER
+       ============================================================ */
     header.site {
       position: sticky;
       top: 0;
@@ -79,7 +118,10 @@
       background: rgba(5,7,11,.88);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s ease;
     }
+    body.light-mode header.site { background: rgba(255,255,255,.92); }
+
     .header-row {
       display: flex;
       align-items: center;
@@ -126,7 +168,7 @@
       border: 1px solid var(--line);
       border-radius: 999px;
       padding: 6px 14px;
-      transition: border-color .2s;
+      transition: border-color .2s, background 0.3s;
     }
     .search-box:focus-within { border-color: var(--blue); }
     .search-box input {
@@ -176,13 +218,55 @@
       border: 2px solid var(--bg);
     }
     .fav-count { background: var(--blue); }
-    .burger { display: none; }
 
-    /* ===== CATEGORÍAS (solo PC) ===== */
+    /* ============================================================
+       TOGGLES: TEMA E IDIOMA
+       ============================================================ */
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: 6px;
+    }
+    .theme-toggle, .lang-toggle {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      padding: 4px 6px;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      cursor: pointer;
+      transition: border-color .2s, background 0.3s;
+      color: var(--white);
+      font-size: 13px;
+    }
+    body.light-mode .theme-toggle, body.light-mode .lang-toggle {
+      background: var(--surface);
+      border-color: var(--line);
+    }
+    .theme-toggle:hover, .lang-toggle:hover { border-color: var(--blue); }
+    .theme-toggle .tog-icon, .lang-toggle .lang-opt {
+      padding: 4px 6px;
+      border-radius: 20px;
+      font-size: 13px;
+      transition: background .2s, color .2s;
+    }
+    .theme-toggle .tog-icon.active,
+    .lang-toggle .lang-opt.active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    /* ============================================================
+       CATEGORÍAS (solo PC)
+       ============================================================ */
     .cat-strip {
       background: var(--bg-soft);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s, border-color 0.3s;
     }
+    body.light-mode .cat-strip { background: var(--bg-soft); border-bottom-color: var(--line); }
     .cat-strip .wrap {
       display: flex;
       gap: 24px;
@@ -203,29 +287,65 @@
     .cat-chip:hover { color: var(--white); }
     .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-    /* ===== HELP ===== */
-    .help-section { padding: 30px 0; }
+    /* ============================================================
+       HELP (CONTENIDO MEJORADO)
+       ============================================================ */
+    .breadcrumb {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .breadcrumb a { color: var(--blue); }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb i { font-size: 12px; }
+
     .help-header {
       text-align: center;
+      padding: 40px 20px;
       margin-bottom: 30px;
+      background: linear-gradient(135deg, var(--surface), var(--surface-2));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .help-header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 30%, var(--blue-soft), transparent 60%);
+      opacity: .3;
+      pointer-events: none;
     }
     .help-header h1 {
-      font-size: 28px;
+      font-size: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 12px;
+      position: relative;
+      z-index: 1;
     }
     .help-header h1 i { color: var(--blue); }
-    .help-header p { color: var(--muted); margin-top: 6px; }
+    .help-header p {
+      color: var(--muted);
+      margin-top: 6px;
+      position: relative;
+      z-index: 1;
+    }
 
-    .help-search {
-      max-width: 500px;
+    .help-search-wrapper {
+      max-width: 550px;
       margin: 0 auto 30px;
       display: flex;
       gap: 12px;
+      align-items: center;
     }
-    .help-search input {
+    .help-search-wrapper input {
       flex: 1;
       padding: 12px 16px;
       border-radius: 10px;
@@ -236,8 +356,8 @@
       outline: none;
       transition: 0.2s;
     }
-    .help-search input:focus { border-color: var(--blue); }
-    .help-search button {
+    .help-search-wrapper input:focus { border-color: var(--blue); }
+    .help-search-wrapper button {
       padding: 12px 24px;
       border-radius: 10px;
       background: var(--blue);
@@ -247,7 +367,14 @@
       transition: 0.2s;
       white-space: nowrap;
     }
-    .help-search button:hover { transform: scale(1.02); }
+    .help-search-wrapper button:hover { transform: scale(1.02); }
+    .search-result-count {
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted);
+      margin: -20px 0 20px 0;
+      min-height: 24px;
+    }
 
     .help-grid {
       display: grid;
@@ -260,15 +387,22 @@
       border-radius: var(--radius);
       padding: 24px;
       text-align: center;
-      transition: 0.2s;
+      transition: 0.3s;
       cursor: pointer;
+      backdrop-filter: blur(4px);
     }
-    .help-card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-4px); }
+    .help-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    }
     .help-card .icon {
       font-size: 40px;
       color: var(--blue);
       margin-bottom: 12px;
+      transition: 0.3s;
     }
+    .help-card:hover .icon { transform: scale(1.1); }
     .help-card h3 { font-size: 18px; margin-bottom: 6px; }
     .help-card p { color: var(--muted); font-size: 14px; }
 
@@ -283,6 +417,7 @@
       gap: 10px;
     }
     .faq-section h2 i { color: var(--blue); }
+
     .faq-item {
       background: var(--surface);
       border: 1px solid var(--line);
@@ -290,33 +425,209 @@
       padding: 16px 20px;
       margin-bottom: 12px;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.25s;
     }
-    .faq-item:hover { border-color: rgba(255,255,255,0.2); }
+    .faq-item:hover { border-color: var(--blue); }
     .faq-item .question {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-weight: 600;
+      gap: 12px;
     }
-    .faq-item .question i { transition: 0.2s; }
+    .faq-item .question i {
+      transition: transform 0.35s ease, color 0.3s;
+      color: var(--blue);
+    }
     .faq-item .answer {
       max-height: 0;
       overflow: hidden;
-      transition: max-height 0.3s ease;
+      transition: max-height 0.4s ease, padding 0.3s ease;
       color: var(--muted);
       font-size: 14px;
       padding-top: 0;
+      line-height: 1.6;
     }
-    .faq-item.open .answer { max-height: 200px; padding-top: 12px; }
+    .faq-item .answer a { color: var(--blue); text-decoration: underline; }
+    .faq-item.open .answer {
+      max-height: 300px;
+      padding-top: 14px;
+    }
     .faq-item.open .question i { transform: rotate(180deg); }
 
-    /* ===== FOOTER ===== */
+    /* ============================================================
+       BOTONES FLOTANTES
+       ============================================================ */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 100px;
+      right: 16px;
+      z-index: 1000;
+      background: #25D366;
+      color: #fff;
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 8px 25px rgba(37,211,102,0.4);
+      transition: 0.3s;
+      text-decoration: none;
+    }
+    .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 10px 30px rgba(37,211,102,0.6); }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 165px;
+      right: 16px;
+      z-index: 999;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(20px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .back-to-top:hover {
+      background: var(--blue);
+      color: #fff;
+      transform: translateY(-4px);
+    }
+
+    /* ============================================================
+       TOASTS
+       ============================================================ */
+    .toast-container {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 360px;
+    }
+    .toast {
+      background: var(--surface);
+      border: 1px solid var(--line-2);
+      border-left: 4px solid var(--blue);
+      border-radius: 10px;
+      padding: 14px 18px;
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      animation: slideIn 0.4s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast.success { border-left-color: var(--green); }
+    .toast.error { border-left-color: var(--red); }
+    .toast.info { border-left-color: var(--blue); }
+    .toast .toast-icon { font-size: 20px; }
+    .toast.success .toast-icon { color: var(--green); }
+    .toast.error .toast-icon { color: var(--red); }
+    .toast.info .toast-icon { color: var(--blue); }
+    .toast.hide { animation: slideOut 0.4s ease forwards; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(50px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideOut { to { opacity: 0; transform: translateX(50px); } }
+
+    /* ============================================================
+       COOKIES BANNER
+       ============================================================ */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      padding: 16px 24px;
+      z-index: 9999;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+    .cookie-banner.show { transform: translateY(0); }
+    .cookie-banner p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+      min-width: 200px;
+    }
+    .cookie-banner p a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+    .cookie-banner .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .cookie-banner .btn-cookie {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cookie-banner .btn-cookie.accept {
+      background: var(--green);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.accept:hover { transform: scale(1.05); }
+    .cookie-banner .btn-cookie.reject {
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .cookie-banner .btn-cookie.reject:hover {
+      background: var(--red);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings {
+      background: var(--blue);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings:hover { transform: scale(1.05); }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
     footer {
       background: #020406;
       border-top: 1px solid var(--line);
       padding: 40px 0 20px;
+      transition: background 0.3s ease;
     }
+    body.light-mode footer { background: #e9edf2; }
+
     .foot-grid {
       display: grid;
       grid-template-columns: 1.4fr 1fr 1fr 1fr;
@@ -359,6 +670,7 @@
     .footer-social span { color: var(--muted); font-weight: 600; font-size: 13px; }
     .footer-social a { color: var(--muted); font-size: 18px; transition: 0.2s; }
     .footer-social a:hover { color: var(--white); transform: scale(1.2); }
+
     .foot-col h5 {
       font-size: 13px;
       text-transform: uppercase;
@@ -385,7 +697,25 @@
       color: var(--muted);
     }
 
-    /* ===== BOTTOM NAV ===== */
+    .libro-reclamos-final {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 26px 0;
+    }
+    .libro-reclamos-final a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      opacity: .95;
+    }
+    .libro-reclamos-final a:hover { transform: translateY(-2px); opacity: 1; }
+    .libro-reclamos-final img { height: 62px; width: auto; display: block; }
+
+    /* ============================================================
+       BOTTOM NAV (móvil)
+       ============================================================ */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -436,11 +766,11 @@
       border: 2px solid var(--bg);
     }
 
-    /* ============================================================ */
-    /* ===== RESPONSIVE ===== */
-    /* ============================================================ */
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
     @media (max-width: 980px) {
-      .main-nav, .cat-strip, .burger { display: none !important; }
+      .main-nav, .cat-strip { display: none !important; }
       .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
       .bottom-nav { display: flex; }
       .search-box {
@@ -456,6 +786,10 @@
       .icon-btn i { font-size: 16px; }
       .help-grid { grid-template-columns: repeat(2, 1fr); }
       .foot-grid { grid-template-columns: 1fr 1fr; }
+      .cookie-banner { flex-direction: column; text-align: center; padding: 16px; }
+      .cookie-banner .buttons { justify-content: center; }
+      .whatsapp-float { bottom: 90px; right: 12px; width: 48px; height: 48px; font-size: 24px; }
+      .back-to-top { bottom: 150px; right: 12px; width: 40px; height: 40px; font-size: 18px; }
     }
 
     @media (max-width: 600px) {
@@ -465,38 +799,54 @@
       .bottom-nav a span { font-size: 9px; }
       .help-grid { grid-template-columns: 1fr; }
       .foot-grid { grid-template-columns: 1fr; gap: 20px; }
-      .help-search { flex-direction: column; }
-      .help-search button { width: 100%; }
+      .help-search-wrapper { flex-direction: column; }
+      .help-search-wrapper button { width: 100%; }
+      .help-header h1 { font-size: 26px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ===== TOPBAR ===== -->
-  <div class="topbar">
+  <!-- ============================================================
+       TOPBAR
+       ============================================================ -->
+  <div class="topbar" id="topbar">
     <div class="wrap">
       <div class="topbar-links">
-        <span>🚚 <b>Envíos a todo el Perú</b></span>
-        <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
+        <span class="topbar-msg">🚚 <b data-i18n="topbar_envios">Envíos a todo el Perú</b></span>
+        <a href="pedidos.html" style="color:var(--muted);" class="topbar-track" data-i18n="topbar_rastrear">Rastrea tu pedido</a>
+      </div>
+      <div class="header-controls">
+        <div class="theme-toggle" id="themeToggle" title="Cambiar tema">
+          <span class="tog-icon active" data-theme="dark"><i class="fas fa-moon"></i></span>
+          <span class="tog-icon" data-theme="light"><i class="fas fa-sun"></i></span>
+        </div>
+        <div class="lang-toggle" id="langToggle" title="Cambiar idioma">
+          <span class="lang-opt active" data-lang="es">ES</span>
+          <span class="lang-opt" data-lang="en">EN</span>
+        </div>
       </div>
     </div>
   </div>
   <div class="beam-rule"></div>
 
-  <!-- ===== HEADER ===== -->
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
   <header class="site">
     <div class="wrap header-row">
+      <!-- LOGO CORREGIDO: apunta a ../index.html -->
       <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
       <nav class="main-nav">
-        <a href="productos.html?cat=tecnologia">Tecnología</a>
-        <a href="productos.html?cat=hogar">Hogar</a>
-        <a href="productos.html?cat=deportes">Deportes</a>
-        <a href="productos.html?cat=accesorios">Accesorios</a>
-        <a href="ofertas.html">Ofertas</a>
+        <a href="productos.html?cat=tecnologia" data-i18n="menu_tecnologia">Tecnología</a>
+        <a href="productos.html?cat=hogar" data-i18n="menu_hogar">Hogar</a>
+        <a href="productos.html?cat=deportes" data-i18n="menu_deportes">Deportes</a>
+        <a href="productos.html?cat=accesorios" data-i18n="menu_accesorios">Accesorios</a>
+        <a href="ofertas.html" data-i18n="menu_ofertas">Ofertas</a>
       </nav>
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Buscar productos…" />
+        <input type="text" id="searchInput" placeholder="Buscar productos…" data-i18n-placeholder="buscar" />
       </div>
       <div class="header-icons">
         <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
@@ -517,106 +867,121 @@
     </div>
   </header>
 
-  <!-- ===== HELP ===== -->
+  <!-- ============================================================
+       CONTENIDO PRINCIPAL: AYUDA
+       ============================================================ -->
   <section class="help-section">
     <div class="wrap">
+      <!-- Breadcrumb -->
+      <div class="breadcrumb">
+        <a href="../index.html" data-i18n="inicio">Inicio</a>
+        <i class="fas fa-chevron-right"></i>
+        <span data-i18n="ayuda_titulo">Ayuda</span>
+      </div>
+
+      <!-- Header -->
       <div class="help-header">
-        <h1><i class="fas fa-life-ring"></i> Centro de ayuda</h1>
-        <p>¿En qué podemos ayudarte? Encuentra respuestas a tus preguntas.</p>
+        <h1><i class="fas fa-life-ring"></i> <span data-i18n="ayuda_titulo">Centro de ayuda</span></h1>
+        <p data-i18n="ayuda_sub">¿En qué podemos ayudarte? Encuentra respuestas a tus preguntas.</p>
       </div>
 
-      <div class="help-search">
-        <input type="text" id="helpSearch" placeholder="Buscar en ayuda…" />
-        <button id="helpSearchBtn"><i class="fas fa-search"></i> Buscar</button>
+      <!-- Búsqueda -->
+      <div class="help-search-wrapper">
+        <input type="text" id="helpSearch" placeholder="Buscar en ayuda…" data-i18n-placeholder="ayuda_buscar" />
+        <button id="helpSearchBtn"><i class="fas fa-search"></i> <span data-i18n="ayuda_buscar_btn">Buscar</span></button>
       </div>
+      <div class="search-result-count" id="searchResultCount"></div>
 
+      <!-- Tarjetas de ayuda -->
       <div class="help-grid" id="helpGrid">
         <div class="help-card" onclick="window.location.href='pedidos.html'">
           <div class="icon"><i class="fas fa-truck"></i></div>
-          <h3>Rastrear pedido</h3>
-          <p>Consulta el estado de tu envío en tiempo real.</p>
+          <h3 data-i18n="ayuda_card1_tit">Rastrear pedido</h3>
+          <p data-i18n="ayuda_card1_desc">Consulta el estado de tu envío en tiempo real.</p>
         </div>
         <div class="help-card" onclick="window.location.href='#faq'">
           <div class="icon"><i class="fas fa-question-circle"></i></div>
-          <h3>Preguntas frecuentes</h3>
-          <p>Respuestas a las dudas más comunes.</p>
+          <h3 data-i18n="ayuda_card2_tit">Preguntas frecuentes</h3>
+          <p data-i18n="ayuda_card2_desc">Respuestas a las dudas más comunes.</p>
         </div>
         <div class="help-card" onclick="window.location.href='contacto.html'">
           <div class="icon"><i class="fas fa-envelope"></i></div>
-          <h3>Contacto</h3>
-          <p>Habla con nuestro equipo de soporte.</p>
+          <h3 data-i18n="ayuda_card3_tit">Contacto</h3>
+          <p data-i18n="ayuda_card3_desc">Habla con nuestro equipo de soporte.</p>
         </div>
         <div class="help-card" onclick="window.location.href='ayuda.html?section=cambios'">
           <div class="icon"><i class="fas fa-exchange-alt"></i></div>
-          <h3>Cambios y devoluciones</h3>
-          <p>Conoce nuestra política de cambios.</p>
+          <h3 data-i18n="ayuda_card4_tit">Cambios y devoluciones</h3>
+          <p data-i18n="ayuda_card4_desc">Conoce nuestra política de cambios.</p>
         </div>
         <div class="help-card" onclick="window.location.href='ayuda.html?section=pagos'">
           <div class="icon"><i class="fas fa-credit-card"></i></div>
-          <h3>Medios de pago</h3>
-          <p>Visa, Mastercard, Yape, Plin y más.</p>
+          <h3 data-i18n="ayuda_card5_tit">Medios de pago</h3>
+          <p data-i18n="ayuda_card5_desc">Visa, Mastercard, Yape, Plin y más.</p>
         </div>
         <div class="help-card" onclick="window.location.href='ayuda.html?section=cuenta'">
           <div class="icon"><i class="fas fa-user-cog"></i></div>
-          <h3>Gestión de cuenta</h3>
-          <p>Cambiar contraseña, datos personales, etc.</p>
+          <h3 data-i18n="ayuda_card6_tit">Gestión de cuenta</h3>
+          <p data-i18n="ayuda_card6_desc">Cambiar contraseña, datos personales, etc.</p>
         </div>
       </div>
 
       <!-- FAQ -->
       <div class="faq-section" id="faq">
-        <h2><i class="fas fa-list-ul"></i> Preguntas frecuentes</h2>
+        <h2><i class="fas fa-list-ul"></i> <span data-i18n="ayuda_faq_tit">Preguntas frecuentes</span></h2>
 
         <div class="faq-item">
           <div class="question">
-            <span>¿Cómo puedo rastrear mi pedido?</span>
+            <span data-i18n="faq1_q">¿Cómo puedo rastrear mi pedido?</span>
             <i class="fas fa-chevron-down"></i>
           </div>
-          <div class="answer">Puedes rastrear tu pedido ingresando tu número de seguimiento en nuestra sección <a href="pedidos.html" style="color:var(--blue);">Rastrear pedido</a>. También recibirás actualizaciones por correo.</div>
+          <div class="answer" data-i18n="faq1_a">Puedes rastrear tu pedido ingresando tu número de seguimiento en nuestra sección <a href="pedidos.html">Rastrear pedido</a>. También recibirás actualizaciones por correo.</div>
         </div>
 
         <div class="faq-item">
           <div class="question">
-            <span>¿Cuáles son los métodos de pago aceptados?</span>
+            <span data-i18n="faq2_q">¿Cuáles son los métodos de pago aceptados?</span>
             <i class="fas fa-chevron-down"></i>
           </div>
-          <div class="answer">Aceptamos Visa, Mastercard, American Express, Diners Club, Yape y Plin. Todos los pagos son procesados de forma segura.</div>
+          <div class="answer" data-i18n="faq2_a">Aceptamos Visa, Mastercard, American Express, Diners Club, Yape y Plin. Todos los pagos son procesados de forma segura.</div>
         </div>
 
         <div class="faq-item">
           <div class="question">
-            <span>¿Cómo solicito un cambio o devolución?</span>
+            <span data-i18n="faq3_q">¿Cómo solicito un cambio o devolución?</span>
             <i class="fas fa-chevron-down"></i>
           </div>
-          <div class="answer">Puedes solicitar un cambio o devolución dentro de los 7 días hábiles posteriores a la recepción del producto. Contáctanos a través de nuestra sección de <a href="contacto.html" style="color:var(--blue);">Contacto</a> para más información.</div>
+          <div class="answer" data-i18n="faq3_a">Puedes solicitar un cambio o devolución dentro de los 7 días hábiles posteriores a la recepción del producto. Contáctanos a través de nuestra sección de <a href="contacto.html">Contacto</a> para más información.</div>
         </div>
 
         <div class="faq-item">
           <div class="question">
-            <span>¿Cómo puedo actualizar mis datos personales?</span>
+            <span data-i18n="faq4_q">¿Cómo puedo actualizar mis datos personales?</span>
             <i class="fas fa-chevron-down"></i>
           </div>
-          <div class="answer">Ingresa a tu <a href="perfil.html" style="color:var(--blue);">perfil</a> y selecciona "Editar" en la sección de Datos personales. Podrás modificar tu nombre, correo, teléfono y dirección.</div>
+          <div class="answer" data-i18n="faq4_a">Ingresa a tu <a href="perfil.html">perfil</a> y selecciona "Editar" en la sección de Datos personales. Podrás modificar tu nombre, correo, teléfono y dirección.</div>
         </div>
 
         <div class="faq-item">
           <div class="question">
-            <span>¿Cuánto tiempo tarda el envío?</span>
+            <span data-i18n="faq5_q">¿Cuánto tiempo tarda el envío?</span>
             <i class="fas fa-chevron-down"></i>
           </div>
-          <div class="answer">Los envíos a Lima Metropolitana tardan de 1 a 3 días hábiles. Para provincias, el plazo es de 3 a 7 días hábiles, dependiendo de la ubicación.</div>
+          <div class="answer" data-i18n="faq5_a">Los envíos a Lima Metropolitana tardan de 1 a 3 días hábiles. Para provincias, el plazo es de 3 a 7 días hábiles, dependiendo de la ubicación.</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== FOOTER ===== -->
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
   <footer>
     <div class="wrap">
       <div class="foot-grid">
         <div>
           <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
-          <p class="foot-desc">Tecnología, estilo y calidad en un solo lugar.</p>
+          <p class="foot-desc" data-i18n="footer_desc">Tecnología, estilo y calidad en un solo lugar.</p>
           <div class="pay-icons-footer">
             <span><i class="fab fa-cc-visa"></i> VISA</span>
             <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
@@ -626,7 +991,7 @@
             <span><i class="fab fa-cc-diners-club"></i> Diners</span>
           </div>
           <div class="footer-social">
-            <span>Síguenos:</span>
+            <span data-i18n="siguenos">Síguenos:</span>
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
@@ -634,117 +999,357 @@
           </div>
         </div>
         <div class="foot-col">
-          <h5>Categorías</h5>
-          <a href="productos.html?cat=tecnologia">Tecnología</a>
-          <a href="productos.html?cat=hogar">Hogar</a>
-          <a href="productos.html?cat=deportes">Deportes</a>
-          <a href="productos.html?cat=accesorios">Accesorios</a>
-          <a href="categorias.html">Ver todas</a>
+          <h5 data-i18n="categorias">Categorías</h5>
+          <a href="productos.html?cat=tecnologia" data-i18n="tecnologia">Tecnología</a>
+          <a href="productos.html?cat=hogar" data-i18n="hogar">Hogar</a>
+          <a href="productos.html?cat=deportes" data-i18n="deportes">Deportes</a>
+          <a href="productos.html?cat=accesorios" data-i18n="accesorios">Accesorios</a>
+          <a href="categorias.html" data-i18n="ver_todas">Ver todas</a>
         </div>
         <div class="foot-col">
-          <h5>Ayuda</h5>
-          <a href="ayuda.html">Centro de ayuda</a>
-          <a href="pedidos.html">Rastrear pedido</a>
-          <a href="ayuda.html#faq">Preguntas frecuentes</a>
-          <a href="contacto.html">Contacto</a>
+          <h5 data-i18n="ayuda">Ayuda</h5>
+          <a href="ayuda.html" data-i18n="ayuda">Centro de ayuda</a>
+          <a href="pedidos.html" data-i18n="rastrear">Rastrear pedido</a>
+          <a href="ayuda.html#faq" data-i18n="preguntas">Preguntas frecuentes</a>
+          <a href="contacto.html" data-i18n="contacto">Contacto</a>
         </div>
         <div class="foot-col">
-          <h5>Nosotros</h5>
-          <a href="nosotros.html">Sobre LAGUER</a>
-          <a href="contacto.html">Contacto</a>
-          <a href="terminos.html">Términos</a>
-          <a href="privacidad.html">Privacidad</a>
+          <h5 data-i18n="nosotros">Nosotros</h5>
+          <a href="nosotros.html" data-i18n="sobre">Sobre LAGUER</a>
+          <a href="contacto.html" data-i18n="contacto">Contacto</a>
+          <a href="terminos.html" data-i18n="terminos">Términos</a>
+          <a href="privacidad.html" data-i18n="privacidad">Privacidad</a>
         </div>
+      </div>
+      <div class="libro-reclamos-final">
+        <a href="libro-reclamaciones.html" aria-label="Libro de Reclamaciones">
+          <img src="../image/libro-recla.jfif" alt="Libro de Reclamaciones" loading="lazy" />
+        </a>
       </div>
       <div class="beam-rule" style="margin:16px 0;"></div>
       <div class="foot-bottom">
         <span>© 2026 LAGUER. Todos los derechos reservados.</span>
-        <span>Hecho con ♥ para todo el Perú</span>
+        <span data-i18n="hecho_con">Hecho con ♥ para todo el Perú</span>
       </div>
     </div>
   </footer>
 
-  <!-- ===== BOTTOM NAV (móvil) ===== -->
+  <!-- ============================================================
+       BOTTOM NAV (móvil) — CORREGIDO: Inicio apunta a ../index.html
+       ============================================================ -->
   <nav class="bottom-nav" id="bottomNav">
-    <a href="../index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
-    <a href="productos.html"><i class="fas fa-th-large"></i><span>Productos</span></a>
+    <a href="../index.html"><i class="fas fa-home"></i><span data-i18n="inicio">Inicio</span></a>
+    <a href="productos.html"><i class="fas fa-th-large"></i><span data-i18n="productos">Productos</span></a>
     <a href="carrito.html" id="bottomCartLink">
-      <i class="fas fa-shopping-cart"></i><span>Carrito</span>
+      <i class="fas fa-shopping-cart"></i><span data-i18n="carrito">Carrito</span>
       <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
     </a>
-    <a href="perfil.html"><i class="fas fa-user"></i><span>Perfil</span></a>
+    <a href="login.html"><i class="fas fa-user"></i><span data-i18n="perfil">Perfil</span></a>
   </nav>
 
-  <!-- ============================================================ -->
-  <!-- ===== SCRIPTS ===== -->
-  <!-- ============================================================ -->
+  <!-- ============================================================
+       BOTONES FLOTANTES
+       ============================================================ -->
+  <!-- WhatsApp -->
+  <a href="https://wa.me/51987654321?text=Hola%20LAGUER!%20Necesito%20ayuda" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+  <!-- Volver arriba -->
+  <div class="back-to-top" id="backToTop" title="Volver arriba">
+    <i class="fas fa-arrow-up"></i>
+  </div>
+
+  <!-- ============================================================
+       COOKIES BANNER
+       ============================================================ -->
+  <div class="cookie-banner" id="cookieBanner">
+    <p>
+      <span data-i18n="cookies_texto">Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra</span>
+      <a href="privacidad.html" data-i18n="politica_privacidad">política de privacidad</a>.
+    </p>
+    <div class="buttons">
+      <button class="btn-cookie reject" id="cookieReject" data-i18n="rechazar">Rechazar</button>
+      <button class="btn-cookie settings" id="cookieSettings" data-i18n="configurar">Configurar</button>
+      <button class="btn-cookie accept" id="cookieAccept" data-i18n="aceptar">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOAST CONTAINER
+       ============================================================ -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ============================================================
+       SCRIPTS COMPLETOS
+       ============================================================ -->
   <script>
     (function() {
       'use strict';
 
       // =============================================================
-      // 1. FAQ ACCORDION
+      // 1. TRADUCCIONES (ES / EN)
       // =============================================================
-      document.querySelectorAll('.faq-item .question').forEach(q => {
-        q.addEventListener('click', function() {
-          const parent = this.parentElement;
-          const isOpen = parent.classList.contains('open');
-          // Cerrar todos
-          document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('open'));
-          if (!isOpen) parent.classList.add('open');
+      const translations = {
+        es: {
+          'topbar_envios': 'Envíos a todo el Perú',
+          'topbar_rastrear': 'Rastrea tu pedido',
+          'menu_tecnologia': 'Tecnología',
+          'menu_hogar': 'Hogar',
+          'menu_deportes': 'Deportes',
+          'menu_accesorios': 'Accesorios',
+          'menu_ofertas': 'Ofertas',
+          'buscar': 'Buscar productos…',
+          'cookies_texto': 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra',
+          'politica_privacidad': 'política de privacidad',
+          'rechazar': 'Rechazar',
+          'configurar': 'Configurar',
+          'aceptar': 'Aceptar',
+          'footer_desc': 'Tecnología, estilo y calidad en un solo lugar.',
+          'siguenos': 'Síguenos:',
+          'categorias': 'Categorías',
+          'ayuda': 'Ayuda',
+          'nosotros': 'Nosotros',
+          'rastrear': 'Rastrear pedido',
+          'cambios': 'Cambios y devoluciones',
+          'medios_pago': 'Medios de pago',
+          'preguntas': 'Preguntas frecuentes',
+          'sobre': 'Sobre LAGUER',
+          'contacto': 'Contacto',
+          'terminos': 'Términos',
+          'privacidad': 'Privacidad',
+          'inicio': 'Inicio',
+          'productos': 'Productos',
+          'carrito': 'Carrito',
+          'perfil': 'Perfil',
+          'hecho_con': 'Hecho con ♥ para todo el Perú',
+          'ver_todas': 'Ver todas',
+          'tecnologia': 'Tecnología',
+          'hogar': 'Hogar',
+          'deportes': 'Deportes',
+          'accesorios': 'Accesorios',
+          'ayuda_titulo': 'Centro de ayuda',
+          'ayuda_sub': '¿En qué podemos ayudarte? Encuentra respuestas a tus preguntas.',
+          'ayuda_buscar': 'Buscar en ayuda…',
+          'ayuda_buscar_btn': 'Buscar',
+          'ayuda_card1_tit': 'Rastrear pedido',
+          'ayuda_card1_desc': 'Consulta el estado de tu envío en tiempo real.',
+          'ayuda_card2_tit': 'Preguntas frecuentes',
+          'ayuda_card2_desc': 'Respuestas a las dudas más comunes.',
+          'ayuda_card3_tit': 'Contacto',
+          'ayuda_card3_desc': 'Habla con nuestro equipo de soporte.',
+          'ayuda_card4_tit': 'Cambios y devoluciones',
+          'ayuda_card4_desc': 'Conoce nuestra política de cambios.',
+          'ayuda_card5_tit': 'Medios de pago',
+          'ayuda_card5_desc': 'Visa, Mastercard, Yape, Plin y más.',
+          'ayuda_card6_tit': 'Gestión de cuenta',
+          'ayuda_card6_desc': 'Cambiar contraseña, datos personales, etc.',
+          'ayuda_faq_tit': 'Preguntas frecuentes',
+          'faq1_q': '¿Cómo puedo rastrear mi pedido?',
+          'faq1_a': 'Puedes rastrear tu pedido ingresando tu número de seguimiento en nuestra sección <a href="pedidos.html">Rastrear pedido</a>. También recibirás actualizaciones por correo.',
+          'faq2_q': '¿Cuáles son los métodos de pago aceptados?',
+          'faq2_a': 'Aceptamos Visa, Mastercard, American Express, Diners Club, Yape y Plin. Todos los pagos son procesados de forma segura.',
+          'faq3_q': '¿Cómo solicito un cambio o devolución?',
+          'faq3_a': 'Puedes solicitar un cambio o devolución dentro de los 7 días hábiles posteriores a la recepción del producto. Contáctanos a través de nuestra sección de <a href="contacto.html">Contacto</a> para más información.',
+          'faq4_q': '¿Cómo puedo actualizar mis datos personales?',
+          'faq4_a': 'Ingresa a tu <a href="perfil.html">perfil</a> y selecciona "Editar" en la sección de Datos personales. Podrás modificar tu nombre, correo, teléfono y dirección.',
+          'faq5_q': '¿Cuánto tiempo tarda el envío?',
+          'faq5_a': 'Los envíos a Lima Metropolitana tardan de 1 a 3 días hábiles. Para provincias, el plazo es de 3 a 7 días hábiles, dependiendo de la ubicación.'
+        },
+        en: {
+          'topbar_envios': 'Shipping to all Peru',
+          'topbar_rastrear': 'Track your order',
+          'menu_tecnologia': 'Technology',
+          'menu_hogar': 'Home',
+          'menu_deportes': 'Sports',
+          'menu_accesorios': 'Accessories',
+          'menu_ofertas': 'Offers',
+          'buscar': 'Search products…',
+          'cookies_texto': 'We use cookies to improve your experience. By continuing, you accept our',
+          'politica_privacidad': 'privacy policy',
+          'rechazar': 'Reject',
+          'configurar': 'Settings',
+          'aceptar': 'Accept',
+          'footer_desc': 'Technology, style and quality in one place.',
+          'siguenos': 'Follow us:',
+          'categorias': 'Categories',
+          'ayuda': 'Help',
+          'nosotros': 'About',
+          'rastrear': 'Track order',
+          'cambios': 'Returns & exchanges',
+          'medios_pago': 'Payment methods',
+          'preguntas': 'FAQ',
+          'sobre': 'About LAGUER',
+          'contacto': 'Contact',
+          'terminos': 'Terms',
+          'privacidad': 'Privacy',
+          'inicio': 'Home',
+          'productos': 'Products',
+          'carrito': 'Cart',
+          'perfil': 'Profile',
+          'hecho_con': 'Made with ♥ for all Peru',
+          'ver_todas': 'View all',
+          'tecnologia': 'Technology',
+          'hogar': 'Home',
+          'deportes': 'Sports',
+          'accesorios': 'Accessories',
+          'ayuda_titulo': 'Help Center',
+          'ayuda_sub': 'How can we help you? Find answers to your questions.',
+          'ayuda_buscar': 'Search in help…',
+          'ayuda_buscar_btn': 'Search',
+          'ayuda_card1_tit': 'Track order',
+          'ayuda_card1_desc': 'Check the status of your shipment in real time.',
+          'ayuda_card2_tit': 'FAQ',
+          'ayuda_card2_desc': 'Answers to the most common questions.',
+          'ayuda_card3_tit': 'Contact',
+          'ayuda_card3_desc': 'Talk to our support team.',
+          'ayuda_card4_tit': 'Returns & exchanges',
+          'ayuda_card4_desc': 'Learn about our exchange policy.',
+          'ayuda_card5_tit': 'Payment methods',
+          'ayuda_card5_desc': 'Visa, Mastercard, Yape, Plin and more.',
+          'ayuda_card6_tit': 'Account management',
+          'ayuda_card6_desc': 'Change password, personal data, etc.',
+          'ayuda_faq_tit': 'Frequently Asked Questions',
+          'faq1_q': 'How can I track my order?',
+          'faq1_a': 'You can track your order by entering your tracking number in our <a href="pedidos.html">Track order</a> section. You will also receive updates by email.',
+          'faq2_q': 'What payment methods are accepted?',
+          'faq2_a': 'We accept Visa, Mastercard, American Express, Diners Club, Yape and Plin. All payments are processed securely.',
+          'faq3_q': 'How do I request a return or exchange?',
+          'faq3_a': 'You can request a return or exchange within 7 business days of receiving the product. Contact us through our <a href="contacto.html">Contact</a> section for more information.',
+          'faq4_q': 'How can I update my personal information?',
+          'faq4_a': 'Go to your <a href="perfil.html">profile</a> and select "Edit" in the Personal information section. You can modify your name, email, phone and address.',
+          'faq5_q': 'How long does delivery take?',
+          'faq5_a': 'Deliveries to Metropolitan Lima take 1 to 3 business days. For provinces, the delivery time is 3 to 7 business days, depending on location.'
+        }
+      };
+
+      // =============================================================
+      // 2. IDIOMA
+      // =============================================================
+      const langSelector = document.getElementById('languageSelector');
+      let currentLang = localStorage.getItem('laguer_lang') || 'es';
+
+      function applyLanguage(lang) {
+        currentLang = lang;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.dataset.i18n;
+          el.textContent = translations[lang]?.[key] || translations.es[key] || key;
         });
-      });
-
-      // Abrir FAQ por URL (ej: ?section=cambios)
-      const params = new URLSearchParams(window.location.search);
-      const section = params.get('section');
-      if (section) {
-        const faqItems = document.querySelectorAll('.faq-item');
-        if (section === 'cambios') faqItems[2]?.classList.add('open');
-        else if (section === 'pagos') faqItems[1]?.classList.add('open');
-        else if (section === 'cuenta') faqItems[3]?.classList.add('open');
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+          const key = el.dataset.i18nPlaceholder;
+          el.placeholder = translations[lang]?.[key] || translations.es[key] || key;
+        });
+        if (langSelector) langSelector.value = lang;
+        localStorage.setItem('laguer_lang', lang);
+        // Topbar dinámico
+        document.querySelector('.topbar-msg').innerHTML = translations[lang]['topbar_envios'];
+        document.querySelector('.topbar-track').textContent = translations[lang]['topbar_rastrear'];
+        document.querySelector('.search-box input').placeholder = translations[lang]['buscar'];
       }
 
-      // =============================================================
-      // 2. BÚSQUEDA EN AYUDA
-      // =============================================================
-      const searchInput = document.getElementById('helpSearch');
-      const searchBtn = document.getElementById('helpSearchBtn');
-      const faqItems = document.querySelectorAll('.faq-item');
-
-      function filterFaq(term) {
-        const lower = term.toLowerCase().trim();
-        faqItems.forEach(item => {
-          const text = item.textContent.toLowerCase();
-          item.style.display = (!lower || text.includes(lower)) ? '' : 'none';
+      if (langSelector) {
+        langSelector.addEventListener('change', function() {
+          applyLanguage(this.value);
         });
       }
 
-      searchBtn.addEventListener('click', function() {
-        filterFaq(searchInput.value);
+      // =============================================================
+      // 3. TEMA OSCURO / CLARO
+      // =============================================================
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcons = themeToggle.querySelectorAll('.tog-icon');
+      let currentTheme = localStorage.getItem('laguer_theme') || 'dark';
+
+      function applyTheme(theme) {
+        if (theme === 'light') {
+          document.body.classList.add('light-mode');
+          themeIcons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'light'));
+        } else {
+          document.body.classList.remove('light-mode');
+          themeIcons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'dark'));
+        }
+        localStorage.setItem('laguer_theme', theme);
+      }
+
+      themeToggle.addEventListener('click', function() {
+        const isLight = document.body.classList.contains('light-mode');
+        applyTheme(isLight ? 'dark' : 'light');
       });
-      searchInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') filterFaq(this.value);
-      });
+      applyTheme(currentTheme);
 
       // =============================================================
-      // 3. BADGES DE CARRITO Y FAVORITOS
+      // 4. TOASTS
       // =============================================================
-      const cart = JSON.parse(localStorage.getItem('laguerCart')) || [];
-      const favs = JSON.parse(localStorage.getItem('laguerFavs')) || [];
-      const totalCart = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
-
-      document.getElementById('cartCount').textContent = totalCart;
-      document.getElementById('favCount').textContent = favs.length;
-
-      const bottomBadge = document.getElementById('bottomCartBadge');
-      if (bottomBadge) {
-        bottomBadge.textContent = totalCart;
-        bottomBadge.style.display = totalCart === 0 ? 'none' : 'flex';
+      function showToast(message, type) {
+        type = type || 'info';
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        const icons = {
+          success: 'fa-check-circle',
+          error: 'fa-times-circle',
+          info: 'fa-info-circle'
+        };
+        const toast = document.createElement('div');
+        toast.className = 'toast ' + type;
+        toast.innerHTML = `<span class="toast-icon"><i class="fas ${icons[type] || icons.info}"></i></span> <span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.classList.add('hide');
+          setTimeout(() => toast.remove(), 400);
+        }, 4000);
       }
 
       // =============================================================
-      // 4. BÚSQUEDA DEL HEADER (redirige a productos)
+      // 5. COOKIES
+      // =============================================================
+      (function() {
+        const COOKIE_KEY = 'laguer_cookie_consent';
+        const banner = document.getElementById('cookieBanner');
+        if (!banner) return;
+
+        function getCookieConsent() { return localStorage.getItem(COOKIE_KEY); }
+        function setCookieConsent(value) {
+          localStorage.setItem(COOKIE_KEY, value);
+          banner.classList.remove('show');
+        }
+
+        if (!getCookieConsent()) {
+          setTimeout(() => banner.classList.add('show'), 500);
+        }
+
+        document.getElementById('cookieAccept')?.addEventListener('click', function() {
+          setCookieConsent('accepted');
+          showToast('🍪 Cookies aceptadas.', 'success');
+        });
+        document.getElementById('cookieReject')?.addEventListener('click', function() {
+          setCookieConsent('rejected');
+          showToast('🍪 Cookies rechazadas.', 'info');
+        });
+        document.getElementById('cookieSettings')?.addEventListener('click', function() {
+          showToast('⚙️ Configuración de cookies.', 'info');
+        });
+      })();
+
+      // =============================================================
+      // 6. CARRITO Y FAVORITOS
+      // =============================================================
+      const CART_KEY = 'laguerCart';
+      const FAV_KEY = 'laguerFavs';
+
+      function updateBadges() {
+        const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        const total = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+        document.querySelectorAll('.cart-count, #cartCount').forEach(el => el.textContent = total);
+        const bottomBadge = document.getElementById('bottomCartBadge');
+        if (bottomBadge) {
+          bottomBadge.textContent = total;
+          bottomBadge.style.display = total === 0 ? 'none' : 'flex';
+        }
+        const favs = JSON.parse(localStorage.getItem(FAV_KEY)) || [];
+        document.querySelectorAll('.fav-count, #favCount').forEach(el => el.textContent = favs.length);
+      }
+
+      // =============================================================
+      // 7. BÚSQUEDA DEL HEADER
       // =============================================================
       document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
@@ -753,7 +1358,100 @@
         }
       });
 
-      console.log('🆘 Página de ayuda LAGUER lista');
+      // =============================================================
+      // 8. BOTTOM NAV - MARCAR ACTIVO
+      // =============================================================
+      const currentPath = window.location.pathname.split('/').pop() || 'ayuda.html';
+      document.querySelectorAll('.bottom-nav a').forEach(a => {
+        const href = a.getAttribute('href');
+        if (href === currentPath) a.classList.add('active');
+      });
+
+      // =============================================================
+      // 9. FAQ ACCORDION
+      // =============================================================
+      document.querySelectorAll('.faq-item .question').forEach(q => {
+        q.addEventListener('click', function() {
+          const parent = this.parentElement;
+          const isOpen = parent.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach(item => item.classList.remove('open'));
+          if (!isOpen) parent.classList.add('open');
+        });
+      });
+
+      // =============================================================
+      // 10. BÚSQUEDA EN AYUDA (con contador de resultados)
+      // =============================================================
+      const searchInput = document.getElementById('helpSearch');
+      const searchBtn = document.getElementById('helpSearchBtn');
+      const faqItems = document.querySelectorAll('.faq-item');
+      const resultCountEl = document.getElementById('searchResultCount');
+
+      function filterFaq(term) {
+        const lower = term.toLowerCase().trim();
+        let visible = 0;
+        faqItems.forEach(item => {
+          const text = item.textContent.toLowerCase();
+          const match = !lower || text.includes(lower);
+          item.style.display = match ? '' : 'none';
+          if (match) visible++;
+        });
+        if (lower) {
+          resultCountEl.textContent = `Mostrando ${visible} de ${faqItems.length} preguntas`;
+          resultCountEl.style.display = 'block';
+        } else {
+          resultCountEl.style.display = 'none';
+        }
+      }
+
+      searchBtn.addEventListener('click', function() {
+        filterFaq(searchInput.value);
+      });
+      searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') filterFaq(this.value);
+        if (this.value === '' && e.key === 'Backspace') filterFaq('');
+      });
+      searchInput.addEventListener('input', function() {
+        filterFaq(this.value);
+      });
+
+      // =============================================================
+      // 11. ABRIR FAQ POR PARÁMETRO URL (?section=...)
+      // =============================================================
+      const params = new URLSearchParams(window.location.search);
+      const section = params.get('section');
+      if (section) {
+        const faqItemsArr = document.querySelectorAll('.faq-item');
+        if (section === 'cambios') faqItemsArr[2]?.classList.add('open');
+        else if (section === 'pagos') faqItemsArr[1]?.classList.add('open');
+        else if (section === 'cuenta') faqItemsArr[3]?.classList.add('open');
+      }
+
+      // =============================================================
+      // 12. BOTÓN VOLVER ARRIBA (Back to Top)
+      // =============================================================
+      const backToTopBtn = document.getElementById('backToTop');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) {
+          backToTopBtn.classList.add('visible');
+        } else {
+          backToTopBtn.classList.remove('visible');
+        }
+      });
+      backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      // =============================================================
+      // 13. INICIALIZAR
+      // =============================================================
+      document.addEventListener('DOMContentLoaded', function() {
+        applyLanguage(currentLang);
+        updateBadges();
+        filterFaq(''); // resetear contador
+        console.log('🆘 Página de ayuda mejorada y conectada');
+      });
+
     })();
   </script>
 </body>

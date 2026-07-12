@@ -3,31 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Nosotros · LAGUER</title>
+  <title>Sobre nosotros · LAGUER</title>
   <link rel="icon" href="../image/favicon-laguer.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
-    /* ===== VARIABLES Y RESET (igual que en las demás páginas) ===== */
+    /* ============================================================
+       VARIABLES (TEMA OSCURO POR DEFECTO)
+       ============================================================ */
     :root {
       --bg: #05070b;
       --bg-soft: #0b1017;
       --surface: #121a24;
       --surface-2: #1a2531;
       --line: rgba(255,255,255,.08);
+      --line-2: rgba(255,255,255,.14);
       --red: #ee1d25;
       --red-dark: #a5141a;
       --green: #39b54a;
       --green-dark: #1f7b2c;
       --blue: #189ee0;
       --blue-dark: #0f6ca3;
+      --amber: #f1c40f;
       --white: #f5f8fb;
       --muted: #8fa0b3;
       --radius: 16px;
       --bottom-nav-height: 70px;
     }
+
+    /* ============================================================
+       TEMA CLARO
+       ============================================================ */
+    body.light-mode {
+      --bg: #f4f6f9;
+      --bg-soft: #eef1f5;
+      --surface: #ffffff;
+      --surface-2: #f0f2f5;
+      --line: rgba(0,0,0,.08);
+      --line-2: rgba(0,0,0,.14);
+      --white: #1a1a1a;
+      --muted: #555555;
+    }
+
+    /* ============================================================
+       RESET Y BASE
+       ============================================================ */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -37,6 +59,7 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
       padding-bottom: calc(var(--bottom-nav-height) + 20px);
+      transition: background 0.3s ease, color 0.3s ease;
     }
     h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
     a { color: inherit; text-decoration: none; }
@@ -45,7 +68,9 @@
     button { font-family: inherit; cursor: pointer; border: none; }
     .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
 
-    /* ===== BEAM ===== */
+    /* ============================================================
+       BEAM
+       ============================================================ */
     .beam-rule {
       height: 3px;
       width: 100%;
@@ -53,13 +78,27 @@
       opacity: .9;
     }
 
-    /* ===== TOPBAR ===== */
+    /* ============================================================
+       TOPBAR
+       ============================================================ */
     .topbar {
       background: #020406;
       font-size: 12.5px;
       color: var(--muted);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
+    body.light-mode .topbar {
+      background: #eef1f5 !important;
+      border-bottom-color: var(--line);
+    }
+    body.light-mode .topbar .topbar-links a { color: var(--muted); }
+    body.light-mode .topbar .topbar-links b { color: var(--white); }
+    body.light-mode .topbar #languageSelector {
+      color: var(--white);
+      border-color: var(--line);
+    }
+
     .topbar .wrap {
       display: flex;
       justify-content: space-between;
@@ -69,7 +108,9 @@
     .topbar-links { display: flex; gap: 20px; }
     .topbar-links b { color: var(--white); }
 
-    /* ===== HEADER ===== */
+    /* ============================================================
+       HEADER
+       ============================================================ */
     header.site {
       position: sticky;
       top: 0;
@@ -77,7 +118,10 @@
       background: rgba(5,7,11,.88);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s ease;
     }
+    body.light-mode header.site { background: rgba(255,255,255,.92); }
+
     .header-row {
       display: flex;
       align-items: center;
@@ -124,7 +168,7 @@
       border: 1px solid var(--line);
       border-radius: 999px;
       padding: 6px 14px;
-      transition: border-color .2s;
+      transition: border-color .2s, background 0.3s;
     }
     .search-box:focus-within { border-color: var(--blue); }
     .search-box input {
@@ -174,11 +218,14 @@
       border: 2px solid var(--bg);
     }
     .fav-count { background: var(--blue); }
-    .burger { display: none; }
 
+    /* ============================================================
+       CATEGORÍAS
+       ============================================================ */
     .cat-strip {
       background: var(--bg-soft);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s;
     }
     .cat-strip .wrap {
       display: flex;
@@ -200,7 +247,9 @@
     .cat-chip:hover { color: var(--white); }
     .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-    /* ===== CONTENIDO ===== */
+    /* ============================================================
+       NOSOTROS (CONTENIDO)
+       ============================================================ */
     .page-section { padding: 40px 0; }
     .page-header {
       text-align: center;
@@ -221,6 +270,8 @@
       grid-template-columns: 1fr 1fr;
       gap: 40px;
       align-items: center;
+      max-width: 1000px;
+      margin: 0 auto;
     }
     .about-text h2 {
       font-size: 22px;
@@ -246,21 +297,23 @@
       align-items: center;
       gap: 10px;
     }
-    .about-text .valores .item i {
-      color: var(--blue);
-      font-size: 20px;
-    }
+    .about-text .valores .item i { font-size: 20px; }
     .about-text .valores .item span { font-weight: 600; }
+
     .about-image img {
       border-radius: var(--radius);
       border: 1px solid var(--line);
+      padding: 20px;
+      background: var(--surface);
+      max-width: 100%;
     }
 
     .team-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-      margin-top: 30px;
+      max-width: 800px;
+      margin: 20px auto 0;
     }
     .team-card {
       background: var(--surface);
@@ -270,7 +323,10 @@
       text-align: center;
       transition: 0.2s;
     }
-    .team-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
+    .team-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.15);
+    }
     .team-card .avatar {
       width: 80px;
       height: 80px;
@@ -287,12 +343,128 @@
     .team-card h4 { font-size: 16px; }
     .team-card p { color: var(--muted); font-size: 13px; }
 
-    /* ===== FOOTER ===== */
+    /* ============================================================
+       TOASTS
+       ============================================================ */
+    .toast-container {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 360px;
+    }
+    .toast {
+      background: var(--surface);
+      border: 1px solid var(--line-2);
+      border-left: 4px solid var(--blue);
+      border-radius: 10px;
+      padding: 14px 18px;
+      color: var(--white);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      animation: slideIn 0.4s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast.success { border-left-color: var(--green); }
+    .toast.error { border-left-color: var(--red); }
+    .toast.info { border-left-color: var(--blue); }
+    .toast .toast-icon { font-size: 20px; }
+    .toast.success .toast-icon { color: var(--green); }
+    .toast.error .toast-icon { color: var(--red); }
+    .toast.info .toast-icon { color: var(--blue); }
+    .toast.hide { animation: slideOut 0.4s ease forwards; }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(50px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes slideOut {
+      to { opacity: 0; transform: translateX(50px); }
+    }
+
+    /* ============================================================
+       COOKIES BANNER
+       ============================================================ */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      padding: 16px 24px;
+      z-index: 9999;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+    .cookie-banner.show { transform: translateY(0); }
+    .cookie-banner p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+      min-width: 200px;
+    }
+    .cookie-banner p a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+    .cookie-banner .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .cookie-banner .btn-cookie {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cookie-banner .btn-cookie.accept {
+      background: var(--green);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.accept:hover { transform: scale(1.05); }
+    .cookie-banner .btn-cookie.reject {
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .cookie-banner .btn-cookie.reject:hover {
+      background: var(--red);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings {
+      background: var(--blue);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings:hover { transform: scale(1.05); }
+
+    /* ============================================================
+       FOOTER
+       ============================================================ */
     footer {
       background: #020406;
       border-top: 1px solid var(--line);
       padding: 40px 0 20px;
+      transition: background 0.3s ease;
     }
+    body.light-mode footer { background: #e9edf2; }
+
     .foot-grid {
       display: grid;
       grid-template-columns: 1.4fr 1fr 1fr 1fr;
@@ -335,6 +507,7 @@
     .footer-social span { color: var(--muted); font-weight: 600; font-size: 13px; }
     .footer-social a { color: var(--muted); font-size: 18px; transition: 0.2s; }
     .footer-social a:hover { color: var(--white); transform: scale(1.2); }
+
     .foot-col h5 {
       font-size: 13px;
       text-transform: uppercase;
@@ -361,7 +534,25 @@
       color: var(--muted);
     }
 
-    /* ===== BOTTOM NAV ===== */
+    .libro-reclamos-final {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 26px 0;
+    }
+    .libro-reclamos-final a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      opacity: .95;
+    }
+    .libro-reclamos-final a:hover { transform: translateY(-2px); opacity: 1; }
+    .libro-reclamos-final img { height: 62px; width: auto; display: block; }
+
+    /* ============================================================
+       BOTTOM NAV (móvil)
+       ============================================================ */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -412,10 +603,11 @@
       border: 2px solid var(--bg);
     }
 
-    /* ============================================================ */
-    /* ===== RESPONSIVE ===== */
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
     @media (max-width: 980px) {
-      .main-nav, .cat-strip, .burger { display: none !important; }
+      .main-nav, .cat-strip { display: none !important; }
       .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
       .bottom-nav { display: flex; }
       .search-box {
@@ -432,45 +624,62 @@
       .about-grid { grid-template-columns: 1fr; }
       .team-grid { grid-template-columns: repeat(2, 1fr); }
       .foot-grid { grid-template-columns: 1fr 1fr; }
+      .cookie-banner { flex-direction: column; text-align: center; padding: 16px; }
+      .cookie-banner .buttons { justify-content: center; }
     }
+
     @media (max-width: 600px) {
-      .team-grid { grid-template-columns: 1fr; }
-      .about-text .valores { grid-template-columns: 1fr; }
       .search-box { padding: 6px 12px; }
       .search-box input { font-size: 14px; }
       .bottom-nav a i { font-size: 20px; }
       .bottom-nav a span { font-size: 9px; }
       .foot-grid { grid-template-columns: 1fr; gap: 20px; }
+      .about-text .valores { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ===== TOPBAR ===== -->
-  <div class="topbar">
+  <!-- ============================================================
+       TOPBAR
+       ============================================================ -->
+  <div class="topbar" id="topbar">
     <div class="wrap">
       <div class="topbar-links">
-        <span>🚚 <b>Envíos a todo el Perú</b></span>
-        <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
+        <span>🚚 <b data-i18n="topbar_envios">Envíos a todo el Perú</b></span>
+        <a href="pedidos.html" style="color:var(--muted);" data-i18n="topbar_rastrear">Rastrea tu pedido</a>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <select id="languageSelector" style="background:transparent; border:1px solid var(--line); border-radius:6px; color:var(--white); padding:2px 6px; font-size:12px; cursor:pointer;">
+          <option value="es">🇪🇸 ES</option>
+          <option value="en">🇬🇧 EN</option>
+        </select>
+        <button id="themeToggle" class="icon-btn" style="font-size:16px; width:32px; height:32px;">
+          <i class="fas fa-moon"></i>
+        </button>
       </div>
     </div>
   </div>
   <div class="beam-rule"></div>
 
-  <!-- ===== HEADER ===== -->
+  <!-- ============================================================
+       HEADER
+       ============================================================ -->
   <header class="site">
     <div class="wrap header-row">
+      <!-- LOGO: redirige a ../index.html (página de inicio) -->
       <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
       <nav class="main-nav">
-        <a href="productos.html?cat=tecnologia">Tecnología</a>
-        <a href="productos.html?cat=hogar">Hogar</a>
-        <a href="productos.html?cat=deportes">Deportes</a>
-        <a href="productos.html?cat=accesorios">Accesorios</a>
-        <a href="ofertas.html">Ofertas</a>
+        <a href="productos.html?cat=tecnologia" data-i18n="menu_tecnologia">Tecnología</a>
+        <a href="productos.html?cat=hogar" data-i18n="menu_hogar">Hogar</a>
+        <a href="productos.html?cat=deportes" data-i18n="menu_deportes">Deportes</a>
+        <a href="productos.html?cat=accesorios" data-i18n="menu_accesorios">Accesorios</a>
+        <a href="ofertas.html" data-i18n="menu_ofertas">Ofertas</a>
       </nav>
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Buscar productos…" />
+        <input type="text" id="searchInput" placeholder="Buscar productos…" data-i18n-placeholder="buscar" />
       </div>
       <div class="header-icons">
         <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
@@ -491,59 +700,63 @@
     </div>
   </header>
 
-  <!-- ===== CONTENIDO ===== -->
+  <!-- ============================================================
+       CONTENIDO PRINCIPAL: NOSOTROS
+       ============================================================ -->
   <section class="page-section">
     <div class="wrap">
       <div class="page-header">
-        <h1><i class="fas fa-users"></i> Sobre LAGUER</h1>
-        <p>Conoce nuestra historia, misión y equipo</p>
+        <h1><i class="fas fa-users"></i> <span data-i18n="nosotros_titulo">Sobre LAGUER</span></h1>
+        <p data-i18n="nosotros_sub">Conoce nuestra historia, misión y equipo</p>
       </div>
 
       <div class="about-grid">
         <div class="about-text">
-          <h2>Más que una tienda, una experiencia</h2>
-          <p>LAGUER nació con la misión de acercar la tecnología, el estilo y la calidad a cada hogar peruano. Ofrecemos productos cuidadosamente seleccionados para mejorar tu vida diaria, con un compromiso firme con la excelencia y la satisfacción del cliente.</p>
-          <p>Desde nuestros inicios, hemos trabajado para construir una comunidad de personas que valoran la innovación, el diseño y la confianza. Nuestro equipo está conformado por apasionados que creen que cada compra es una oportunidad para hacer la diferencia.</p>
+          <h2 data-i18n="nosotros_mision">Más que una tienda, una experiencia</h2>
+          <p data-i18n="nosotros_texto1">LAGUER nació con la misión de acercar la tecnología, el estilo y la calidad a cada hogar peruano. Ofrecemos productos cuidadosamente seleccionados para mejorar tu vida diaria, con un compromiso firme con la excelencia y la satisfacción del cliente.</p>
+          <p data-i18n="nosotros_texto2">Desde nuestros inicios, hemos trabajado para construir una comunidad de personas que valoran la innovación, el diseño y la confianza. Nuestro equipo está conformado por apasionados que creen que cada compra es una oportunidad para hacer la diferencia.</p>
           <div class="valores">
-            <div class="item"><i class="fas fa-star"></i><span>Calidad</span></div>
-            <div class="item"><i class="fas fa-handshake"></i><span>Confianza</span></div>
-            <div class="item"><i class="fas fa-lightbulb"></i><span>Innovación</span></div>
-            <div class="item"><i class="fas fa-heart"></i><span>Pasión</span></div>
+            <div class="item"><i class="fas fa-star" style="color:var(--blue);"></i><span data-i18n="valor_calidad">Calidad</span></div>
+            <div class="item"><i class="fas fa-handshake" style="color:var(--green);"></i><span data-i18n="valor_confianza">Confianza</span></div>
+            <div class="item"><i class="fas fa-lightbulb" style="color:var(--amber);"></i><span data-i18n="valor_innovacion">Innovación</span></div>
+            <div class="item"><i class="fas fa-heart" style="color:var(--red);"></i><span data-i18n="valor_pasion">Pasión</span></div>
           </div>
         </div>
         <div class="about-image">
-          <img src="../image/laguer-logo.png" alt="LAGUER" style="max-width:100%; padding:20px; background:var(--surface); border-radius:var(--radius);">
+          <img src="../image/laguer-logo.png" alt="LAGUER" />
         </div>
       </div>
 
-      <h2 style="margin-top:40px; text-align:center;">Nuestro equipo</h2>
+      <h3 style="text-align:center; margin-top:50px;" data-i18n="nosotros_equipo">Nuestro equipo</h3>
       <div class="team-grid">
         <div class="team-card">
           <div class="avatar"><i class="fas fa-user-tie"></i></div>
           <h4>Hugo L.</h4>
-          <p>CEO & Fundador</p>
+          <p data-i18n="team_ceo">CEO & Fundador</p>
         </div>
         <div class="team-card">
-          <div class="avatar"><i class="fas fa-user-cog"></i></div>
-          <h4>x</h4>
-          <p>Directora de Operaciones</p>
+          <div class="avatar"><i class="fas fa-user-cog" style="color:var(--green); border-color:var(--green);"></i></div>
+          <h4>María G.</h4>
+          <p data-i18n="team_operaciones">Directora de Operaciones</p>
         </div>
         <div class="team-card">
-          <div class="avatar"><i class="fas fa-user-graduate"></i></div>
-          <h4>x</h4>
-          <p>Jefe de Producto</p>
+          <div class="avatar"><i class="fas fa-user-graduate" style="color:var(--red); border-color:var(--red);"></i></div>
+          <h4>Carlos R.</h4>
+          <p data-i18n="team_producto">Jefe de Producto</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== FOOTER ===== -->
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
   <footer>
     <div class="wrap">
       <div class="foot-grid">
         <div>
           <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
-          <p class="foot-desc">Tecnología, estilo y calidad en un solo lugar.</p>
+          <p class="foot-desc" data-i18n="footer_desc">Tecnología, estilo y calidad en un solo lugar.</p>
           <div class="pay-icons-footer">
             <span><i class="fab fa-cc-visa"></i> VISA</span>
             <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
@@ -553,7 +766,7 @@
             <span><i class="fab fa-cc-diners-club"></i> Diners</span>
           </div>
           <div class="footer-social">
-            <span>Síguenos:</span>
+            <span data-i18n="siguenos">Síguenos:</span>
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
@@ -561,59 +774,331 @@
           </div>
         </div>
         <div class="foot-col">
-          <h5>Categorías</h5>
-          <a href="productos.html?cat=tecnologia">Tecnología</a>
-          <a href="productos.html?cat=hogar">Hogar</a>
-          <a href="productos.html?cat=deportes">Deportes</a>
-          <a href="productos.html?cat=accesorios">Accesorios</a>
-          <a href="categorias.html">Ver todas</a>
+          <h5 data-i18n="categorias">Categorías</h5>
+          <a href="productos.html?cat=tecnologia" data-i18n="tecnologia">Tecnología</a>
+          <a href="productos.html?cat=hogar" data-i18n="hogar">Hogar</a>
+          <a href="productos.html?cat=deportes" data-i18n="deportes">Deportes</a>
+          <a href="productos.html?cat=accesorios" data-i18n="accesorios">Accesorios</a>
+          <a href="categorias.html" data-i18n="ver_todas">Ver todas</a>
         </div>
         <div class="foot-col">
-          <h5>Ayuda</h5>
-          <a href="ayuda.html">Centro de ayuda</a>
-          <a href="pedidos.html">Rastrear pedido</a>
-          <a href="ayuda.html#faq">Preguntas frecuentes</a>
-          <a href="contacto.html">Contacto</a>
+          <h5 data-i18n="ayuda">Ayuda</h5>
+          <a href="pedidos.html" data-i18n="rastrear">Rastrear pedido</a>
+          <a href="ayuda.html" data-i18n="cambios">Cambios y devoluciones</a>
+          <a href="ayuda.html" data-i18n="medios_pago">Medios de pago</a>
+          <a href="ayuda.html" data-i18n="preguntas">Preguntas frecuentes</a>
         </div>
         <div class="foot-col">
-          <h5>Nosotros</h5>
-          <a href="nosotros.html">Sobre LAGUER</a>
-          <a href="contacto.html">Contacto</a>
-          <a href="terminos.html">Términos</a>
-          <a href="privacidad.html">Privacidad</a>
+          <h5 data-i18n="nosotros">Nosotros</h5>
+          <a href="nosotros.html" data-i18n="sobre">Sobre LAGUER</a>
+          <a href="contacto.html" data-i18n="contacto">Contacto</a>
+          <a href="terminos.html" data-i18n="terminos">Términos</a>
+          <a href="privacidad.html" data-i18n="privacidad">Privacidad</a>
         </div>
+      </div>
+      <div class="libro-reclamos-final">
+        <a href="libro-reclamaciones.html" aria-label="Libro de Reclamaciones">
+          <img src="../image/libro-recla.jfif" alt="Libro de Reclamaciones" loading="lazy" />
+        </a>
       </div>
       <div class="beam-rule" style="margin:16px 0;"></div>
       <div class="foot-bottom">
         <span>© 2026 LAGUER. Todos los derechos reservados.</span>
-        <span>Hecho con ♥ para todo el Perú</span>
+        <span data-i18n="hecho_con">Hecho con ♥ para todo el Perú</span>
       </div>
     </div>
   </footer>
 
-  <!-- ===== BOTTOM NAV ===== -->
+  <!-- ============================================================
+       BOTTOM NAV (móvil) — el enlace "Inicio" apunta a ../index.html
+       ============================================================ -->
   <nav class="bottom-nav" id="bottomNav">
-    <a href="../index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
-    <a href="productos.html"><i class="fas fa-th-large"></i><span>Productos</span></a>
+    <a href="../index.html"><i class="fas fa-home"></i><span data-i18n="inicio">Inicio</span></a>
+    <a href="productos.html"><i class="fas fa-th-large"></i><span data-i18n="productos">Productos</span></a>
     <a href="carrito.html" id="bottomCartLink">
-      <i class="fas fa-shopping-cart"></i><span>Carrito</span>
+      <i class="fas fa-shopping-cart"></i><span data-i18n="carrito">Carrito</span>
       <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
     </a>
-    <a href="perfil.html"><i class="fas fa-user"></i><span>Perfil</span></a>
+    <a href="login.html"><i class="fas fa-user"></i><span data-i18n="perfil">Perfil</span></a>
   </nav>
 
+  <!-- ============================================================
+       COOKIES BANNER
+       ============================================================ -->
+  <div class="cookie-banner" id="cookieBanner">
+    <p>
+      <span data-i18n="cookies_texto">Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra</span>
+      <a href="privacidad.html" data-i18n="politica_privacidad">política de privacidad</a>.
+    </p>
+    <div class="buttons">
+      <button class="btn-cookie reject" id="cookieReject" data-i18n="rechazar">Rechazar</button>
+      <button class="btn-cookie settings" id="cookieSettings" data-i18n="configurar">Configurar</button>
+      <button class="btn-cookie accept" id="cookieAccept" data-i18n="aceptar">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TOAST CONTAINER
+       ============================================================ -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ============================================================
+       SCRIPTS COMPLETOS
+       ============================================================ -->
   <script>
     (function() {
-      const cart = JSON.parse(localStorage.getItem('laguerCart')) || [];
-      const favs = JSON.parse(localStorage.getItem('laguerFavs')) || [];
-      const totalCart = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
-      document.getElementById('cartCount').textContent = totalCart;
-      document.getElementById('favCount').textContent = favs.length;
-      const bottomBadge = document.getElementById('bottomCartBadge');
-      if (bottomBadge) { bottomBadge.textContent = totalCart; bottomBadge.style.display = totalCart === 0 ? 'none' : 'flex'; }
+      'use strict';
+
+      // =============================================================
+      // 1. TRADUCCIONES (ES / EN)
+      // =============================================================
+      const translations = {
+        es: {
+          'topbar_envios': 'Envíos a todo el Perú',
+          'topbar_rastrear': 'Rastrea tu pedido',
+          'menu_tecnologia': 'Tecnología',
+          'menu_hogar': 'Hogar',
+          'menu_deportes': 'Deportes',
+          'menu_accesorios': 'Accesorios',
+          'menu_ofertas': 'Ofertas',
+          'buscar': 'Buscar productos…',
+          'cookies_texto': 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra',
+          'politica_privacidad': 'política de privacidad',
+          'rechazar': 'Rechazar',
+          'configurar': 'Configurar',
+          'aceptar': 'Aceptar',
+          'footer_desc': 'Tecnología, estilo y calidad en un solo lugar.',
+          'siguenos': 'Síguenos:',
+          'categorias': 'Categorías',
+          'ayuda': 'Ayuda',
+          'nosotros': 'Nosotros',
+          'rastrear': 'Rastrear pedido',
+          'cambios': 'Cambios y devoluciones',
+          'medios_pago': 'Medios de pago',
+          'preguntas': 'Preguntas frecuentes',
+          'sobre': 'Sobre LAGUER',
+          'contacto': 'Contacto',
+          'terminos': 'Términos',
+          'privacidad': 'Privacidad',
+          'inicio': 'Inicio',
+          'productos': 'Productos',
+          'carrito': 'Carrito',
+          'perfil': 'Perfil',
+          'hecho_con': 'Hecho con ♥ para todo el Perú',
+          'ver_todas': 'Ver todas',
+          'nosotros_titulo': 'Sobre LAGUER',
+          'nosotros_sub': 'Conoce nuestra historia, misión y equipo',
+          'nosotros_mision': 'Más que una tienda, una experiencia',
+          'nosotros_texto1': 'LAGUER nació con la misión de acercar la tecnología, el estilo y la calidad a cada hogar peruano. Ofrecemos productos cuidadosamente seleccionados para mejorar tu vida diaria, con un compromiso firme con la excelencia y la satisfacción del cliente.',
+          'nosotros_texto2': 'Desde nuestros inicios, hemos trabajado para construir una comunidad de personas que valoran la innovación, el diseño y la confianza. Nuestro equipo está conformado por apasionados que creen que cada compra es una oportunidad para hacer la diferencia.',
+          'valor_calidad': 'Calidad',
+          'valor_confianza': 'Confianza',
+          'valor_innovacion': 'Innovación',
+          'valor_pasion': 'Pasión',
+          'nosotros_equipo': 'Nuestro equipo',
+          'team_ceo': 'CEO & Fundador',
+          'team_operaciones': 'Directora de Operaciones',
+          'team_producto': 'Jefe de Producto'
+        },
+        en: {
+          'topbar_envios': 'Shipping to all Peru',
+          'topbar_rastrear': 'Track your order',
+          'menu_tecnologia': 'Technology',
+          'menu_hogar': 'Home',
+          'menu_deportes': 'Sports',
+          'menu_accesorios': 'Accessories',
+          'menu_ofertas': 'Offers',
+          'buscar': 'Search products…',
+          'cookies_texto': 'We use cookies to improve your experience. By continuing, you accept our',
+          'politica_privacidad': 'privacy policy',
+          'rechazar': 'Reject',
+          'configurar': 'Settings',
+          'aceptar': 'Accept',
+          'footer_desc': 'Technology, style and quality in one place.',
+          'siguenos': 'Follow us:',
+          'categorias': 'Categories',
+          'ayuda': 'Help',
+          'nosotros': 'About',
+          'rastrear': 'Track order',
+          'cambios': 'Returns & exchanges',
+          'medios_pago': 'Payment methods',
+          'preguntas': 'FAQ',
+          'sobre': 'About LAGUER',
+          'contacto': 'Contact',
+          'terminos': 'Terms',
+          'privacidad': 'Privacy',
+          'inicio': 'Home',
+          'productos': 'Products',
+          'carrito': 'Cart',
+          'perfil': 'Profile',
+          'hecho_con': 'Made with ♥ for all Peru',
+          'ver_todas': 'View all',
+          'nosotros_titulo': 'About LAGUER',
+          'nosotros_sub': 'Know our history, mission and team',
+          'nosotros_mision': 'More than a store, an experience',
+          'nosotros_texto1': 'LAGUER was born with the mission of bringing technology, style and quality to every Peruvian home. We offer carefully selected products to improve your daily life, with a firm commitment to excellence and customer satisfaction.',
+          'nosotros_texto2': 'Since our beginnings, we have worked to build a community of people who value innovation, design and trust. Our team is made up of passionate people who believe that every purchase is an opportunity to make a difference.',
+          'valor_calidad': 'Quality',
+          'valor_confianza': 'Trust',
+          'valor_innovacion': 'Innovation',
+          'valor_pasion': 'Passion',
+          'nosotros_equipo': 'Our team',
+          'team_ceo': 'CEO & Founder',
+          'team_operaciones': 'Operations Director',
+          'team_producto': 'Head of Product'
+        }
+      };
+
+      // =============================================================
+      // 2. IDIOMA
+      // =============================================================
+      const langSelector = document.getElementById('languageSelector');
+      let currentLang = localStorage.getItem('laguer_lang') || 'es';
+
+      function applyLanguage(lang) {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+          const key = el.dataset.i18n;
+          el.textContent = translations[lang]?.[key] || translations.es[key] || key;
+        });
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+          const key = el.dataset.i18nPlaceholder;
+          el.placeholder = translations[lang]?.[key] || translations.es[key] || key;
+        });
+        if (langSelector) langSelector.value = lang;
+        localStorage.setItem('laguer_lang', lang);
+      }
+
+      if (langSelector) {
+        langSelector.addEventListener('change', function() {
+          currentLang = this.value;
+          applyLanguage(currentLang);
+        });
+      }
+      applyLanguage(currentLang);
+
+      // =============================================================
+      // 3. TEMA OSCURO / CLARO
+      // =============================================================
+      const themeToggle = document.getElementById('themeToggle');
+      let currentTheme = localStorage.getItem('laguer_theme') || 'dark';
+
+      function applyTheme(theme) {
+        if (theme === 'light') {
+          document.body.classList.add('light-mode');
+          if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+          document.body.classList.remove('light-mode');
+          if (themeToggle) themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        localStorage.setItem('laguer_theme', theme);
+      }
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', function() {
+          const isLight = document.body.classList.contains('light-mode');
+          applyTheme(isLight ? 'dark' : 'light');
+        });
+      }
+      applyTheme(currentTheme);
+
+      // =============================================================
+      // 4. TOASTS
+      // =============================================================
+      function showToast(message, type) {
+        type = type || 'info';
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+        const icons = {
+          success: 'fa-check-circle',
+          error: 'fa-times-circle',
+          info: 'fa-info-circle'
+        };
+        const toast = document.createElement('div');
+        toast.className = 'toast ' + type;
+        toast.innerHTML = `<span class="toast-icon"><i class="fas ${icons[type] || icons.info}"></i></span> <span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.classList.add('hide');
+          setTimeout(() => toast.remove(), 400);
+        }, 4000);
+      }
+
+      // =============================================================
+      // 5. COOKIES
+      // =============================================================
+      (function() {
+        const COOKIE_KEY = 'laguer_cookie_consent';
+        const banner = document.getElementById('cookieBanner');
+        if (!banner) return;
+
+        function getCookieConsent() { return localStorage.getItem(COOKIE_KEY); }
+        function setCookieConsent(value) {
+          localStorage.setItem(COOKIE_KEY, value);
+          banner.classList.remove('show');
+        }
+
+        if (!getCookieConsent()) {
+          setTimeout(() => banner.classList.add('show'), 500);
+        }
+
+        document.getElementById('cookieAccept')?.addEventListener('click', function() {
+          setCookieConsent('accepted');
+          showToast('🍪 Cookies aceptadas.', 'success');
+        });
+        document.getElementById('cookieReject')?.addEventListener('click', function() {
+          setCookieConsent('rejected');
+          showToast('🍪 Cookies rechazadas.', 'info');
+        });
+        document.getElementById('cookieSettings')?.addEventListener('click', function() {
+          showToast('⚙️ Configuración de cookies.', 'info');
+        });
+      })();
+
+      // =============================================================
+      // 6. CARRITO Y FAVORITOS
+      // =============================================================
+      const CART_KEY = 'laguerCart';
+      const FAV_KEY = 'laguerFavs';
+
+      function updateCartBadge() {
+        const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+        const total = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+        document.querySelectorAll('.cart-count, #cartCount').forEach(el => el.textContent = total);
+        const bottomBadge = document.getElementById('bottomCartBadge');
+        if (bottomBadge) {
+          bottomBadge.textContent = total;
+          bottomBadge.style.display = total === 0 ? 'none' : 'flex';
+        }
+      }
+
+      function updateFavBadge() {
+        const favs = JSON.parse(localStorage.getItem(FAV_KEY)) || [];
+        document.querySelectorAll('.fav-count, #favCount').forEach(el => el.textContent = favs.length);
+      }
+
+      updateCartBadge();
+      updateFavBadge();
+
+      // =============================================================
+      // 7. BÚSQUEDA DEL HEADER
+      // =============================================================
       document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') { const term = this.value.trim(); if (term) window.location.href = `productos.html?search=${encodeURIComponent(term)}`; }
+        if (e.key === 'Enter') {
+          const term = this.value.trim();
+          if (term) window.location.href = `productos.html?search=${encodeURIComponent(term)}`;
+        }
       });
+
+      // =============================================================
+      // 8. BOTTOM NAV - MARCAR ACTIVO
+      // =============================================================
+      const currentPath = window.location.pathname.split('/').pop() || 'nosotros.html';
+      document.querySelectorAll('.bottom-nav a').forEach(a => {
+        const href = a.getAttribute('href');
+        if (href === currentPath) a.classList.add('active');
+      });
+
+      console.log('📄 Página "Nosotros" completa y funcional (modo oscuro/claro + idioma)');
     })();
   </script>
 </body>

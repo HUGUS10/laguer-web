@@ -1,0 +1,1000 @@
+:root {
+/* Otras propiedades */
+  --bg: #05070b;
+  --bg-soft: #0b1017;
+  --surface: #121a24;
+  --surface-2: #1a2531;
+  --line: rgba(255,255,255,.08);
+  --red: #ee1d25;
+  --red-dark: #a5141a;
+  --green: #39b54a;
+  --green-dark: #1f7b2c;
+  --blue: #189ee0;
+  --blue-dark: #0f6ca3;
+  --white: #f5f8fb;
+  --muted: #8fa0b3;
+  --radius: 16px;
+  --bottom-nav-height: 70px;}
+
+body.light-mode {
+/* Otras propiedades */
+  --bg: #f5f8fb;
+  --bg-soft: #e9edf2;
+  --surface: #ffffff;
+  --surface-2: #f0f2f5;
+  --line: rgba(0,0,0,.08);
+  --white: #1a1a1a;
+  --muted: #555555;}
+
+* {
+/* Modelo de caja */
+  box-sizing: border-box;
+
+  /* Márgenes */
+  margin: 0;
+
+  /* Relleno */
+  padding: 0;}
+
+html {
+/* Otras propiedades */
+  scroll-behavior: smooth;}
+
+body {
+/* Modelo de caja */
+  overflow-x: hidden;
+
+  /* Relleno */
+  padding-bottom: calc(var(--bottom-nav-height) + 20px);
+
+  /* Fondos */
+  background: var(--bg);
+
+  /* Tipografía */
+  font-family: 'Manrope', sans-serif;
+
+  /* Colores y efectos */
+  color: var(--white);
+
+  /* Transiciones y animaciones */
+  transition: background 0.3s ease, color 0.3s ease;
+
+  /* Otras propiedades */
+  -webkit-font-smoothing: antialiased;}
+
+h1, h2, h3, h4 {
+/* Tipografía */
+  font-family: 'Space Grotesk', sans-serif;
+
+  /* Otras propiedades */
+  letter-spacing: -0.01em;}
+
+a {
+/* Tipografía */
+  text-decoration: none;
+
+  /* Colores y efectos */
+  color: inherit;}
+
+ul {
+/* Otras propiedades */
+  list-style: none;}
+
+img {
+/* Modelo de caja */
+  display: block;
+
+  /* Dimensiones */
+  max-width: 100%;}
+
+button {
+/* Bordes */
+  border: none;
+
+  /* Tipografía */
+  font-family: inherit;
+
+  /* Interactividad */
+  cursor: pointer;}
+
+.wrap {
+/* Dimensiones */
+  max-width: 1280px;
+
+  /* Márgenes */
+  margin: 0 auto;
+
+  /* Relleno */
+  padding: 0 20px;}
+
+.beam-rule {
+/* Dimensiones */
+  height: 3px;
+  width: 100%;
+
+  /* Fondos */
+  background: linear-gradient(90deg, var(--red) 0 33%, var(--green) 33% 66%, var(--blue) 66% 100%);
+
+  /* Colores y efectos */
+  opacity: .9;}
+
+.topbar {
+/* Bordes */
+  border-bottom: 1px solid var(--line);
+
+  /* Fondos */
+  background: #020406;
+
+  /* Tipografía */
+  font-size: 12.5px;
+
+  /* Colores y efectos */
+  color: var(--muted);
+
+  /* Transiciones y animaciones */
+  transition: background 0.3s ease, border-color 0.3s ease;}
+
+body.light-mode .topbar {
+/* Fondos */
+  background: #eef1f5 !important;
+
+  /* Otras propiedades */
+  border-bottom-color: var(--line);}
+
+.topbar .wrap {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  justify-content: space-between;
+  align-items: center;
+
+  /* Dimensiones */
+  height: 36px;}
+
+.topbar-links {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  gap: 20px;}
+
+.topbar-links b {
+/* Colores y efectos */
+  color: var(--white);}
+
+header.site {
+/* Posicionamiento */
+  position: sticky;
+  top: 0;
+  z-index: 50;
+
+  /* Bordes */
+  border-bottom: 1px solid var(--line);
+
+  /* Fondos */
+  background: rgba(5,7,11,.88);
+
+  /* Transiciones y animaciones */
+  transition: background 0.3s ease;
+
+  /* Otras propiedades */
+  backdrop-filter: blur(10px);}
+
+body.light-mode header.site {
+/* Fondos */
+  background: rgba(255,255,255,.92);}
+
+.header-row {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  align-items: center;
+  gap: 16px;
+
+  /* Dimensiones */
+  height: 60px;}
+
+.logo-mark {
+/* Flexbox y Grid */
+  flex-shrink: 0;
+
+  /* Dimensiones */
+  height: 32px;}
+
+.logo-mark img {
+/* Dimensiones */
+  height: 100%;
+  width: auto;}
+
+.main-nav {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  gap: 20px;
+  flex: 0 0 auto;}
+
+.main-nav a {
+/* Posicionamiento */
+  position: relative;
+
+  /* Relleno */
+  padding: 4px 2px;
+
+  /* Tipografía */
+  font-weight: 600;
+  font-size: 14px;
+
+  /* Colores y efectos */
+  color: var(--white);
+  opacity: .85;}
+
+.main-nav a::after {
+/* Posicionamiento */
+  position: absolute;
+  left: 0;
+  bottom: 0;
+
+  /* Dimensiones */
+  height: 2px;
+  width: 0;
+
+  /* Fondos */
+  background: linear-gradient(90deg, var(--red), var(--green), var(--blue));
+
+  /* Transiciones y animaciones */
+  transition: width .25s ease;
+
+  /* Otras propiedades */
+  content: "";}
+
+.main-nav a:hover {
+/* Colores y efectos */
+  opacity: 1;}
+
+.main-nav a:hover::after {
+/* Dimensiones */
+  width: 100%;}
+
+.search-box {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+
+  /* Dimensiones */
+  max-width: 300px;
+
+  /* Márgenes */
+  margin-left: auto;
+
+  /* Relleno */
+  padding: 6px 14px;
+
+  /* Bordes */
+  border: 1px solid var(--line);
+  border-radius: 999px;
+
+  /* Fondos */
+  background: var(--surface);
+
+  /* Transiciones y animaciones */
+  transition: border-color .2s;}
+
+.search-box:focus-within {
+/* Bordes */
+  border-color: var(--blue);}
+
+.search-box input {
+/* Dimensiones */
+  width: 100%;
+
+  /* Bordes */
+  border: none;
+
+  /* Fondos */
+  background: none;
+
+  /* Tipografía */
+  font-size: 14px;
+  font-family: inherit;
+
+  /* Colores y efectos */
+  color: var(--white);
+
+  /* Otras propiedades */
+  outline: none;}
+
+.search-box input::placeholder {
+/* Colores y efectos */
+  color: var(--muted);}
+
+.search-box i {
+/* Colores y efectos */
+  opacity: .7;}
+
+.header-icons {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;}
+
+.icon-btn {
+/* Posicionamiento */
+  position: relative;
+
+  /* Modelo de caja */
+  display: grid;
+
+  /* Dimensiones */
+  width: 36px;
+  height: 36px;
+
+  /* Bordes */
+  border-radius: 50%;
+  border: 1px solid var(--line);
+
+  /* Fondos */
+  background: var(--surface);
+
+  /* Colores y efectos */
+  color: var(--white);
+
+  /* Transiciones y animaciones */
+  transition: .2s;
+
+  /* Otras propiedades */
+  place-items: center;}
+
+.icon-btn:hover {
+/* Bordes */
+  border-color: var(--green);
+
+  /* Fondos */
+  background: var(--surface-2);}
+
+.cart-count, .fav-count {
+/* Posicionamiento */
+  position: absolute;
+  top: -4px;
+  right: -4px;
+
+  /* Modelo de caja */
+  display: grid;
+
+  /* Dimensiones */
+  width: 18px;
+  height: 18px;
+
+  /* Bordes */
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+
+  /* Fondos */
+  background: var(--red);
+
+  /* Tipografía */
+  font-size: 10px;
+  font-weight: 800;
+
+  /* Colores y efectos */
+  color: #fff;
+
+  /* Otras propiedades */
+  place-items: center;}
+
+.fav-count {
+/* Fondos */
+  background: var(--blue);}
+
+.cat-strip {
+/* Bordes */
+  border-bottom: 1px solid var(--line);
+
+  /* Fondos */
+  background: var(--bg-soft);}
+
+.cat-strip .wrap {
+/* Modelo de caja */
+  display: flex;
+  overflow-x: auto;
+
+  /* Flexbox y Grid */
+  gap: 24px;
+
+  /* Relleno */
+  padding: 10px 20px;}
+
+.cat-chip {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+
+  /* Tipografía */
+  font-size: 13px;
+  font-weight: 600;
+
+  /* Colores y efectos */
+  color: var(--muted);
+
+  /* Transiciones y animaciones */
+  transition: color 0.2s;
+
+  /* Otras propiedades */
+  white-space: nowrap;}
+
+.cat-chip:hover {
+/* Colores y efectos */
+  color: var(--white);}
+
+.cat-dot {
+/* Dimensiones */
+  width: 8px;
+  height: 8px;
+
+  /* Bordes */
+  border-radius: 50%;}
+
+.toast-container {
+/* Posicionamiento */
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 10000;
+
+  /* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  flex-direction: column;
+  gap: 10px;
+
+  /* Dimensiones */
+  max-width: 360px;}
+
+.toast {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  align-items: center;
+  gap: 10px;
+
+  /* Relleno */
+  padding: 14px 18px;
+
+  /* Bordes */
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--blue);
+  border-radius: 10px;
+
+  /* Fondos */
+  background: var(--surface);
+
+  /* Tipografía */
+  font-size: 14px;
+  font-weight: 600;
+
+  /* Colores y efectos */
+  color: var(--white);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+
+  /* Transiciones y animaciones */
+  animation: slideIn 0.4s ease;}
+
+.toast.success {
+/* Otras propiedades */
+  border-left-color: var(--green);}
+
+.toast.error {
+/* Otras propiedades */
+  border-left-color: var(--red);}
+
+.toast.info {
+/* Otras propiedades */
+  border-left-color: var(--blue);}
+
+.toast .toast-icon {
+/* Tipografía */
+  font-size: 20px;}
+
+.toast.success .toast-icon {
+/* Colores y efectos */
+  color: var(--green);}
+
+.toast.error .toast-icon {
+/* Colores y efectos */
+  color: var(--red);}
+
+.toast.info .toast-icon {
+/* Colores y efectos */
+  color: var(--blue);}
+
+.toast.hide {
+/* Transiciones y animaciones */
+  animation: slideOut 0.4s ease forwards;}
+
+.cookie-banner {
+/* Posicionamiento */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+
+  /* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  /* Relleno */
+  padding: 16px 24px;
+
+  /* Bordes */
+  border-top: 1px solid var(--line);
+
+  /* Fondos */
+  background: var(--surface);
+
+  /* Transiciones y animaciones */
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Otras propiedades */
+  transform: translateY(100%);
+  backdrop-filter: blur(10px);}
+
+.cookie-banner.show {
+/* Otras propiedades */
+  transform: translateY(0);}
+
+.cookie-banner p {
+/* Flexbox y Grid */
+  flex: 1;
+
+  /* Dimensiones */
+  min-width: 200px;
+
+  /* Márgenes */
+  margin: 0;
+
+  /* Tipografía */
+  font-size: 14px;
+
+  /* Colores y efectos */
+  color: var(--muted);}
+
+.cookie-banner p a {
+/* Tipografía */
+  text-decoration: underline;
+
+  /* Colores y efectos */
+  color: var(--blue);}
+
+.cookie-banner .buttons {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  gap: 10px;
+  flex-wrap: wrap;}
+
+.cookie-banner .btn-cookie {
+/* Relleno */
+  padding: 8px 20px;
+
+  /* Bordes */
+  border-radius: 8px;
+  border: none;
+
+  /* Tipografía */
+  font-weight: 700;
+  font-size: 13px;
+
+  /* Transiciones y animaciones */
+  transition: 0.2s;
+
+  /* Interactividad */
+  cursor: pointer;}
+
+.cookie-banner .btn-cookie.accept {
+/* Fondos */
+  background: var(--green);
+
+  /* Colores y efectos */
+  color: #fff;}
+
+.cookie-banner .btn-cookie.accept:hover {
+/* Otras propiedades */
+  transform: scale(1.05);}
+
+.cookie-banner .btn-cookie.reject {
+/* Bordes */
+  border: 1px solid var(--line);
+
+  /* Fondos */
+  background: var(--surface-2);
+
+  /* Colores y efectos */
+  color: var(--muted);}
+
+.cookie-banner .btn-cookie.reject:hover {
+/* Fondos */
+  background: var(--red);
+
+  /* Colores y efectos */
+  color: #fff;}
+
+.cookie-banner .btn-cookie.settings {
+/* Fondos */
+  background: var(--blue);
+
+  /* Colores y efectos */
+  color: #fff;}
+
+.cookie-banner .btn-cookie.settings:hover {
+/* Otras propiedades */
+  transform: scale(1.05);}
+
+footer {
+/* Relleno */
+  padding: 40px 0 20px;
+
+  /* Bordes */
+  border-top: 1px solid var(--line);
+
+  /* Fondos */
+  background: #020406;
+
+  /* Transiciones y animaciones */
+  transition: background 0.3s ease;}
+
+body.light-mode footer {
+/* Fondos */
+  background: #e9edf2;}
+
+.foot-grid {
+/* Modelo de caja */
+  display: grid;
+
+  /* Flexbox y Grid */
+  gap: 30px;
+
+  /* Márgenes */
+  margin-bottom: 30px;
+
+  /* Otras propiedades */
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;}
+
+.foot-logo {
+/* Dimensiones */
+  height: 30px;
+
+  /* Márgenes */
+  margin-bottom: 10px;}
+
+.foot-desc {
+/* Dimensiones */
+  max-width: 260px;
+
+  /* Tipografía */
+  font-size: 13px;
+  line-height: 1.6;
+
+  /* Colores y efectos */
+  color: var(--muted);}
+
+.pay-icons-footer {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  flex-wrap: wrap;
+  gap: 8px;
+
+  /* Márgenes */
+  margin-top: 10px;}
+
+.pay-icons-footer span {
+/* Modelo de caja */
+  display: inline-flex;
+
+  /* Flexbox y Grid */
+  align-items: center;
+  gap: 4px;
+
+  /* Relleno */
+  padding: 4px 10px;
+
+  /* Bordes */
+  border: 1px solid var(--line);
+  border-radius: 6px;
+
+  /* Fondos */
+  background: var(--surface);
+
+  /* Tipografía */
+  font-size: 12px;
+  font-weight: 600;
+
+  /* Colores y efectos */
+  color: var(--muted);}
+
+.pay-icons-footer span i {
+/* Tipografía */
+  font-size: 16px;}
+
+.pay-icons-footer span .fa-cc-visa {
+/* Colores y efectos */
+  color: #1a1f71;}
+
+.pay-icons-footer span .fa-cc-mastercard {
+/* Colores y efectos */
+  color: #eb001b;}
+
+.pay-icons-footer span .fa-cc-amex {
+/* Colores y efectos */
+  color: #2e77bc;}
+
+.pay-icons-footer span .fa-cc-diners-club {
+/* Colores y efectos */
+  color: #006633;}
+
+.pay-icons-footer span .fa-mobile-alt {
+/* Colores y efectos */
+  color: var(--blue);}
+
+.footer-social {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  gap: 14px;
+  align-items: center;
+
+  /* Márgenes */
+  margin-top: 12px;}
+
+.footer-social span {
+/* Tipografía */
+  font-weight: 600;
+  font-size: 13px;
+
+  /* Colores y efectos */
+  color: var(--muted);}
+
+.footer-social a {
+/* Tipografía */
+  font-size: 18px;
+
+  /* Colores y efectos */
+  color: var(--muted);
+
+  /* Transiciones y animaciones */
+  transition: 0.2s;}
+
+.footer-social a:hover {
+/* Colores y efectos */
+  color: var(--white);
+
+  /* Otras propiedades */
+  transform: scale(1.2);}
+
+.foot-col h5 {
+/* Márgenes */
+  margin-bottom: 12px;
+
+  /* Tipografía */
+  font-size: 13px;
+  text-transform: uppercase;
+
+  /* Colores y efectos */
+  color: var(--white);
+
+  /* Otras propiedades */
+  letter-spacing: .06em;}
+
+.foot-col a {
+/* Modelo de caja */
+  display: block;
+
+  /* Márgenes */
+  margin-bottom: 8px;
+
+  /* Tipografía */
+  font-size: 13px;
+
+  /* Colores y efectos */
+  color: var(--muted);
+
+  /* Transiciones y animaciones */
+  transition: .2s;}
+
+.foot-col a:hover {
+/* Colores y efectos */
+  color: var(--white);}
+
+.foot-bottom {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  /* Relleno */
+  padding-top: 16px;
+
+  /* Bordes */
+  border-top: 1px solid var(--line);
+
+  /* Tipografía */
+  font-size: 12px;
+
+  /* Colores y efectos */
+  color: var(--muted);}
+
+.libro-reclamos-final {
+/* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  justify-content: center;
+  align-items: center;
+
+  /* Márgenes */
+  margin: 26px 0;}
+
+.libro-reclamos-final a {
+/* Modelo de caja */
+  display: inline-flex;
+
+  /* Flexbox y Grid */
+  align-items: center;
+  justify-content: center;
+
+  /* Colores y efectos */
+  opacity: .95;
+
+  /* Transiciones y animaciones */
+  transition: transform 0.2s ease, opacity 0.2s ease;}
+
+.libro-reclamos-final a:hover {
+/* Colores y efectos */
+  opacity: 1;
+
+  /* Otras propiedades */
+  transform: translateY(-2px);}
+
+.libro-reclamos-final img {
+/* Modelo de caja */
+  display: block;
+
+  /* Dimensiones */
+  height: 62px;
+  width: auto;}
+
+.bottom-nav {
+/* Posicionamiento */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+
+  /* Modelo de caja */
+  display: none;
+
+  /* Flexbox y Grid */
+  align-items: center;
+  justify-content: space-around;
+
+  /* Dimensiones */
+  height: var(--bottom-nav-height);
+
+  /* Relleno */
+  padding: 0 8px;
+
+  /* Bordes */
+  border-top: 1px solid var(--line);
+
+  /* Fondos */
+  background: rgba(11,16,23,0.95);
+
+  /* Otras propiedades */
+  backdrop-filter: blur(12px);}
+
+.bottom-nav a {
+/* Posicionamiento */
+  position: relative;
+
+  /* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+
+  /* Relleno */
+  padding: 4px 8px;
+
+  /* Bordes */
+  border-radius: 10px;
+
+  /* Tipografía */
+  font-size: 10px;
+  font-weight: 600;
+  text-decoration: none;
+
+  /* Colores y efectos */
+  color: var(--muted);
+
+  /* Transiciones y animaciones */
+  transition: 0.2s;}
+
+.bottom-nav a i {
+/* Tipografía */
+  font-size: 22px;
+
+  /* Transiciones y animaciones */
+  transition: 0.2s;}
+
+.bottom-nav a span {
+/* Tipografía */
+  font-size: 10px;}
+
+.bottom-nav a.active {
+/* Colores y efectos */
+  color: var(--blue);}
+
+.bottom-nav a.active i {
+/* Otras propiedades */
+  transform: translateY(-2px);}
+
+.bottom-nav a .badge-bottom {
+/* Posicionamiento */
+  position: absolute;
+  top: 0;
+  right: -4px;
+
+  /* Modelo de caja */
+  display: flex;
+
+  /* Flexbox y Grid */
+  align-items: center;
+  justify-content: center;
+
+  /* Dimensiones */
+  width: 18px;
+  height: 18px;
+
+  /* Bordes */
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+
+  /* Fondos */
+  background: var(--red);
+
+  /* Tipografía */
+  font-size: 10px;
+  font-weight: 800;
+
+  /* Colores y efectos */
+  color: #fff;}
