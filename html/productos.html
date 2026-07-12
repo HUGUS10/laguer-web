@@ -29,6 +29,10 @@
       --bottom-nav-height: 70px;
     }
 
+<<<<<<< HEAD
+=======
+    /* ===== RESET ===== */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -46,6 +50,10 @@
     button { font-family: inherit; cursor: pointer; border: none; }
     .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
 
+<<<<<<< HEAD
+=======
+    /* ===== BEAM ===== */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .beam-rule {
       height: 3px;
       width: 100%;
@@ -78,6 +86,10 @@
     }
     @media (prefers-reduced-motion: reduce) { .beam-glow span { animation: none; } }
 
+<<<<<<< HEAD
+=======
+    /* ===== TOPBAR ===== */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .topbar {
       background: #020406;
       font-size: 12.5px;
@@ -93,6 +105,10 @@
     .topbar-links { display: flex; gap: 20px; }
     .topbar-links b { color: var(--white); }
 
+<<<<<<< HEAD
+=======
+    /* ===== HEADER ===== */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     header.site {
       position: sticky;
       top: 0;
@@ -199,6 +215,10 @@
     .fav-count { background: var(--blue); }
     .burger { display: none; }
 
+<<<<<<< HEAD
+=======
+    /* ===== CATEGORÍAS (solo PC) ===== */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .cat-strip {
       background: var(--bg-soft);
       border-bottom: 1px solid var(--line);
@@ -459,6 +479,7 @@
       color: var(--muted);
     }
 
+<<<<<<< HEAD
     /* ===== Sello: Libro de Reclamaciones (imagen, centrada en medio del footer) ===== */
     .libro-reclamos-final {
       display: flex;
@@ -483,6 +504,8 @@
       display: block;
     }
 
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     /* ===== BOTTOM NAV (móvil) ===== */
     .bottom-nav {
       position: fixed;
@@ -690,6 +713,7 @@
           <a href="privacidad.html">Privacidad</a>
         </div>
       </div>
+<<<<<<< HEAD
 
       <!-- ===== Libro de Reclamaciones (imagen centrada) ===== -->
       <div class="libro-reclamos-final">
@@ -698,6 +722,8 @@
         </a>
       </div>
 
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       <div class="beam-rule" style="margin:16px 0;"></div>
       <div class="foot-bottom">
         <span>© 2026 LAGUER. Todos los derechos reservados.</span>
@@ -724,6 +750,7 @@
     (function() {
       'use strict';
 
+<<<<<<< HEAD
       // =======================================================================
       // PRODUCTOS CON SUS IMÁGENES REALES (carpeta image/productos/)
       // =======================================================================
@@ -797,6 +824,25 @@
       // =======================================================================
       // CARRITO Y FAVORITOS (localStorage)
       // =======================================================================
+=======
+      // ============================
+      // 1. DATOS DE PRODUCTOS
+      // ============================
+      const sampleProducts = [
+        { id: 'p1', name: 'Smartwatch Pro', category: 'tecnologia', price: 199, image: '../image/placeholder.png', discount: 30 },
+        { id: 'p2', name: 'Audífonos BT', category: 'audio', price: 89, image: '../image/placeholder.png', discount: 20 },
+        { id: 'p3', name: 'Lámpara LED', category: 'hogar', price: 45, image: '../image/placeholder.png', discount: 0 },
+        { id: 'p4', name: 'Mochila Deportiva', category: 'deportes', price: 120, image: '../image/placeholder.png', discount: 10 },
+        { id: 'p5', name: 'Cargador Rápido', category: 'accesorios', price: 35, image: '../image/placeholder.png', discount: 0 },
+        { id: 'p6', name: 'Teclado Gaming', category: 'gaming', price: 150, image: '../image/placeholder.png', discount: 15 },
+        { id: 'p7', name: 'Polo Deportivo', category: 'deportes', price: 89, image: '../image/placeholder.png', discount: 25 },
+        { id: 'p8', name: 'Set Organizadores', category: 'hogar', price: 60, image: '../image/placeholder.png', discount: 0 }
+      ];
+
+      // ============================
+      // 2. CARRITO (localStorage)
+      // ============================
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       const CART_KEY = 'laguerCart';
       const FAV_KEY = 'laguerFavs';
       const grid = document.getElementById('productGrid');
@@ -826,6 +872,7 @@
           cart.push({ ...product, quantity: 1 });
         }
         updateCartUI();
+<<<<<<< HEAD
         // Feedback visual
         const btn = document.querySelector(`[data-id="${product.id}"] .add-btn-producto`);
         if (btn) {
@@ -835,6 +882,9 @@
         } else {
           alert('✅ Producto agregado al carrito');
         }
+=======
+        alert('✅ Producto agregado al carrito');
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       }
 
       function updateFavUI() {
@@ -848,6 +898,7 @@
           const prod = sampleProducts.find(p => p.id === productId);
           if (prod) {
             favs.push({ ...prod });
+<<<<<<< HEAD
             if (btn) {
               btn.classList.add('active');
               btn.textContent = '♥';
@@ -861,13 +912,26 @@
             btn.textContent = '♡';
             btn.style.color = 'var(--white)';
           }
+=======
+            if (btn) { btn.classList.add('active'); btn.textContent = '♥'; }
+          }
+        } else {
+          favs.splice(index, 1);
+          if (btn) { btn.classList.remove('active'); btn.textContent = '♡'; }
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
         }
         updateFavUI();
       }
 
+<<<<<<< HEAD
       // =======================================================================
       // RENDERIZAR PRODUCTOS
       // =======================================================================
+=======
+      // ============================
+      // 3. RENDERIZAR PRODUCTOS
+      // ============================
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       function renderProducts(products) {
         loading.style.display = 'none';
         if (!products || products.length === 0) {
@@ -895,7 +959,11 @@
                 <div class="categoria">${prod.category || 'General'}</div>
                 <div class="nombre">${prod.name}</div>
                 <div class="precio">S/ ${finalPrice.toFixed(2)}</div>
+<<<<<<< HEAD
                 <button class="add-btn-producto" data-id="${prod.id}" data-name="${prod.name}" data-price="${finalPrice}" data-image="${imgSrc}">
+=======
+                <button class="add-btn-producto" data-id="${prod.id}" data-name="${prod.name}" data-price="${finalPrice}">
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
                   <i class="fas fa-cart-plus"></i> Agregar
                 </button>
               </div>
@@ -905,15 +973,23 @@
         grid.innerHTML = html;
 
         // ===== EVENTOS =====
+<<<<<<< HEAD
         // Agregar al carrito (con imagen)
+=======
+        // Agregar al carrito
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
         grid.querySelectorAll('.add-btn-producto').forEach(btn => {
           btn.addEventListener('click', function(e) {
             e.stopPropagation();
             const id = this.dataset.id;
             const name = this.dataset.name;
             const price = parseFloat(this.dataset.price) || 0;
+<<<<<<< HEAD
             const image = this.dataset.image || '../image/placeholder.png';
             addToCart({ id, name, price, image });
+=======
+            addToCart({ id, name, price });
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
           });
         });
 
@@ -926,7 +1002,11 @@
           });
         });
 
+<<<<<<< HEAD
         // Redirigir a detalle (producto.html)
+=======
+        // Redirigir a detalle
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
         grid.querySelectorAll('.product-card').forEach(card => {
           card.addEventListener('click', function(e) {
             if (e.target.closest('.add-btn-producto') || e.target.closest('.fav-btn-producto')) return;
@@ -936,9 +1016,15 @@
         });
       }
 
+<<<<<<< HEAD
       // =======================================================================
       // FILTROS Y BÚSQUEDA
       // =======================================================================
+=======
+      // ============================
+      // 4. FILTROS Y BÚSQUEDA
+      // ============================
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       let currentProducts = [...sampleProducts];
 
       function applyFilters() {
@@ -972,9 +1058,21 @@
       // Búsqueda en tiempo real
       document.getElementById('searchInput').addEventListener('input', applyFilters);
 
+<<<<<<< HEAD
       // =======================================================================
       // INICIALIZAR
       // =======================================================================
+=======
+      // ============================
+      // 5. MENÚ MÓVIL
+      // ============================
+      // No usamos burger en productos, pero lo dejamos por si acaso
+      // El bottom nav ya está presente
+
+      // ============================
+      // 6. INICIALIZAR
+      // ============================
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       document.addEventListener('DOMContentLoaded', function() {
         // Cargar favoritos del localStorage
         favs = JSON.parse(localStorage.getItem(FAV_KEY)) || [];

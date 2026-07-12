@@ -2,12 +2,17 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+<<<<<<< HEAD
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+=======
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
   <title>Detalle · LAGUER</title>
   <link rel="icon" href="../image/favicon-laguer.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<<<<<<< HEAD
 
   <style>
     /* ===== VARIABLES ===== */
@@ -199,13 +204,29 @@
     .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
     .section { padding: 30px 0; }
+=======
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/header.css" />
+  <link rel="stylesheet" href="../css/footer.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+  <style>
+    /* Estilos específicos para producto detalle */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .product-detail {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 40px;
+<<<<<<< HEAD
       padding: 10px 0;
     }
     .product-gallery { position: relative; }
+=======
+      padding: 20px 0;
+    }
+    .product-gallery {
+      position: relative;
+    }
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .product-gallery .main-image {
       width: 100%;
       aspect-ratio: 1/1;
@@ -357,6 +378,10 @@
       color: var(--red);
     }
 
+<<<<<<< HEAD
+=======
+    /* Características */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .caracteristicas {
       margin-top: 30px;
       border-top: 1px solid var(--line);
@@ -385,6 +410,7 @@
       margin-right: 8px;
     }
 
+<<<<<<< HEAD
     /* ===== FOOTER ===== */
     footer {
       background: #020406;
@@ -565,11 +591,23 @@
       .product-info .add-to-cart-btn { font-size: 16px; padding: 12px; }
       .foot-grid { grid-template-columns: 1fr; gap: 20px; }
       .section { padding: 20px 0; }
+=======
+    @media (max-width: 768px) {
+      .product-detail {
+        grid-template-columns: 1fr;
+      }
+      .caracteristicas ul {
+        grid-template-columns: 1fr;
+      }
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     }
   </style>
 </head>
 <body>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
   <!-- ===== TOPBAR ===== -->
   <div class="topbar">
     <div class="wrap">
@@ -577,6 +615,14 @@
         <span>🚚 <b>Envíos a todo el Perú</b></span>
         <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
       </div>
+<<<<<<< HEAD
+=======
+      <div class="topbar-social">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-tiktok"></i></a>
+      </div>
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     </div>
   </div>
   <div class="beam-rule"></div>
@@ -584,7 +630,13 @@
   <!-- ===== HEADER ===== -->
   <header class="site">
     <div class="wrap header-row">
+<<<<<<< HEAD
       <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
+=======
+      <a href="../index.html" class="logo-mark">
+        <img src="../image/laguer-logo.png" alt="LAGUER" />
+      </a>
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       <nav class="main-nav">
         <a href="productos.html?cat=tecnologia">Tecnología</a>
         <a href="productos.html?cat=hogar">Hogar</a>
@@ -594,12 +646,22 @@
       </nav>
       <div class="search-box">
         <i class="fas fa-search"></i>
+<<<<<<< HEAD
         <input type="text" id="searchInput" placeholder="Buscar productos…" />
       </div>
       <div class="header-icons">
         <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
         <a href="favoritos.html" class="icon-btn fav-btn-header"><i class="fas fa-heart"></i><span class="fav-count" id="favCount">0</span></a>
         <a href="carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+=======
+        <input type="text" placeholder="Buscar productos…" />
+      </div>
+      <div class="header-icons">
+        <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
+        <a href="favoritos.html" class="icon-btn"><i class="fas fa-heart"></i><span class="fav-count">0</span></a>
+        <a href="carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+        <button class="burger" id="burgerBtn"><span></span></button>
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       </div>
     </div>
     <div class="cat-strip">
@@ -615,7 +677,11 @@
     </div>
   </header>
 
+<<<<<<< HEAD
   <!-- ===== DETALLE PRODUCTO ===== -->
+=======
+  <!-- ===== DETALLE DEL PRODUCTO ===== -->
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
   <section class="section">
     <div class="wrap">
       <div id="productDetailContainer">
@@ -634,6 +700,7 @@
         <div>
           <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
           <p class="foot-desc">Tecnología, estilo y calidad en un solo lugar.</p>
+<<<<<<< HEAD
           <div class="pay-icons-footer">
             <span><i class="fab fa-cc-visa"></i> VISA</span>
             <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
@@ -648,6 +715,10 @@
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-tiktok"></i></a>
+=======
+          <div class="pay-icons">
+            <span>VISA</span><span>Mastercard</span><span>Yape</span><span>Plin</span>
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
           </div>
         </div>
         <div class="foot-col">
@@ -656,14 +727,20 @@
           <a href="productos.html?cat=hogar">Hogar</a>
           <a href="productos.html?cat=deportes">Deportes</a>
           <a href="productos.html?cat=accesorios">Accesorios</a>
+<<<<<<< HEAD
           <a href="categorias.html">Ver todas</a>
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
         </div>
         <div class="foot-col">
           <h5>Ayuda</h5>
           <a href="pedidos.html">Rastrear pedido</a>
           <a href="ayuda.html">Cambios y devoluciones</a>
           <a href="ayuda.html">Medios de pago</a>
+<<<<<<< HEAD
           <a href="ayuda.html">Preguntas frecuentes</a>
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
         </div>
         <div class="foot-col">
           <h5>Nosotros</h5>
@@ -673,6 +750,7 @@
           <a href="privacidad.html">Privacidad</a>
         </div>
       </div>
+<<<<<<< HEAD
 
       <!-- ===== Libro de Reclamaciones (imagen centrada) ===== -->
       <div class="libro-reclamos-final">
@@ -682,6 +760,9 @@
       </div>
 
       <div class="beam-rule" style="margin:16px 0;"></div>
+=======
+      <div class="beam-rule" style="margin-bottom:22px; opacity:.6;"></div>
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       <div class="foot-bottom">
         <span>© 2026 LAGUER. Todos los derechos reservados.</span>
         <span>Hecho con ♥ para todo el Perú</span>
@@ -689,6 +770,7 @@
     </div>
   </footer>
 
+<<<<<<< HEAD
   <!-- ===== BOTTOM NAV (solo móvil) ===== -->
   <nav class="bottom-nav" id="bottomNav">
     <a href="../index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
@@ -1146,6 +1228,26 @@
 
       console.log('📦 Detalle de producto LAGUER listo (con imagen dinámica)');
     })();
+=======
+  <!-- ===== SCRIPTS ===== -->
+  <script type="module" src="../js/producto.js"></script>
+  <script type="module">
+    // Menú móvil
+    document.getElementById('burgerBtn')?.addEventListener('click', function() {
+      const nav = document.querySelector('nav.main-nav');
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+      if (nav.style.display === 'flex') {
+        nav.style.position = 'absolute';
+        nav.style.top = '66px';
+        nav.style.left = '0';
+        nav.style.right = '0';
+        nav.style.flexDirection = 'column';
+        nav.style.background = '#0b1017';
+        nav.style.padding = '18px 28px';
+        nav.style.borderBottom = '1px solid var(--line)';
+      }
+    });
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
   </script>
 </body>
 </html>

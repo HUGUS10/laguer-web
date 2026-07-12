@@ -10,7 +10,11 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
+<<<<<<< HEAD
     /* ===== VARIABLES (igual que en index) ===== */
+=======
+    /* ===== VARIABLES ===== */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     :root {
       --bg: #05070b;
       --bg-soft: #0b1017;
@@ -29,6 +33,10 @@
       --bottom-nav-height: 70px;
     }
 
+<<<<<<< HEAD
+=======
+    /* ===== RESET ===== */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -46,6 +54,10 @@
     button { font-family: inherit; cursor: pointer; border: none; }
     .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
 
+<<<<<<< HEAD
+=======
+    /* ===== BEAM ===== */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .beam-rule {
       height: 3px;
       width: 100%;
@@ -78,6 +90,10 @@
     }
     @media (prefers-reduced-motion: reduce) { .beam-glow span { animation: none; } }
 
+<<<<<<< HEAD
+=======
+    /* ===== TOPBAR ===== */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .topbar {
       background: #020406;
       font-size: 12.5px;
@@ -93,6 +109,10 @@
     .topbar-links { display: flex; gap: 20px; }
     .topbar-links b { color: var(--white); }
 
+<<<<<<< HEAD
+=======
+    /* ===== HEADER ===== */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     header.site {
       position: sticky;
       top: 0;
@@ -199,6 +219,10 @@
     .fav-count { background: var(--blue); }
     .burger { display: none; }
 
+<<<<<<< HEAD
+=======
+    /* ===== CATEGORÍAS (solo PC) ===== */
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     .cat-strip {
       background: var(--bg-soft);
       border-bottom: 1px solid var(--line);
@@ -419,6 +443,7 @@
       color: var(--muted);
     }
 
+<<<<<<< HEAD
     /* ===== Sello: Libro de Reclamaciones (imagen centrada) ===== */
     .libro-reclamos-final {
       display: flex;
@@ -443,6 +468,8 @@
       display: block;
     }
 
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     /* ===== BOTTOM NAV ===== */
     .bottom-nav {
       position: fixed;
@@ -636,6 +663,7 @@
           <a href="privacidad.html">Privacidad</a>
         </div>
       </div>
+<<<<<<< HEAD
 
       <!-- ===== Libro de Reclamaciones (imagen centrada) ===== -->
       <div class="libro-reclamos-final">
@@ -644,6 +672,8 @@
         </a>
       </div>
 
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       <div class="beam-rule" style="margin:16px 0;"></div>
       <div class="foot-bottom">
         <span>© 2026 LAGUER. Todos los derechos reservados.</span>
@@ -674,6 +704,7 @@
       'use strict';
 
       // ============================
+<<<<<<< HEAD
       // 1. PRODUCTOS CON IMÁGENES REALES (igual que en index.html)
       // ============================
       const sampleProducts = [
@@ -749,6 +780,9 @@
 
       // ============================
       // 2. FUNCIONES DE FAVORITOS
+=======
+      // 1. CLAVES Y CONSTANTES
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       // ============================
       const FAV_KEY = 'laguerFavs';
       const CART_KEY = 'laguerCart';
@@ -759,6 +793,28 @@
       const bottomCartBadge = document.getElementById('bottomCartBadge');
       const cartCountEl = document.getElementById('cartCount');
 
+<<<<<<< HEAD
+=======
+      // Datos de ejemplo para completar productos que se guarden solo con ID
+      const sampleProducts = [
+        { id: 'p1', name: 'Smartwatch Pro', category: 'tecnologia', price: 199, image: '../image/placeholder.png', discount: 30 },
+        { id: 'p2', name: 'Audífonos BT', category: 'audio', price: 89, image: '../image/placeholder.png', discount: 20 },
+        { id: 'p3', name: 'Lámpara LED', category: 'hogar', price: 45, image: '../image/placeholder.png', discount: 0 },
+        { id: 'p4', name: 'Mochila Deportiva', category: 'deportes', price: 120, image: '../image/placeholder.png', discount: 10 },
+        { id: 'p5', name: 'Cargador Rápido', category: 'accesorios', price: 35, image: '../image/placeholder.png', discount: 0 },
+        { id: 'p6', name: 'Teclado Gaming', category: 'gaming', price: 150, image: '../image/placeholder.png', discount: 15 },
+        { id: 'p7', name: 'Polo Deportivo', category: 'deportes', price: 89, image: '../image/placeholder.png', discount: 25 },
+        { id: 'p8', name: 'Set Organizadores', category: 'hogar', price: 60, image: '../image/placeholder.png', discount: 0 }
+      ];
+
+      function getProductById(id) {
+        return sampleProducts.find(p => p.id === id);
+      }
+
+      // ============================
+      // 2. FUNCIONES DE FAVORITOS
+      // ============================
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       function getFavs() {
         try { return JSON.parse(localStorage.getItem(FAV_KEY)) || []; }
         catch { return []; }
@@ -832,7 +888,11 @@
 
         let html = '';
         favs.forEach(prod => {
+<<<<<<< HEAD
           // Completar datos si faltan (usando sampleProducts con imágenes reales)
+=======
+          // Completar datos si faltan
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
           if (!prod.image || !prod.category) {
             const full = getProductById(prod.id);
             if (full) prod = { ...full, ...prod };
@@ -929,7 +989,11 @@
         document.querySelector('.bottom-nav a[href="favoritos.html"]')?.classList.add('active');
       });
 
+<<<<<<< HEAD
       console.log('❤️ Página de favoritos LAGUER lista con imágenes reales');
+=======
+      console.log('❤️ Página de favoritos LAGUER lista');
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     })();
   </script>
 </body>

@@ -617,6 +617,7 @@
       color: var(--muted);
     }
 
+<<<<<<< HEAD
     /* ===== Sello: Libro de Reclamaciones ===== */
     .libro-reclamos-final {
       display: flex;
@@ -639,6 +640,27 @@
       height: 62px;
       width: auto;
       display: block;
+=======
+    /* ===== MEJORA: enlace con ícono en el footer ===== */
+    .foot-col .reclamo-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(238,29,37,0.1);
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      transition: 0.2s;
+      margin-top: 4px;
+    }
+    .foot-col .reclamo-link:hover {
+      border-color: var(--red);
+      background: rgba(238,29,37,0.2);
+    }
+    .foot-col .reclamo-link i {
+      color: var(--red);
+      font-size: 18px;
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     }
 
     .social-bubble {
@@ -980,6 +1002,7 @@
           <a href="html/contacto.html">Contacto</a>
           <a href="html/terminos.html">Términos</a>
           <a href="html/privacidad.html">Privacidad</a>
+<<<<<<< HEAD
         </div>
       </div>
 
@@ -990,6 +1013,14 @@
         </a>
       </div>
 
+=======
+          <!-- Libro de Reclamaciones con ícono visual -->
+          <a href="html/libro-reclamaciones.html" class="reclamo-link">
+            <i class="fas fa-book"></i> Libro de Reclamaciones
+          </a>
+        </div>
+      </div>
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       <div class="beam-rule" style="margin:16px 0;"></div>
       <div class="foot-bottom">
         <span>© 2026 LAGUER. Todos los derechos reservados.</span>
@@ -1029,6 +1060,7 @@
     (function() {
       'use strict';
 
+<<<<<<< HEAD
       // =======================================================================
       // PRODUCTOS CON SUS IMÁGENES REALES (carpeta image/productos/)
       // =======================================================================
@@ -1144,6 +1176,19 @@
       // =======================================================================
       // CARRITO Y FAVORITOS (localStorage)
       // =======================================================================
+=======
+      const sampleProducts = [
+        { id: 'p1', name: 'Smartwatch Pro', category: 'tecnologia', price: 199, image: 'image/placeholder.png', discount: 30 },
+        { id: 'p2', name: 'Audífonos BT', category: 'audio', price: 89, image: 'image/placeholder.png', discount: 20 },
+        { id: 'p3', name: 'Lámpara LED', category: 'hogar', price: 45, image: 'image/placeholder.png', discount: 0 },
+        { id: 'p4', name: 'Mochila Deportiva', category: 'deportes', price: 120, image: 'image/placeholder.png', discount: 10 },
+        { id: 'p5', name: 'Cargador Rápido', category: 'accesorios', price: 35, image: 'image/placeholder.png', discount: 0 },
+        { id: 'p6', name: 'Teclado Gaming', category: 'gaming', price: 150, image: 'image/placeholder.png', discount: 15 },
+        { id: 'p7', name: 'Polo Deportivo', category: 'deportes', price: 89, image: 'image/placeholder.png', discount: 25 },
+        { id: 'p8', name: 'Set Organizadores', category: 'hogar', price: 60, image: 'image/placeholder.png', discount: 0 }
+      ];
+
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       const CART_KEY = 'laguerCart';
       const FAV_KEY = 'laguerFavs';
       let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
@@ -1210,9 +1255,12 @@
         updateFavUI();
       }
 
+<<<<<<< HEAD
       // =======================================================================
       // RENDERIZAR PRODUCTOS
       // =======================================================================
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       function renderProducts(products, containerId) {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -1252,18 +1300,25 @@
         });
         container.innerHTML = html;
 
+<<<<<<< HEAD
         // ===== EVENTOS =====
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
         container.querySelectorAll('.add-to-cart').forEach(btn => {
           btn.addEventListener('click', function(e) {
             e.stopPropagation();
             const id = this.dataset.id;
             const name = this.dataset.name;
             const price = parseFloat(this.dataset.price) || 0;
+<<<<<<< HEAD
             // Obtener la imagen de la tarjeta
             const card = this.closest('.card');
             const img = card ? card.querySelector('.card-media img') : null;
             const image = img ? img.src : 'image/placeholder.png';
             addToCart({ id, name, price, image });
+=======
+            addToCart({ id, name, price });
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
           });
         });
 
@@ -1284,9 +1339,12 @@
         });
       }
 
+<<<<<<< HEAD
       // =======================================================================
       // OFERTAS MINI
       // =======================================================================
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       function renderMiniOfertas() {
         const container = document.getElementById('miniOfertas');
         if (!container) return;
@@ -1320,9 +1378,12 @@
         });
       }
 
+<<<<<<< HEAD
       // =======================================================================
       // FILTROS Y BÚSQUEDA
       // =======================================================================
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       function initFilters() {
         const tabs = document.querySelectorAll('.tab');
         const grid = document.getElementById('productGrid');
@@ -1354,9 +1415,12 @@
         });
       }
 
+<<<<<<< HEAD
       // =======================================================================
       // EVENTOS ADICIONALES
       // =======================================================================
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       document.getElementById('closeSocial')?.addEventListener('click', function() {
         document.getElementById('socialBubble').classList.toggle('hidden');
       });
@@ -1368,9 +1432,12 @@
         setTimeout(() => btn.textContent = 'Suscribirme', 3000);
       });
 
+<<<<<<< HEAD
       // =======================================================================
       // INICIALIZAR
       // =======================================================================
+=======
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
       document.addEventListener('DOMContentLoaded', function() {
         renderProducts(sampleProducts, 'productGrid');
         renderMiniOfertas();
@@ -1382,7 +1449,11 @@
       });
 
       window.addToCart = addToCart;
+<<<<<<< HEAD
       console.log('🚀 LAGUER · index listo con imágenes reales y carrito con fotos');
+=======
+      console.log('🚀 LAGUER · index listo');
+>>>>>>> 8e1df1f5156831e6539914230bb31caf3daf531e
     })();
   </script>
 </body>
