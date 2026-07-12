@@ -29,6 +29,17 @@
       --bottom-nav-height: 70px;
     }
 
+    /* ===== TEMA CLARO ===== */
+    body.light-mode {
+      --bg: #f5f8fb;
+      --bg-soft: #e9edf2;
+      --surface: #ffffff;
+      --surface-2: #f0f2f5;
+      --line: rgba(0,0,0,.08);
+      --white: #1a1a1a;
+      --muted: #555555;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -38,6 +49,7 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
       padding-bottom: calc(var(--bottom-nav-height) + 20px);
+      transition: background 0.3s ease, color 0.3s ease;
     }
     h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
     a { color: inherit; text-decoration: none; }
@@ -100,6 +112,10 @@
       background: rgba(5,7,11,.88);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s ease;
+    }
+    body.light-mode header.site {
+      background: rgba(255,255,255,.92);
     }
     .header-row {
       display: flex;
@@ -165,7 +181,7 @@
     .header-icons {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-shrink: 0;
     }
     .icon-btn {
@@ -224,6 +240,15 @@
     .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
     .hero img { width: 100%; display: block; }
+
+    /* ===== ANIMACIONES ===== */
+    .fade-in {
+      animation: fadeIn 0.6s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     .ofertas-mini {
       background: var(--bg-soft);
@@ -548,6 +573,10 @@
       background: #020406;
       border-top: 1px solid var(--line);
       padding: 40px 0 20px;
+      transition: background 0.3s ease;
+    }
+    body.light-mode footer {
+      background: #e9edf2;
     }
     .foot-grid {
       display: grid;
@@ -639,6 +668,141 @@
       height: 62px;
       width: auto;
       display: block;
+    }
+
+    /* ===== COOKIES BANNER ===== */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      padding: 16px 24px;
+      z-index: 9999;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+    .cookie-banner.show {
+      transform: translateY(0);
+    }
+    .cookie-banner p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+      min-width: 200px;
+    }
+    .cookie-banner p a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+    .cookie-banner .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .cookie-banner .btn-cookie {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cookie-banner .btn-cookie.accept {
+      background: var(--green);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.accept:hover {
+      transform: scale(1.05);
+    }
+    .cookie-banner .btn-cookie.reject {
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .cookie-banner .btn-cookie.reject:hover {
+      background: var(--red);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings {
+      background: var(--blue);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings:hover {
+      transform: scale(1.05);
+    }
+
+    /* ===== LIGHTBOX ===== */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lightbox-overlay.active {
+      display: flex;
+    }
+    .lightbox-img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 8px;
+      animation: zoomIn 0.3s ease;
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .lightbox-close:hover {
+      transform: rotate(90deg);
+    }
+
+    /* ===== SHARE BUTTONS ===== */
+    .share-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .share-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .share-btn:hover {
+      transform: scale(1.1);
+      border-color: var(--blue);
     }
 
     .social-bubble {
@@ -772,7 +936,7 @@
     /* ============================================================ */
     @media (max-width: 980px) {
       .main-nav, .cat-strip, .burger { display: none !important; }
-      .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
+      .header-icons .icon-btn:not(.fav-btn-header):not(.theme-toggle):not(.lang-selector) { display: none; }
       .bottom-nav { display: flex; }
       .search-box {
         max-width: none;
@@ -791,6 +955,8 @@
       .whatsapp-float { bottom: 100px; right: 12px; width: 48px; height: 48px; font-size: 24px; }
       .social-bubble { left: 10px; bottom: 110px; padding: 10px 8px; gap: 8px; }
       .social-bubble a { width: 34px; height: 34px; font-size: 15px; }
+      .cookie-banner { flex-direction: column; text-align: center; padding: 16px; }
+      .cookie-banner .buttons { justify-content: center; }
     }
 
     @media (max-width: 600px) {
@@ -808,6 +974,7 @@
       .promo-form { flex-direction: column; }
       .foot-grid { grid-template-columns: 1fr; gap: 20px; }
       .section { padding: 24px 0; }
+      .share-buttons { justify-content: center; }
     }
   </style>
 </head>
@@ -820,6 +987,17 @@
         <span>🚚 <b>Envíos a todo el Perú</b></span>
         <a href="html/pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
       </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <!-- Selector de idioma -->
+        <select id="languageSelector" style="background:transparent; border:1px solid var(--line); border-radius:6px; color:var(--white); padding:2px 6px; font-size:12px; cursor:pointer;">
+          <option value="es">🇪🇸 ES</option>
+          <option value="en">🇬🇧 EN</option>
+        </select>
+        <!-- Toggle de tema -->
+        <button id="themeToggle" class="icon-btn" style="font-size:16px; width:32px; height:32px;">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
     </div>
   </div>
   <div class="beam-rule"></div>
@@ -829,15 +1007,15 @@
     <div class="wrap header-row">
       <a href="index.html" class="logo-mark"><img src="image/laguer-logo.png" alt="LAGUER" /></a>
       <nav class="main-nav">
-        <a href="html/productos.html?cat=tecnologia">Tecnología</a>
-        <a href="html/productos.html?cat=hogar">Hogar</a>
-        <a href="html/productos.html?cat=deportes">Deportes</a>
-        <a href="html/productos.html?cat=accesorios">Accesorios</a>
-        <a href="html/ofertas.html">Ofertas</a>
+        <a href="html/productos.html?cat=tecnologia" data-i18n="menu_tecnologia">Tecnología</a>
+        <a href="html/productos.html?cat=hogar" data-i18n="menu_hogar">Hogar</a>
+        <a href="html/productos.html?cat=deportes" data-i18n="menu_deportes">Deportes</a>
+        <a href="html/productos.html?cat=accesorios" data-i18n="menu_accesorios">Accesorios</a>
+        <a href="html/ofertas.html" data-i18n="menu_ofertas">Ofertas</a>
       </nav>
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Buscar productos…" />
+        <input type="text" id="searchInput" placeholder="Buscar productos…" data-i18n-placeholder="buscar" />
       </div>
       <div class="header-icons">
         <a href="html/login.html" class="icon-btn"><i class="fas fa-user"></i></a>
@@ -866,9 +1044,9 @@
   <!-- ===== OFERTAS MINI ===== -->
   <section class="ofertas-mini">
     <div class="wrap">
-      <div class="titulo"><i class="fas fa-bolt"></i> Ofertas destacadas</div>
+      <div class="titulo"><i class="fas fa-bolt"></i> <span data-i18n="ofertas_destacadas">Ofertas destacadas</span></div>
       <div class="mini-grid" id="miniOfertas"></div>
-      <a href="html/ofertas.html" class="ver-todas">Ver todas →</a>
+      <a href="html/ofertas.html" class="ver-todas" data-i18n="ver_todas">Ver todas →</a>
     </div>
   </section>
 
@@ -877,18 +1055,18 @@
     <div class="wrap">
       <div class="section-head">
         <div>
-          <span class="eyebrow">Catálogo completo</span>
-          <h2>Productos destacados</h2>
-          <p>Los más vendidos de la semana.</p>
+          <span class="eyebrow" data-i18n="catalogo_completo">Catálogo completo</span>
+          <h2 data-i18n="productos_destacados">Productos destacados</h2>
+          <p data-i18n="mas_vendidos">Los más vendidos de la semana.</p>
         </div>
-        <a href="html/productos.html" class="see-all">Ver todo →</a>
+        <a href="html/productos.html" class="see-all" data-i18n="ver_todo">Ver todo →</a>
       </div>
       <div class="tabs" id="tabs">
-        <button class="tab active" data-filter="all">Todos</button>
-        <button class="tab" data-filter="tecnologia">Tecnología</button>
-        <button class="tab" data-filter="hogar">Hogar</button>
-        <button class="tab" data-filter="deportes">Deportes</button>
-        <button class="tab" data-filter="accesorios">Accesorios</button>
+        <button class="tab active" data-filter="all" data-i18n="todos">Todos</button>
+        <button class="tab" data-filter="tecnologia" data-i18n="tecnologia">Tecnología</button>
+        <button class="tab" data-filter="hogar" data-i18n="hogar">Hogar</button>
+        <button class="tab" data-filter="deportes" data-i18n="deportes">Deportes</button>
+        <button class="tab" data-filter="accesorios" data-i18n="accesorios">Accesorios</button>
       </div>
       <div class="grid" id="productGrid"></div>
     </div>
@@ -900,23 +1078,23 @@
       <div class="values">
         <div class="value-card">
           <div class="value-icon" style="background:rgba(238,29,37,.15); color:var(--red);"><i class="fas fa-shipping-fast"></i></div>
-          <h4>Envíos a todo el Perú</h4>
-          <p style="font-size:13px; color:var(--muted);">Seguimiento en tiempo real.</p>
+          <h4 data-i18n="envios">Envíos a todo el Perú</h4>
+          <p style="font-size:13px; color:var(--muted);" data-i18n="envios_desc">Seguimiento en tiempo real.</p>
         </div>
         <div class="value-card">
           <div class="value-icon" style="background:rgba(57,181,74,.15); color:var(--green);"><i class="fas fa-check-circle"></i></div>
-          <h4>Productos originales</h4>
-          <p style="font-size:13px; color:var(--muted);">Garantía de autenticidad.</p>
+          <h4 data-i18n="originales">Productos originales</h4>
+          <p style="font-size:13px; color:var(--muted);" data-i18n="originales_desc">Garantía de autenticidad.</p>
         </div>
         <div class="value-card">
           <div class="value-icon" style="background:rgba(24,158,224,.15); color:var(--blue);"><i class="fas fa-lock"></i></div>
-          <h4>Pago seguro</h4>
-          <p style="font-size:13px; color:var(--muted);">Visa, Mastercard, Yape, Plin.</p>
+          <h4 data-i18n="pago_seguro">Pago seguro</h4>
+          <p style="font-size:13px; color:var(--muted);" data-i18n="pago_seguro_desc">Visa, Mastercard, Yape, Plin.</p>
         </div>
         <div class="value-card">
           <div class="value-icon" style="background:rgba(238,29,37,.15); color:var(--red);"><i class="fas fa-headset"></i></div>
-          <h4>Soporte 24/7</h4>
-          <p style="font-size:13px; color:var(--muted);">Estamos para ayudarte.</p>
+          <h4 data-i18n="soporte">Soporte 24/7</h4>
+          <p style="font-size:13px; color:var(--muted);" data-i18n="soporte_desc">Estamos para ayudarte.</p>
         </div>
       </div>
     </div>
@@ -926,11 +1104,11 @@
   <section class="section" style="padding:20px 0 40px;">
     <div class="wrap">
       <div class="promo">
-        <h3>¡Suscríbete y ahorra!</h3>
-        <p>Recibe ofertas exclusivas por correo.</p>
+        <h3 data-i18n="newsletter_titulo">¡Suscríbete y ahorra!</h3>
+        <p data-i18n="newsletter_desc">Recibe ofertas exclusivas por correo.</p>
         <form class="promo-form" id="newsletterForm">
-          <input type="email" placeholder="tucorreo@ejemplo.com" required />
-          <button type="submit">Suscribirme</button>
+          <input type="email" placeholder="tucorreo@ejemplo.com" required data-i18n-placeholder="email_placeholder" />
+          <button type="submit" data-i18n="suscribirme">Suscribirme</button>
         </form>
       </div>
     </div>
@@ -942,7 +1120,7 @@
       <div class="foot-grid">
         <div>
           <img class="foot-logo" src="image/laguer-logo.png" alt="LAGUER" />
-          <p class="foot-desc">Tecnología, estilo y calidad en un solo lugar.</p>
+          <p class="foot-desc" data-i18n="footer_desc">Tecnología, estilo y calidad en un solo lugar.</p>
           <div class="pay-icons-footer">
             <span><i class="fab fa-cc-visa"></i> VISA</span>
             <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
@@ -952,7 +1130,7 @@
             <span><i class="fab fa-cc-diners-club"></i> Diners</span>
           </div>
           <div class="footer-social">
-            <span>Síguenos:</span>
+            <span data-i18n="siguenos">Síguenos:</span>
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
@@ -960,30 +1138,30 @@
           </div>
         </div>
         <div class="foot-col">
-          <h5>Categorías</h5>
-          <a href="html/productos.html?cat=tecnologia">Tecnología</a>
-          <a href="html/productos.html?cat=hogar">Hogar</a>
-          <a href="html/productos.html?cat=deportes">Deportes</a>
-          <a href="html/productos.html?cat=accesorios">Accesorios</a>
-          <a href="html/categorias.html">Ver todas</a>
+          <h5 data-i18n="categorias">Categorías</h5>
+          <a href="html/productos.html?cat=tecnologia" data-i18n="tecnologia">Tecnología</a>
+          <a href="html/productos.html?cat=hogar" data-i18n="hogar">Hogar</a>
+          <a href="html/productos.html?cat=deportes" data-i18n="deportes">Deportes</a>
+          <a href="html/productos.html?cat=accesorios" data-i18n="accesorios">Accesorios</a>
+          <a href="html/categorias.html" data-i18n="ver_todas">Ver todas</a>
         </div>
         <div class="foot-col">
-          <h5>Ayuda</h5>
-          <a href="html/pedidos.html">Rastrear pedido</a>
-          <a href="html/ayuda.html">Cambios y devoluciones</a>
-          <a href="html/ayuda.html">Medios de pago</a>
-          <a href="html/ayuda.html">Preguntas frecuentes</a>
+          <h5 data-i18n="ayuda">Ayuda</h5>
+          <a href="html/pedidos.html" data-i18n="rastrear">Rastrear pedido</a>
+          <a href="html/ayuda.html" data-i18n="cambios">Cambios y devoluciones</a>
+          <a href="html/ayuda.html" data-i18n="medios_pago">Medios de pago</a>
+          <a href="html/ayuda.html" data-i18n="preguntas">Preguntas frecuentes</a>
         </div>
         <div class="foot-col">
-          <h5>Nosotros</h5>
-          <a href="html/nosotros.html">Sobre LAGUER</a>
-          <a href="html/contacto.html">Contacto</a>
-          <a href="html/terminos.html">Términos</a>
-          <a href="html/privacidad.html">Privacidad</a>
+          <h5 data-i18n="nosotros">Nosotros</h5>
+          <a href="html/nosotros.html" data-i18n="sobre">Sobre LAGUER</a>
+          <a href="html/contacto.html" data-i18n="contacto">Contacto</a>
+          <a href="html/terminos.html" data-i18n="terminos">Términos</a>
+          <a href="html/privacidad.html" data-i18n="privacidad">Privacidad</a>
         </div>
       </div>
 
-      <!-- ===== Libro de Reclamaciones (imagen, centrada) ===== -->
+      <!-- ===== Libro de Reclamaciones ===== -->
       <div class="libro-reclamos-final">
         <a href="html/libro-reclamaciones.html" aria-label="Libro de Reclamaciones">
           <img src="image/libro-recla.jfif" alt="Libro de Reclamaciones" loading="lazy" />
@@ -993,7 +1171,7 @@
       <div class="beam-rule" style="margin:16px 0;"></div>
       <div class="foot-bottom">
         <span>© 2026 LAGUER. Todos los derechos reservados.</span>
-        <span>Hecho con ♥ para todo el Perú</span>
+        <span data-i18n="hecho_con">Hecho con ♥ para todo el Perú</span>
       </div>
     </div>
   </footer>
@@ -1013,14 +1191,33 @@
 
   <!-- ===== BOTTOM NAV (solo móvil) ===== -->
   <nav class="bottom-nav" id="bottomNav">
-    <a href="index.html" class="active"><i class="fas fa-home"></i><span>Inicio</span></a>
-    <a href="html/productos.html"><i class="fas fa-th-large"></i><span>Productos</span></a>
+    <a href="index.html" class="active"><i class="fas fa-home"></i><span data-i18n="inicio">Inicio</span></a>
+    <a href="html/productos.html"><i class="fas fa-th-large"></i><span data-i18n="productos">Productos</span></a>
     <a href="html/carrito.html" id="bottomCartLink">
-      <i class="fas fa-shopping-cart"></i><span>Carrito</span>
+      <i class="fas fa-shopping-cart"></i><span data-i18n="carrito">Carrito</span>
       <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
     </a>
-    <a href="html/login.html"><i class="fas fa-user"></i><span>Perfil</span></a>
+    <a href="html/login.html"><i class="fas fa-user"></i><span data-i18n="perfil">Perfil</span></a>
   </nav>
+
+  <!-- ===== COOKIES BANNER ===== -->
+  <div class="cookie-banner" id="cookieBanner">
+    <p>
+      <span data-i18n="cookies_texto">Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra</span>
+      <a href="html/privacidad.html" data-i18n="politica_privacidad">política de privacidad</a>.
+    </p>
+    <div class="buttons">
+      <button class="btn-cookie reject" id="cookieReject" data-i18n="rechazar">Rechazar</button>
+      <button class="btn-cookie settings" id="cookieSettings" data-i18n="configurar">Configurar</button>
+      <button class="btn-cookie accept" id="cookieAccept" data-i18n="aceptar">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div class="lightbox-overlay" id="lightboxOverlay">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Zoom" />
+  </div>
 
   <!-- ============================================================ -->
   <!-- ===== SCRIPTS ===== -->
@@ -1030,7 +1227,7 @@
       'use strict';
 
       // =======================================================================
-      // PRODUCTOS CON SUS IMÁGENES REALES (carpeta image/productos/)
+      // PRODUCTOS
       // =======================================================================
       const sampleProducts = [
         {
@@ -1142,7 +1339,7 @@
       ];
 
       // =======================================================================
-      // CARRITO Y FAVORITOS (localStorage)
+      // CARRITO Y FAVORITOS
       // =======================================================================
       const CART_KEY = 'laguerCart';
       const FAV_KEY = 'laguerFavs';
@@ -1221,7 +1418,7 @@
           return;
         }
         let html = '';
-        products.forEach(prod => {
+        products.forEach((prod, index) => {
           const price = prod.price || 0;
           const discount = prod.discount || 0;
           const finalPrice = discount > 0 ? price * (1 - discount / 100) : price;
@@ -1231,8 +1428,9 @@
           const isFav = favs.some(f => f.id === prod.id);
           const heart = isFav ? '♥' : '♡';
           const heartClass = isFav ? 'active' : '';
+          const delay = index * 0.05;
           html += `
-            <article class="card" data-cat="${cat}" data-product-id="${prod.id}">
+            <article class="card fade-in" data-cat="${cat}" data-product-id="${prod.id}" style="animation-delay:${delay}s;">
               <div class="card-media">
                 <img src="${imgSrc}" alt="${prod.name}" loading="lazy" />
                 ${badge}
@@ -1252,14 +1450,13 @@
         });
         container.innerHTML = html;
 
-        // ===== EVENTOS =====
+        // Eventos
         container.querySelectorAll('.add-to-cart').forEach(btn => {
           btn.addEventListener('click', function(e) {
             e.stopPropagation();
             const id = this.dataset.id;
             const name = this.dataset.name;
             const price = parseFloat(this.dataset.price) || 0;
-            // Obtener la imagen de la tarjeta
             const card = this.closest('.card');
             const img = card ? card.querySelector('.card-media img') : null;
             const image = img ? img.src : 'image/placeholder.png';
@@ -1355,6 +1552,254 @@
       }
 
       // =======================================================================
+      // COOKIES
+      // =======================================================================
+      (function() {
+        const COOKIE_KEY = 'laguer_cookie_consent';
+        const banner = document.getElementById('cookieBanner');
+
+        function getCookieConsent() {
+          return localStorage.getItem(COOKIE_KEY);
+        }
+
+        function setCookieConsent(value) {
+          localStorage.setItem(COOKIE_KEY, value);
+          banner.classList.remove('show');
+        }
+
+        if (!getCookieConsent()) {
+          setTimeout(() => banner.classList.add('show'), 500);
+        }
+
+        document.getElementById('cookieAccept')?.addEventListener('click', function() {
+          setCookieConsent('accepted');
+        });
+        document.getElementById('cookieReject')?.addEventListener('click', function() {
+          setCookieConsent('rejected');
+        });
+        document.getElementById('cookieSettings')?.addEventListener('click', function() {
+          alert('Configuración de cookies: aquí puedes gestionar tus preferencias.');
+        });
+      })();
+
+      // =======================================================================
+      // TEMA OSCURO/CLARO
+      // =======================================================================
+      (function() {
+        const toggleBtn = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('laguer_theme') || 'dark';
+
+        if (currentTheme === 'light') {
+          document.body.classList.add('light-mode');
+          toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        toggleBtn?.addEventListener('click', function() {
+          document.body.classList.toggle('light-mode');
+          const isLight = document.body.classList.contains('light-mode');
+          this.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+          localStorage.setItem('laguer_theme', isLight ? 'light' : 'dark');
+        });
+      })();
+
+      // =======================================================================
+      // MULTI-IDIOMA
+      // =======================================================================
+      (function() {
+        const translations = {
+          es: {
+            'menu_tecnologia': 'Tecnología',
+            'menu_hogar': 'Hogar',
+            'menu_deportes': 'Deportes',
+            'menu_accesorios': 'Accesorios',
+            'menu_ofertas': 'Ofertas',
+            'buscar': 'Buscar productos…',
+            'ofertas_destacadas': 'Ofertas destacadas',
+            'ver_todas': 'Ver todas',
+            'catalogo_completo': 'Catálogo completo',
+            'productos_destacados': 'Productos destacados',
+            'mas_vendidos': 'Los más vendidos de la semana.',
+            'ver_todo': 'Ver todo',
+            'todos': 'Todos',
+            'tecnologia': 'Tecnología',
+            'hogar': 'Hogar',
+            'deportes': 'Deportes',
+            'accesorios': 'Accesorios',
+            'envios': 'Envíos a todo el Perú',
+            'envios_desc': 'Seguimiento en tiempo real.',
+            'originales': 'Productos originales',
+            'originales_desc': 'Garantía de autenticidad.',
+            'pago_seguro': 'Pago seguro',
+            'pago_seguro_desc': 'Visa, Mastercard, Yape, Plin.',
+            'soporte': 'Soporte 24/7',
+            'soporte_desc': 'Estamos para ayudarte.',
+            'newsletter_titulo': '¡Suscríbete y ahorra!',
+            'newsletter_desc': 'Recibe ofertas exclusivas por correo.',
+            'email_placeholder': 'tucorreo@ejemplo.com',
+            'suscribirme': 'Suscribirme',
+            'footer_desc': 'Tecnología, estilo y calidad en un solo lugar.',
+            'siguenos': 'Síguenos:',
+            'categorias': 'Categorías',
+            'ayuda': 'Ayuda',
+            'nosotros': 'Nosotros',
+            'rastrear': 'Rastrear pedido',
+            'cambios': 'Cambios y devoluciones',
+            'medios_pago': 'Medios de pago',
+            'preguntas': 'Preguntas frecuentes',
+            'sobre': 'Sobre LAGUER',
+            'contacto': 'Contacto',
+            'terminos': 'Términos',
+            'privacidad': 'Privacidad',
+            'inicio': 'Inicio',
+            'productos': 'Productos',
+            'carrito': 'Carrito',
+            'perfil': 'Perfil',
+            'hecho_con': 'Hecho con ♥ para todo el Perú',
+            'cookies_texto': 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra',
+            'politica_privacidad': 'política de privacidad',
+            'rechazar': 'Rechazar',
+            'configurar': 'Configurar',
+            'aceptar': 'Aceptar',
+            'ver_todas': 'Ver todas'
+          },
+          en: {
+            'menu_tecnologia': 'Technology',
+            'menu_hogar': 'Home',
+            'menu_deportes': 'Sports',
+            'menu_accesorios': 'Accessories',
+            'menu_ofertas': 'Offers',
+            'buscar': 'Search products…',
+            'ofertas_destacadas': 'Featured offers',
+            'ver_todas': 'View all',
+            'catalogo_completo': 'Full catalog',
+            'productos_destacados': 'Featured products',
+            'mas_vendidos': 'Best sellers of the week.',
+            'ver_todo': 'View all',
+            'todos': 'All',
+            'tecnologia': 'Technology',
+            'hogar': 'Home',
+            'deportes': 'Sports',
+            'accesorios': 'Accessories',
+            'envios': 'Shipping to all Peru',
+            'envios_desc': 'Real-time tracking.',
+            'originales': 'Original products',
+            'originales_desc': 'Authenticity guaranteed.',
+            'pago_seguro': 'Secure payment',
+            'pago_seguro_desc': 'Visa, Mastercard, Yape, Plin.',
+            'soporte': '24/7 Support',
+            'soporte_desc': 'We are here to help.',
+            'newsletter_titulo': 'Subscribe and save!',
+            'newsletter_desc': 'Get exclusive offers by email.',
+            'email_placeholder': 'your@email.com',
+            'suscribirme': 'Subscribe',
+            'footer_desc': 'Technology, style and quality in one place.',
+            'siguenos': 'Follow us:',
+            'categorias': 'Categories',
+            'ayuda': 'Help',
+            'nosotros': 'About',
+            'rastrear': 'Track order',
+            'cambios': 'Returns & exchanges',
+            'medios_pago': 'Payment methods',
+            'preguntas': 'FAQ',
+            'sobre': 'About LAGUER',
+            'contacto': 'Contact',
+            'terminos': 'Terms',
+            'privacidad': 'Privacy',
+            'inicio': 'Home',
+            'productos': 'Products',
+            'carrito': 'Cart',
+            'perfil': 'Profile',
+            'hecho_con': 'Made with ♥ for all Peru',
+            'cookies_texto': 'We use cookies to improve your experience. By continuing, you accept our',
+            'politica_privacidad': 'privacy policy',
+            'rechazar': 'Reject',
+            'configurar': 'Settings',
+            'aceptar': 'Accept',
+            'ver_todas': 'View all'
+          }
+        };
+
+        const langSelector = document.getElementById('languageSelector');
+        let currentLang = localStorage.getItem('laguer_lang') || 'es';
+
+        function applyTranslations(lang) {
+          document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            el.textContent = translations[lang]?.[key] || translations.es[key] || key;
+          });
+          document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.dataset.i18nPlaceholder;
+            el.placeholder = translations[lang]?.[key] || translations.es[key] || key;
+          });
+          langSelector.value = lang;
+          localStorage.setItem('laguer_lang', lang);
+        }
+
+        langSelector?.addEventListener('change', function() {
+          currentLang = this.value;
+          applyTranslations(currentLang);
+        });
+
+        // Aplicar al cargar
+        applyTranslations(currentLang);
+      })();
+
+      // =======================================================================
+      // LIGHTBOX
+      // =======================================================================
+      (function() {
+        const overlay = document.getElementById('lightboxOverlay');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const closeBtn = document.getElementById('lightboxClose');
+
+        // Delegación de eventos para imágenes de productos (las que se agreguen dinámicamente)
+        document.addEventListener('click', function(e) {
+          const img = e.target.closest('.card-media img, .mini-item img');
+          if (img && img.src && !img.closest('.fav-btn') && !img.closest('.add-btn')) {
+            lightboxImg.src = img.src;
+            overlay.classList.add('active');
+          }
+        });
+
+        closeBtn?.addEventListener('click', function() {
+          overlay.classList.remove('active');
+        });
+        overlay?.addEventListener('click', function(e) {
+          if (e.target === this) this.classList.remove('active');
+        });
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') overlay.classList.remove('active');
+        });
+      })();
+
+      // =======================================================================
+      // COMPARTIR EN REDES (ejemplo en index)
+      // =======================================================================
+      // (Los botones de compartir se añadirían en producto.html, pero aquí dejamos la función global)
+      window.shareProduct = function(network) {
+        const url = encodeURIComponent(window.location.href);
+        const title = encodeURIComponent(document.title);
+        let shareUrl = '';
+        switch(network) {
+          case 'facebook':
+            shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+            break;
+          case 'twitter':
+            shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+            break;
+          case 'whatsapp':
+            shareUrl = `https://api.whatsapp.com/send?text=${title}%20${url}`;
+            break;
+          case 'copy':
+            navigator.clipboard.writeText(window.location.href).then(() => {
+              alert('✅ Enlace copiado al portapapeles');
+            });
+            return;
+        }
+        if (shareUrl) window.open(shareUrl, '_blank', 'width=600,height=500');
+      };
+
+      // =======================================================================
       // EVENTOS ADICIONALES
       // =======================================================================
       document.getElementById('closeSocial')?.addEventListener('click', function() {
@@ -1382,7 +1827,7 @@
       });
 
       window.addToCart = addToCart;
-      console.log('🚀 LAGUER · index listo con imágenes reales y carrito con fotos');
+      console.log('🚀 LAGUER · index listo con todas las mejoras (cookies, tema, idioma, lightbox, compartir)');
     })();
   </script>
 </body>

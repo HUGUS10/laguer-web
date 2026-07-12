@@ -29,6 +29,17 @@
       --bottom-nav-height: 70px;
     }
 
+    /* ===== TEMA CLARO ===== */
+    body.light-mode {
+      --bg: #f5f8fb;
+      --bg-soft: #e9edf2;
+      --surface: #ffffff;
+      --surface-2: #f0f2f5;
+      --line: rgba(0,0,0,.08);
+      --white: #1a1a1a;
+      --muted: #555555;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -38,6 +49,7 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
       padding-bottom: calc(var(--bottom-nav-height) + 20px);
+      transition: background 0.3s ease, color 0.3s ease;
     }
     h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
     a { color: inherit; text-decoration: none; }
@@ -52,6 +64,31 @@
       background: linear-gradient(90deg, var(--red) 0 33%, var(--green) 33% 66%, var(--blue) 66% 100%);
       opacity: .9;
     }
+    .beam-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .beam-glow span {
+      position: absolute;
+      width: 2px;
+      height: 170%;
+      top: -40%;
+      filter: blur(1px);
+      opacity: .35;
+      animation: drift 14s linear infinite;
+    }
+    .beam-glow span:nth-child(1) { left: 12%; background: var(--red); animation-delay: 0s; }
+    .beam-glow span:nth-child(2) { left: 46%; background: var(--green); animation-delay: -5s; }
+    .beam-glow span:nth-child(3) { left: 78%; background: var(--blue); animation-delay: -9s; }
+    @keyframes drift {
+      0% { transform: rotate(18deg) translateY(-10%); }
+      50% { transform: rotate(18deg) translateY(6%); }
+      100% { transform: rotate(18deg) translateY(-10%); }
+    }
+    @media (prefers-reduced-motion: reduce) { .beam-glow span { animation: none; } }
 
     .topbar {
       background: #020406;
@@ -75,6 +112,10 @@
       background: rgba(5,7,11,.88);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s ease;
+    }
+    body.light-mode header.site {
+      background: rgba(255,255,255,.92);
     }
     .header-row {
       display: flex;
@@ -140,7 +181,7 @@
     .header-icons {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-shrink: 0;
     }
     .icon-btn {
@@ -198,6 +239,7 @@
     .cat-chip:hover { color: var(--white); }
     .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
+    /* ===== DETALLE PRODUCTO ===== */
     .section { padding: 30px 0; }
     .product-detail {
       display: grid;
@@ -216,6 +258,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .product-gallery .main-image:hover {
+      border-color: var(--blue);
     }
     .product-gallery .main-image img {
       width: 100%;
@@ -385,11 +432,41 @@
       margin-right: 8px;
     }
 
+    /* ===== SHARE BUTTONS ===== */
+    .share-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .share-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .share-btn:hover {
+      transform: scale(1.1);
+      border-color: var(--blue);
+    }
+
     /* ===== FOOTER ===== */
     footer {
       background: #020406;
       border-top: 1px solid var(--line);
       padding: 40px 0 20px;
+      transition: background 0.3s ease;
+    }
+    body.light-mode footer {
+      background: #e9edf2;
     }
     .foot-grid {
       display: grid;
@@ -483,7 +560,124 @@
       display: block;
     }
 
-    /* ===== BOTTOM NAV ===== */
+    /* ===== COOKIES BANNER ===== */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      padding: 16px 24px;
+      z-index: 9999;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+    .cookie-banner.show {
+      transform: translateY(0);
+    }
+    .cookie-banner p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+      min-width: 200px;
+    }
+    .cookie-banner p a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+    .cookie-banner .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .cookie-banner .btn-cookie {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cookie-banner .btn-cookie.accept {
+      background: var(--green);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.accept:hover {
+      transform: scale(1.05);
+    }
+    .cookie-banner .btn-cookie.reject {
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .cookie-banner .btn-cookie.reject:hover {
+      background: var(--red);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings {
+      background: var(--blue);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings:hover {
+      transform: scale(1.05);
+    }
+
+    /* ===== LIGHTBOX ===== */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lightbox-overlay.active {
+      display: flex;
+    }
+    .lightbox-img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 8px;
+      animation: zoomIn 0.3s ease;
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .lightbox-close:hover {
+      transform: rotate(90deg);
+    }
+
+    /* ===== ANIMACIONES ===== */
+    .fade-in {
+      animation: fadeIn 0.6s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -534,7 +728,9 @@
       border: 2px solid var(--bg);
     }
 
+    /* ============================================================ */
     /* ===== RESPONSIVE ===== */
+    /* ============================================================ */
     @media (max-width: 980px) {
       .main-nav, .cat-strip, .burger { display: none !important; }
       .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
@@ -555,7 +751,10 @@
       .product-info h1 { font-size: 24px; }
       .product-info .precio { font-size: 26px; }
       .foot-grid { grid-template-columns: 1fr 1fr; }
+      .cookie-banner { flex-direction: column; text-align: center; padding: 16px; }
+      .cookie-banner .buttons { justify-content: center; }
     }
+
     @media (max-width: 600px) {
       .search-box { padding: 6px 12px; }
       .search-box input { font-size: 14px; }
@@ -565,16 +764,27 @@
       .product-info .add-to-cart-btn { font-size: 16px; padding: 12px; }
       .foot-grid { grid-template-columns: 1fr; gap: 20px; }
       .section { padding: 20px 0; }
+      .share-buttons { justify-content: center; }
     }
   </style>
 </head>
 <body>
+
   <!-- ===== TOPBAR ===== -->
   <div class="topbar">
     <div class="wrap">
       <div class="topbar-links">
         <span>🚚 <b>Envíos a todo el Perú</b></span>
         <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <select id="languageSelector" style="background:transparent; border:1px solid var(--line); border-radius:6px; color:var(--white); padding:2px 6px; font-size:12px; cursor:pointer;">
+          <option value="es">🇪🇸 ES</option>
+          <option value="en">🇬🇧 EN</option>
+        </select>
+        <button id="themeToggle" class="icon-btn" style="font-size:16px; width:32px; height:32px;">
+          <i class="fas fa-moon"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -585,15 +795,15 @@
     <div class="wrap header-row">
       <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
       <nav class="main-nav">
-        <a href="productos.html?cat=tecnologia">Tecnología</a>
-        <a href="productos.html?cat=hogar">Hogar</a>
-        <a href="productos.html?cat=deportes">Deportes</a>
-        <a href="productos.html?cat=accesorios">Accesorios</a>
-        <a href="ofertas.html">Ofertas</a>
+        <a href="productos.html?cat=tecnologia" data-i18n="menu_tecnologia">Tecnología</a>
+        <a href="productos.html?cat=hogar" data-i18n="menu_hogar">Hogar</a>
+        <a href="productos.html?cat=deportes" data-i18n="menu_deportes">Deportes</a>
+        <a href="productos.html?cat=accesorios" data-i18n="menu_accesorios">Accesorios</a>
+        <a href="ofertas.html" data-i18n="menu_ofertas">Ofertas</a>
       </nav>
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Buscar productos…" />
+        <input type="text" id="searchInput" placeholder="Buscar productos…" data-i18n-placeholder="buscar" />
       </div>
       <div class="header-icons">
         <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
@@ -620,7 +830,7 @@
       <div id="productDetailContainer">
         <div style="text-align:center; padding:40px 0; color:var(--muted);">
           <i class="fas fa-spinner fa-spin fa-2x"></i>
-          <p>Cargando producto...</p>
+          <p data-i18n="cargando_producto">Cargando producto...</p>
         </div>
       </div>
     </div>
@@ -632,7 +842,7 @@
       <div class="foot-grid">
         <div>
           <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
-          <p class="foot-desc">Tecnología, estilo y calidad en un solo lugar.</p>
+          <p class="foot-desc" data-i18n="footer_desc">Tecnología, estilo y calidad en un solo lugar.</p>
           <div class="pay-icons-footer">
             <span><i class="fab fa-cc-visa"></i> VISA</span>
             <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
@@ -642,7 +852,7 @@
             <span><i class="fab fa-cc-diners-club"></i> Diners</span>
           </div>
           <div class="footer-social">
-            <span>Síguenos:</span>
+            <span data-i18n="siguenos">Síguenos:</span>
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
@@ -650,30 +860,30 @@
           </div>
         </div>
         <div class="foot-col">
-          <h5>Categorías</h5>
-          <a href="productos.html?cat=tecnologia">Tecnología</a>
-          <a href="productos.html?cat=hogar">Hogar</a>
-          <a href="productos.html?cat=deportes">Deportes</a>
-          <a href="productos.html?cat=accesorios">Accesorios</a>
-          <a href="categorias.html">Ver todas</a>
+          <h5 data-i18n="categorias">Categorías</h5>
+          <a href="productos.html?cat=tecnologia" data-i18n="tecnologia">Tecnología</a>
+          <a href="productos.html?cat=hogar" data-i18n="hogar">Hogar</a>
+          <a href="productos.html?cat=deportes" data-i18n="deportes">Deportes</a>
+          <a href="productos.html?cat=accesorios" data-i18n="accesorios">Accesorios</a>
+          <a href="categorias.html" data-i18n="ver_todas">Ver todas</a>
         </div>
         <div class="foot-col">
-          <h5>Ayuda</h5>
-          <a href="pedidos.html">Rastrear pedido</a>
-          <a href="ayuda.html">Cambios y devoluciones</a>
-          <a href="ayuda.html">Medios de pago</a>
-          <a href="ayuda.html">Preguntas frecuentes</a>
+          <h5 data-i18n="ayuda">Ayuda</h5>
+          <a href="pedidos.html" data-i18n="rastrear">Rastrear pedido</a>
+          <a href="ayuda.html" data-i18n="cambios">Cambios y devoluciones</a>
+          <a href="ayuda.html" data-i18n="medios_pago">Medios de pago</a>
+          <a href="ayuda.html" data-i18n="preguntas">Preguntas frecuentes</a>
         </div>
         <div class="foot-col">
-          <h5>Nosotros</h5>
-          <a href="nosotros.html">Sobre LAGUER</a>
-          <a href="contacto.html">Contacto</a>
-          <a href="terminos.html">Términos</a>
-          <a href="privacidad.html">Privacidad</a>
+          <h5 data-i18n="nosotros">Nosotros</h5>
+          <a href="nosotros.html" data-i18n="sobre">Sobre LAGUER</a>
+          <a href="contacto.html" data-i18n="contacto">Contacto</a>
+          <a href="terminos.html" data-i18n="terminos">Términos</a>
+          <a href="privacidad.html" data-i18n="privacidad">Privacidad</a>
         </div>
       </div>
 
-      <!-- ===== Libro de Reclamaciones (imagen centrada) ===== -->
+      <!-- ===== Libro de Reclamaciones ===== -->
       <div class="libro-reclamos-final">
         <a href="libro-reclamaciones.html" aria-label="Libro de Reclamaciones">
           <img src="../image/libro-recla.jfif" alt="Libro de Reclamaciones" loading="lazy" />
@@ -683,21 +893,40 @@
       <div class="beam-rule" style="margin:16px 0;"></div>
       <div class="foot-bottom">
         <span>© 2026 LAGUER. Todos los derechos reservados.</span>
-        <span>Hecho con ♥ para todo el Perú</span>
+        <span data-i18n="hecho_con">Hecho con ♥ para todo el Perú</span>
       </div>
     </div>
   </footer>
 
   <!-- ===== BOTTOM NAV (solo móvil) ===== -->
   <nav class="bottom-nav" id="bottomNav">
-    <a href="../index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
-    <a href="productos.html"><i class="fas fa-th-large"></i><span>Productos</span></a>
+    <a href="../index.html"><i class="fas fa-home"></i><span data-i18n="inicio">Inicio</span></a>
+    <a href="productos.html"><i class="fas fa-th-large"></i><span data-i18n="productos">Productos</span></a>
     <a href="carrito.html" id="bottomCartLink">
-      <i class="fas fa-shopping-cart"></i><span>Carrito</span>
+      <i class="fas fa-shopping-cart"></i><span data-i18n="carrito">Carrito</span>
       <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
     </a>
-    <a href="perfil.html"><i class="fas fa-user"></i><span>Perfil</span></a>
+    <a href="perfil.html"><i class="fas fa-user"></i><span data-i18n="perfil">Perfil</span></a>
   </nav>
+
+  <!-- ===== COOKIES BANNER ===== -->
+  <div class="cookie-banner" id="cookieBanner">
+    <p>
+      <span data-i18n="cookies_texto">Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra</span>
+      <a href="privacidad.html" data-i18n="politica_privacidad">política de privacidad</a>.
+    </p>
+    <div class="buttons">
+      <button class="btn-cookie reject" id="cookieReject" data-i18n="rechazar">Rechazar</button>
+      <button class="btn-cookie settings" id="cookieSettings" data-i18n="configurar">Configurar</button>
+      <button class="btn-cookie accept" id="cookieAccept" data-i18n="aceptar">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div class="lightbox-overlay" id="lightboxOverlay">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Zoom" />
+  </div>
 
   <!-- ============================================================ -->
   <!-- ===== SCRIPTS ===== -->
@@ -706,16 +935,16 @@
     (function() {
       'use strict';
 
-      // ============================
+      // =======================================================================
       // 1. OBTENER ID DE LA URL
-      // ============================
+      // =======================================================================
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get('id');
       const container = document.getElementById('productDetailContainer');
 
-      // ============================
-      // 2. DATOS DE PRODUCTOS (objeto)
-      // ============================
+      // =======================================================================
+      // 2. DATOS DE PRODUCTOS (objeto con todos los productos)
+      // =======================================================================
       const sampleProducts = {
         'p1': {
           id: 'p1',
@@ -725,11 +954,7 @@
           discount: 30,
           stock: 12,
           description: 'Smartwatch con pantalla AMOLED 1.4", GPS, monitoreo de frecuencia cardíaca, resistencia al agua 5ATM y batería de 7 días.',
-          images: [
-            '../image/productos/smartwatch-pro-1.jpg',
-            '../image/productos/smartwatch-pro-2.jpg',
-            '../image/productos/smartwatch-pro-3.jpg'
-          ],
+          images: ['../image/productos/smartwatch-pro-1.jpg', '../image/productos/smartwatch-pro-2.jpg', '../image/productos/smartwatch-pro-3.jpg'],
           colors: ['#1a1a1a', '#ffffff', '#ff4444'],
           sizes: ['Único'],
           characteristics: ['Pantalla AMOLED', 'GPS integrado', 'Monitoreo cardíaco', 'Resistente al agua 5ATM']
@@ -742,11 +967,7 @@
           discount: 20,
           stock: 8,
           description: 'Audífonos inalámbricos con cancelación de ruido, 20 horas de batería, carga rápida y diseño ergonómico.',
-          images: [
-            '../image/productos/audifonos-bt-1.jfif',
-            '../image/productos/audifonos-bt-2.jfif',
-            '../image/productos/audifonos-bt.jfif'
-          ],
+          images: ['../image/productos/audifonos-bt-1.jfif', '../image/productos/audifonos-bt-2.jfif', '../image/productos/audifonos-bt.jfif'],
           colors: ['#000000', '#ffffff'],
           sizes: ['Único'],
           characteristics: ['Bluetooth 5.0', 'Cancelación de ruido', '20h batería', 'Carga rápida']
@@ -772,10 +993,7 @@
           discount: 10,
           stock: 5,
           description: 'Mochila impermeable con compartimento para laptop, bolsillos laterales y correas acolchadas.',
-          images: [
-            '../image/productos/mochila-deportiva-1.jfif',
-            '../image/productos/mochila-deportiva.jfif'
-          ],
+          images: ['../image/productos/mochila-deportiva-1.jfif', '../image/productos/mochila-deportiva.jfif'],
           colors: ['#1a1a1a', '#2e86de'],
           sizes: ['Único'],
           characteristics: ['Impermeable', 'Compartimento laptop', 'Correas acolchadas', 'Bolsillos laterales']
@@ -788,10 +1006,7 @@
           discount: 0,
           stock: 30,
           description: 'Cargador USB-C de 20W con carga rápida, compatible con todos los dispositivos.',
-          images: [
-            '../image/productos/cargador-rapido-1.jfif',
-            '../image/productos/cargador-rapido.jfif'
-          ],
+          images: ['../image/productos/cargador-rapido-1.jfif', '../image/productos/cargador-rapido.jfif'],
           colors: ['#ffffff'],
           sizes: ['Único'],
           characteristics: ['20W', 'USB-C', 'Carga rápida', 'Compatible universal']
@@ -804,10 +1019,7 @@
           discount: 15,
           stock: 7,
           description: 'Teclado mecánico con retroiluminación RGB, switches intercambiables y reposamuñecas ergonómico.',
-          images: [
-            '../image/productos/teclado-gaming-1.jfif',
-            '../image/productos/teclado-gaming.jfif'
-          ],
+          images: ['../image/productos/teclado-gaming-1.jfif', '../image/productos/teclado-gaming.jfif'],
           colors: ['#1a1a1a'],
           sizes: ['Único'],
           characteristics: ['Mecánico', 'RGB', 'Switches intercambiables', 'Reposamuñecas']
@@ -820,11 +1032,7 @@
           discount: 25,
           stock: 15,
           description: 'Polo de algodón transpirable, ideal para entrenar o uso diario. Cuello redondo y estampado resistente.',
-          images: [
-            '../image/productos/polo-deportivo-1.jfif',
-            '../image/productos/polo-deportivo-2.jfif',
-            '../image/productos/polo-deportivo.jfif'
-          ],
+          images: ['../image/productos/polo-deportivo-1.jfif', '../image/productos/polo-deportivo-2.jfif', '../image/productos/polo-deportivo.jfif'],
           colors: ['#1a73e8', '#ea4335', '#000000'],
           sizes: ['S', 'M', 'L', 'XL'],
           characteristics: ['100% algodón', 'Cuello redondo', 'Doble costura', 'Estampado resistente']
@@ -837,24 +1045,20 @@
           discount: 0,
           stock: 10,
           description: 'Set de 5 organizadores de escritorio, ideales para mantener tu espacio ordenado y limpio.',
-          images: [
-            '../image/productos/set-organizadores-1.jfif',
-            '../image/productos/set-organizadores.jfif'
-          ],
+          images: ['../image/productos/set-organizadores-1.jfif', '../image/productos/set-organizadores.jfif'],
           colors: ['#ffffff'],
           sizes: ['Único'],
           characteristics: ['5 piezas', 'Material resistente', 'Diseño moderno', 'Fácil limpieza']
         }
       };
 
-      // Función para obtener producto por ID
       function getProductById(id) {
         return sampleProducts[id] || null;
       }
 
-      // ============================
+      // =======================================================================
       // 3. CARRITO y FAVORITOS (localStorage)
-      // ============================
+      // =======================================================================
       const CART_KEY = 'laguerCart';
       const FAV_KEY = 'laguerFavs';
 
@@ -892,16 +1096,16 @@
         return favs;
       }
 
-      // ============================
+      // =======================================================================
       // 4. RENDERIZAR PRODUCTO
-      // ============================
+      // =======================================================================
       function renderProduct(product) {
         if (!product) {
           container.innerHTML = `
             <div style="text-align:center; padding:40px 0; color:var(--red);">
               <i class="fas fa-box-open fa-2x"></i>
-              <p>Producto no encontrado.</p>
-              <a href="productos.html" style="display:inline-block; padding:12px 24px; margin-top:16px; background:linear-gradient(90deg, var(--red), var(--blue)); border-radius:10px; color:#fff; font-weight:700; text-decoration:none;">Volver al catálogo</a>
+              <p data-i18n="producto_no_encontrado">Producto no encontrado.</p>
+              <a href="productos.html" style="display:inline-block; padding:12px 24px; margin-top:16px; background:linear-gradient(90deg, var(--red), var(--blue)); border-radius:10px; color:#fff; font-weight:700; text-decoration:none;" data-i18n="volver_catalogo">Volver al catálogo</a>
             </div>
           `;
           return;
@@ -918,12 +1122,11 @@
           characteristics = ['Característica 1', 'Característica 2']
         } = product;
 
-        // Verificar si está en favoritos
         const favs = getFavs();
         const isFav = favs.some(f => f.id === product.id);
 
         let html = `
-          <div class="product-detail">
+          <div class="product-detail fade-in">
             <div class="product-gallery">
               <div class="main-image" id="mainImage">
                 <img src="${images[0]}" alt="${name}" id="mainImageTag" />
@@ -943,7 +1146,7 @@
               <div class="descripcion">${description}</div>
 
               <div class="selector">
-                <label>Color</label>
+                <label data-i18n="color">Color</label>
                 <div class="options" id="colorOptions">
         `;
         colors.forEach((color, index) => {
@@ -955,7 +1158,7 @@
               </div>
 
               <div class="selector">
-                <label>Talla</label>
+                <label data-i18n="talla">Talla</label>
                 <div class="options" id="sizeOptions">
         `;
         sizes.forEach((size, index) => {
@@ -967,14 +1170,21 @@
               </div>
 
               <button class="add-to-cart-btn" id="addToCartBtn">
-                <i class="fas fa-shopping-cart"></i> Agregar al carrito
+                <i class="fas fa-shopping-cart"></i> <span data-i18n="agregar_carrito">Agregar al carrito</span>
               </button>
               <button class="favorito-btn ${isFav ? 'active' : ''}" id="favBtn">
-                <i class="fas fa-heart"></i> ${isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+                <i class="fas fa-heart"></i> <span data-i18n="${isFav ? 'quitar_favoritos' : 'agregar_favoritos'}">${isFav ? 'Quitar de favoritos' : 'Agregar a favoritos'}</span>
               </button>
 
+              <div class="share-buttons">
+                <button class="share-btn" data-network="facebook" title="Compartir en Facebook"><i class="fab fa-facebook-f"></i></button>
+                <button class="share-btn" data-network="twitter" title="Compartir en Twitter"><i class="fab fa-twitter"></i></button>
+                <button class="share-btn" data-network="whatsapp" title="Compartir en WhatsApp"><i class="fab fa-whatsapp"></i></button>
+                <button class="share-btn" data-network="copy" title="Copiar enlace"><i class="fas fa-link"></i></button>
+              </div>
+
               <div class="caracteristicas">
-                <h3><i class="fas fa-list-ul"></i> Características</h3>
+                <h3><i class="fas fa-list-ul"></i> <span data-i18n="caracteristicas">Características</span></h3>
                 <ul>
         `;
         characteristics.forEach(char => {
@@ -989,9 +1199,9 @@
 
         container.innerHTML = html;
 
-        // ============================
+        // =======================================================================
         // 5. INTERACCIONES
-        // ============================
+        // =======================================================================
 
         // Miniaturas
         const thumbnails = document.querySelectorAll('.thumbnails img');
@@ -1004,13 +1214,12 @@
           });
         });
 
-        // Colores (cambian la imagen principal)
+        // Colores (cambiar imagen según color seleccionado)
         const colorBtns = document.querySelectorAll('#colorOptions .color-btn');
         colorBtns.forEach((btn, index) => {
           btn.addEventListener('click', function() {
             colorBtns.forEach(b => b.classList.remove('active'));
             this.classList.add('active');
-            // Cambiar imagen según el índice del color (si hay imágenes disponibles)
             const imgIndex = index % images.length;
             mainImage.src = images[imgIndex];
             thumbnails.forEach((t, i) => t.classList.toggle('active', i === imgIndex));
@@ -1026,35 +1235,27 @@
           });
         });
 
-        // ============================
-        // 6. AGREGAR AL CARRITO (CON IMAGEN ACTUAL)
-        // ============================
+        // Agregar al carrito (con imagen, color, talla)
         document.getElementById('addToCartBtn')?.addEventListener('click', function() {
           const colorSelected = document.querySelector('#colorOptions .active');
           const sizeSelected = document.querySelector('#sizeOptions .active');
           const color = colorSelected ? colorSelected.dataset.color : 'N/A';
           const size = sizeSelected ? sizeSelected.dataset.size : 'N/A';
-          
-          // OBTENER LA IMAGEN ACTUAL (la que se muestra en el main image)
-          const currentImage = document.getElementById('mainImageTag').src;
-          
+          const image = product.images && product.images.length > 0 ? product.images[0] : '../image/placeholder.png';
+
           let cart = getCart();
           const existing = cart.find(item => item.id === product.id);
           if (existing) {
             existing.quantity = (existing.quantity || 1) + 1;
-            // Actualizar también color, talla e imagen si cambió
-            existing.color = color;
-            existing.size = size;
-            existing.image = currentImage;
           } else {
-            cart.push({ 
-              id: product.id, 
-              name: product.name, 
-              price: product.price, 
-              quantity: 1, 
-              color: color, 
-              size: size,
-              image: currentImage  // <-- aquí guardamos la imagen actual
+            cart.push({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              quantity: 1,
+              color,
+              size,
+              image
             });
           }
           saveCart(cart);
@@ -1064,45 +1265,97 @@
           setTimeout(() => this.innerHTML = orig, 1500);
         });
 
-        // ============================
-        // 7. FAVORITOS
-        // ============================
+        // Favoritos
         document.getElementById('favBtn')?.addEventListener('click', function() {
           let favs = getFavs();
           const index = favs.findIndex(f => f.id === product.id);
-          const currentImage = document.getElementById('mainImageTag').src;
+          const span = this.querySelector('span');
           if (index === -1) {
-            favs.push({ 
-              id: product.id, 
-              name: product.name, 
-              price: product.price, 
-              category: product.category, 
-              image: currentImage 
+            favs.push({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              category: product.category,
+              image: product.images && product.images.length > 0 ? product.images[0] : '../image/placeholder.png'
             });
             this.classList.add('active');
-            this.innerHTML = '<i class="fas fa-heart"></i> Quitar de favoritos';
+            if (span) span.textContent = 'Quitar de favoritos';
           } else {
             favs.splice(index, 1);
             this.classList.remove('active');
-            this.innerHTML = '<i class="fas fa-heart"></i> Agregar a favoritos';
+            if (span) span.textContent = 'Agregar a favoritos';
           }
           saveFavs(favs);
         });
 
-        // Actualizar badge de carrito
+        // =======================================================================
+        // 6. COMPARTIR EN REDES
+        // =======================================================================
+        document.querySelectorAll('.share-btn').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const network = this.dataset.network;
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(name);
+            let shareUrl = '';
+            switch (network) {
+              case 'facebook':
+                shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+                break;
+              case 'twitter':
+                shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+                break;
+              case 'whatsapp':
+                shareUrl = `https://api.whatsapp.com/send?text=${title}%20${url}`;
+                break;
+              case 'copy':
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                  alert('✅ Enlace copiado al portapapeles');
+                });
+                return;
+            }
+            if (shareUrl) window.open(shareUrl, '_blank', 'width=600,height=500');
+          });
+        });
+
+        // =======================================================================
+        // 7. LIGHTBOX
+        // =======================================================================
+        const mainImageContainer = document.getElementById('mainImage');
+        const overlay = document.getElementById('lightboxOverlay');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const closeBtn = document.getElementById('lightboxClose');
+
+        mainImageContainer?.addEventListener('click', function() {
+          const img = this.querySelector('img');
+          if (img) {
+            lightboxImg.src = img.src;
+            overlay.classList.add('active');
+          }
+        });
+        closeBtn?.addEventListener('click', function() {
+          overlay.classList.remove('active');
+        });
+        overlay?.addEventListener('click', function(e) {
+          if (e.target === this) this.classList.remove('active');
+        });
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') overlay.classList.remove('active');
+        });
+
+        // Actualizar badge del carrito
         updateCartBadge(getCart());
       }
 
-      // ============================
+      // =======================================================================
       // 8. CARGAR PRODUCTO
-      // ============================
+      // =======================================================================
       function loadProduct(id) {
         if (!id) {
           container.innerHTML = `
             <div style="text-align:center; padding:40px 0; color:var(--red);">
               <i class="fas fa-exclamation-triangle fa-2x"></i>
-              <p>No se especificó ningún producto.</p>
-              <a href="productos.html" style="display:inline-block; padding:12px 24px; margin-top:16px; background:linear-gradient(90deg, var(--red), var(--blue)); border-radius:10px; color:#fff; font-weight:700; text-decoration:none;">Ver productos</a>
+              <p data-i18n="no_producto">No se especificó ningún producto.</p>
+              <a href="productos.html" style="display:inline-block; padding:12px 24px; margin-top:16px; background:linear-gradient(90deg, var(--red), var(--blue)); border-radius:10px; color:#fff; font-weight:700; text-decoration:none;" data-i18n="ver_productos">Ver productos</a>
             </div>
           `;
           return;
@@ -1114,16 +1367,16 @@
           container.innerHTML = `
             <div style="text-align:center; padding:40px 0; color:var(--red);">
               <i class="fas fa-box-open fa-2x"></i>
-              <p>Producto no encontrado.</p>
-              <a href="productos.html" style="display:inline-block; padding:12px 24px; margin-top:16px; background:linear-gradient(90deg, var(--red), var(--blue)); border-radius:10px; color:#fff; font-weight:700; text-decoration:none;">Volver al catálogo</a>
+              <p data-i18n="producto_no_encontrado">Producto no encontrado.</p>
+              <a href="productos.html" style="display:inline-block; padding:12px 24px; margin-top:16px; background:linear-gradient(90deg, var(--red), var(--blue)); border-radius:10px; color:#fff; font-weight:700; text-decoration:none;" data-i18n="volver_catalogo">Volver al catálogo</a>
             </div>
           `;
         }
       }
 
-      // ============================
+      // =======================================================================
       // 9. BÚSQUEDA (redirige)
-      // ============================
+      // =======================================================================
       document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
           const term = this.value.trim();
@@ -1131,9 +1384,176 @@
         }
       });
 
-      // ============================
-      // 10. INICIALIZAR
-      // ============================
+      // =======================================================================
+      // 10. COOKIES
+      // =======================================================================
+      (function() {
+        const COOKIE_KEY = 'laguer_cookie_consent';
+        const banner = document.getElementById('cookieBanner');
+
+        function getCookieConsent() {
+          return localStorage.getItem(COOKIE_KEY);
+        }
+        function setCookieConsent(value) {
+          localStorage.setItem(COOKIE_KEY, value);
+          banner.classList.remove('show');
+        }
+
+        if (!getCookieConsent()) {
+          setTimeout(() => banner.classList.add('show'), 500);
+        }
+
+        document.getElementById('cookieAccept')?.addEventListener('click', function() {
+          setCookieConsent('accepted');
+        });
+        document.getElementById('cookieReject')?.addEventListener('click', function() {
+          setCookieConsent('rejected');
+        });
+        document.getElementById('cookieSettings')?.addEventListener('click', function() {
+          alert('Configuración de cookies: aquí puedes gestionar tus preferencias.');
+        });
+      })();
+
+      // =======================================================================
+      // 11. TEMA OSCURO/CLARO
+      // =======================================================================
+      (function() {
+        const toggleBtn = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('laguer_theme') || 'dark';
+
+        if (currentTheme === 'light') {
+          document.body.classList.add('light-mode');
+          toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        toggleBtn?.addEventListener('click', function() {
+          document.body.classList.toggle('light-mode');
+          const isLight = document.body.classList.contains('light-mode');
+          this.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+          localStorage.setItem('laguer_theme', isLight ? 'light' : 'dark');
+        });
+      })();
+
+      // =======================================================================
+      // 12. MULTI-IDIOMA (básico)
+      // =======================================================================
+      (function() {
+        const translations = {
+          es: {
+            'menu_tecnologia': 'Tecnología',
+            'menu_hogar': 'Hogar',
+            'menu_deportes': 'Deportes',
+            'menu_accesorios': 'Accesorios',
+            'menu_ofertas': 'Ofertas',
+            'buscar': 'Buscar productos…',
+            'cargando_producto': 'Cargando producto...',
+            'producto_no_encontrado': 'Producto no encontrado.',
+            'volver_catalogo': 'Volver al catálogo',
+            'ver_productos': 'Ver productos',
+            'no_producto': 'No se especificó ningún producto.',
+            'color': 'Color',
+            'talla': 'Talla',
+            'agregar_carrito': 'Agregar al carrito',
+            'agregar_favoritos': 'Agregar a favoritos',
+            'quitar_favoritos': 'Quitar de favoritos',
+            'caracteristicas': 'Características',
+            'footer_desc': 'Tecnología, estilo y calidad en un solo lugar.',
+            'siguenos': 'Síguenos:',
+            'categorias': 'Categorías',
+            'ayuda': 'Ayuda',
+            'nosotros': 'Nosotros',
+            'rastrear': 'Rastrear pedido',
+            'cambios': 'Cambios y devoluciones',
+            'medios_pago': 'Medios de pago',
+            'preguntas': 'Preguntas frecuentes',
+            'sobre': 'Sobre LAGUER',
+            'contacto': 'Contacto',
+            'terminos': 'Términos',
+            'privacidad': 'Privacidad',
+            'inicio': 'Inicio',
+            'productos': 'Productos',
+            'carrito': 'Carrito',
+            'perfil': 'Perfil',
+            'hecho_con': 'Hecho con ♥ para todo el Perú',
+            'cookies_texto': 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra',
+            'politica_privacidad': 'política de privacidad',
+            'rechazar': 'Rechazar',
+            'configurar': 'Configurar',
+            'aceptar': 'Aceptar',
+            'ver_todas': 'Ver todas'
+          },
+          en: {
+            'menu_tecnologia': 'Technology',
+            'menu_hogar': 'Home',
+            'menu_deportes': 'Sports',
+            'menu_accesorios': 'Accessories',
+            'menu_ofertas': 'Offers',
+            'buscar': 'Search products…',
+            'cargando_producto': 'Loading product...',
+            'producto_no_encontrado': 'Product not found.',
+            'volver_catalogo': 'Back to catalog',
+            'ver_productos': 'View products',
+            'no_producto': 'No product specified.',
+            'color': 'Color',
+            'talla': 'Size',
+            'agregar_carrito': 'Add to cart',
+            'agregar_favoritos': 'Add to favorites',
+            'quitar_favoritos': 'Remove from favorites',
+            'caracteristicas': 'Features',
+            'footer_desc': 'Technology, style and quality in one place.',
+            'siguenos': 'Follow us:',
+            'categorias': 'Categories',
+            'ayuda': 'Help',
+            'nosotros': 'About',
+            'rastrear': 'Track order',
+            'cambios': 'Returns & exchanges',
+            'medios_pago': 'Payment methods',
+            'preguntas': 'FAQ',
+            'sobre': 'About LAGUER',
+            'contacto': 'Contact',
+            'terminos': 'Terms',
+            'privacidad': 'Privacy',
+            'inicio': 'Home',
+            'productos': 'Products',
+            'carrito': 'Cart',
+            'perfil': 'Profile',
+            'hecho_con': 'Made with ♥ for all Peru',
+            'cookies_texto': 'We use cookies to improve your experience. By continuing, you accept our',
+            'politica_privacidad': 'privacy policy',
+            'rechazar': 'Reject',
+            'configurar': 'Settings',
+            'aceptar': 'Accept',
+            'ver_todas': 'View all'
+          }
+        };
+
+        const langSelector = document.getElementById('languageSelector');
+        let currentLang = localStorage.getItem('laguer_lang') || 'es';
+
+        function applyTranslations(lang) {
+          document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            el.textContent = translations[lang]?.[key] || translations.es[key] || key;
+          });
+          document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.dataset.i18nPlaceholder;
+            el.placeholder = translations[lang]?.[key] || translations.es[key] || key;
+          });
+          langSelector.value = lang;
+          localStorage.setItem('laguer_lang', lang);
+        }
+
+        langSelector?.addEventListener('change', function() {
+          currentLang = this.value;
+          applyTranslations(currentLang);
+        });
+
+        applyTranslations(currentLang);
+      })();
+
+      // =======================================================================
+      // 13. INICIALIZAR
+      // =======================================================================
       document.addEventListener('DOMContentLoaded', function() {
         loadProduct(productId);
         // Actualizar badges
@@ -1143,7 +1563,7 @@
         if (favEl) favEl.textContent = favs.length;
       });
 
-      console.log('📦 Detalle de producto LAGUER listo (con imagen dinámica)');
+      console.log('📦 Detalle de producto LAGUER listo con todas las mejoras');
     })();
   </script>
 </body>

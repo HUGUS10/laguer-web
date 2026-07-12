@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
-    /* ===== VARIABLES (igual que en index) ===== */
+    /* ===== VARIABLES ===== */
     :root {
       --bg: #05070b;
       --bg-soft: #0b1017;
@@ -29,6 +29,17 @@
       --bottom-nav-height: 70px;
     }
 
+    /* ===== TEMA CLARO ===== */
+    body.light-mode {
+      --bg: #f5f8fb;
+      --bg-soft: #e9edf2;
+      --surface: #ffffff;
+      --surface-2: #f0f2f5;
+      --line: rgba(0,0,0,.08);
+      --white: #1a1a1a;
+      --muted: #555555;
+    }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -38,6 +49,7 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
       padding-bottom: calc(var(--bottom-nav-height) + 20px);
+      transition: background 0.3s ease, color 0.3s ease;
     }
     h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
     a { color: inherit; text-decoration: none; }
@@ -100,6 +112,10 @@
       background: rgba(5,7,11,.88);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
+      transition: background 0.3s ease;
+    }
+    body.light-mode header.site {
+      background: rgba(255,255,255,.92);
     }
     .header-row {
       display: flex;
@@ -165,7 +181,7 @@
     .header-icons {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
       flex-shrink: 0;
     }
     .icon-btn {
@@ -390,6 +406,10 @@
       background: #020406;
       border-top: 1px solid var(--line);
       padding: 40px 0 20px;
+      transition: background 0.3s ease;
+    }
+    body.light-mode footer {
+      background: #e9edf2;
     }
     .foot-grid {
       display: grid;
@@ -459,7 +479,7 @@
       color: var(--muted);
     }
 
-    /* ===== Sello: Libro de Reclamaciones (imagen, centrada en medio del footer) ===== */
+    /* ===== Sello: Libro de Reclamaciones ===== */
     .libro-reclamos-final {
       display: flex;
       justify-content: center;
@@ -483,7 +503,124 @@
       display: block;
     }
 
-    /* ===== BOTTOM NAV (móvil) ===== */
+    /* ===== COOKIES BANNER ===== */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      padding: 16px 24px;
+      z-index: 9999;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+    .cookie-banner.show {
+      transform: translateY(0);
+    }
+    .cookie-banner p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+      min-width: 200px;
+    }
+    .cookie-banner p a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+    .cookie-banner .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .cookie-banner .btn-cookie {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cookie-banner .btn-cookie.accept {
+      background: var(--green);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.accept:hover {
+      transform: scale(1.05);
+    }
+    .cookie-banner .btn-cookie.reject {
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .cookie-banner .btn-cookie.reject:hover {
+      background: var(--red);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings {
+      background: var(--blue);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings:hover {
+      transform: scale(1.05);
+    }
+
+    /* ===== ANIMACIONES ===== */
+    .fade-in {
+      animation: fadeIn 0.6s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== LIGHTBOX ===== */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .lightbox-overlay.active {
+      display: flex;
+    }
+    .lightbox-img {
+      max-width: 90%;
+      max-height: 90%;
+      object-fit: contain;
+      border-radius: 8px;
+      animation: zoomIn 0.3s ease;
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      color: #fff;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .lightbox-close:hover {
+      transform: rotate(90deg);
+    }
+
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -554,6 +691,8 @@
       .icon-btn i { font-size: 16px; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
       .foot-grid { grid-template-columns: 1fr 1fr; }
+      .cookie-banner { flex-direction: column; text-align: center; padding: 16px; }
+      .cookie-banner .buttons { justify-content: center; }
     }
 
     @media (max-width: 600px) {
@@ -580,6 +719,15 @@
         <span>🚚 <b>Envíos a todo el Perú</b></span>
         <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
       </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <select id="languageSelector" style="background:transparent; border:1px solid var(--line); border-radius:6px; color:var(--white); padding:2px 6px; font-size:12px; cursor:pointer;">
+          <option value="es">🇪🇸 ES</option>
+          <option value="en">🇬🇧 EN</option>
+        </select>
+        <button id="themeToggle" class="icon-btn" style="font-size:16px; width:32px; height:32px;">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
     </div>
   </div>
   <div class="beam-rule"></div>
@@ -589,20 +737,20 @@
     <div class="wrap header-row">
       <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
       <nav class="main-nav">
-        <a href="productos.html?cat=tecnologia">Tecnología</a>
-        <a href="productos.html?cat=hogar">Hogar</a>
-        <a href="productos.html?cat=deportes">Deportes</a>
-        <a href="productos.html?cat=accesorios">Accesorios</a>
-        <a href="ofertas.html">Ofertas</a>
+        <a href="productos.html?cat=tecnologia" data-i18n="menu_tecnologia">Tecnología</a>
+        <a href="productos.html?cat=hogar" data-i18n="menu_hogar">Hogar</a>
+        <a href="productos.html?cat=deportes" data-i18n="menu_deportes">Deportes</a>
+        <a href="productos.html?cat=accesorios" data-i18n="menu_accesorios">Accesorios</a>
+        <a href="ofertas.html" data-i18n="menu_ofertas">Ofertas</a>
       </nav>
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Buscar productos…" />
+        <input type="text" id="searchInput" placeholder="Buscar productos…" data-i18n-placeholder="buscar" />
       </div>
       <div class="header-icons">
-        <a href="login.html" class="icon-btn" id="headerPerfil"><i class="fas fa-user"></i></a>
+        <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
         <a href="favoritos.html" class="icon-btn fav-btn-header"><i class="fas fa-heart"></i><span class="fav-count" id="favCount">0</span></a>
-        <a href="carrito.html" class="icon-btn" id="headerCarrito"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+        <a href="carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
       </div>
     </div>
     <div class="cat-strip">
@@ -622,22 +770,27 @@
   <section class="section">
     <div class="wrap">
       <div class="productos-header">
-        <h1><i class="fas fa-box"></i> Nuestros productos</h1>
+        <h1><i class="fas fa-box"></i> <span data-i18n="nuestros_productos">Nuestros productos</span></h1>
         <div class="filtros" id="filtrosCategoria">
-          <button class="filtro-btn active" data-cat="all">Todos</button>
-          <button class="filtro-btn" data-cat="tecnologia">Tecnología</button>
-          <button class="filtro-btn" data-cat="hogar">Hogar</button>
-          <button class="filtro-btn" data-cat="deportes">Deportes</button>
-          <button class="filtro-btn" data-cat="accesorios">Accesorios</button>
-          <button class="filtro-btn" data-cat="belleza">Belleza</button>
-          <button class="filtro-btn" data-cat="gaming">Gaming</button>
-          <button class="filtro-btn" data-cat="audio">Audio</button>
+          <button class="filtro-btn active" data-cat="all" data-i18n="todos">Todos</button>
+          <button class="filtro-btn" data-cat="tecnologia" data-i18n="tecnologia">Tecnología</button>
+          <button class="filtro-btn" data-cat="hogar" data-i18n="hogar">Hogar</button>
+          <button class="filtro-btn" data-cat="deportes" data-i18n="deportes">Deportes</button>
+          <button class="filtro-btn" data-cat="accesorios" data-i18n="accesorios">Accesorios</button>
+          <button class="filtro-btn" data-cat="belleza" data-i18n="belleza">Belleza</button>
+          <button class="filtro-btn" data-cat="gaming" data-i18n="gaming">Gaming</button>
+          <button class="filtro-btn" data-cat="audio" data-i18n="audio">Audio</button>
         </div>
+      </div>
+
+      <div class="search-box" style="max-width:100%; margin-bottom:20px;">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInputProducts" placeholder="Buscar productos…" data-i18n-placeholder="buscar" />
       </div>
 
       <div id="loading" style="text-align:center; padding:20px 0; color:var(--muted);">
         <i class="fas fa-spinner fa-spin fa-2x"></i>
-        <p>Cargando productos...</p>
+        <p data-i18n="cargando">Cargando productos...</p>
       </div>
 
       <div class="product-grid" id="productGrid"></div>
@@ -650,7 +803,7 @@
       <div class="foot-grid">
         <div>
           <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
-          <p class="foot-desc">Tecnología, estilo y calidad en un solo lugar.</p>
+          <p class="foot-desc" data-i18n="footer_desc">Tecnología, estilo y calidad en un solo lugar.</p>
           <div class="pay-icons-footer">
             <span><i class="fab fa-cc-visa"></i> VISA</span>
             <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
@@ -660,7 +813,7 @@
             <span><i class="fab fa-cc-diners-club"></i> Diners</span>
           </div>
           <div class="footer-social">
-            <span>Síguenos:</span>
+            <span data-i18n="siguenos">Síguenos:</span>
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
@@ -668,30 +821,30 @@
           </div>
         </div>
         <div class="foot-col">
-          <h5>Categorías</h5>
-          <a href="productos.html?cat=tecnologia">Tecnología</a>
-          <a href="productos.html?cat=hogar">Hogar</a>
-          <a href="productos.html?cat=deportes">Deportes</a>
-          <a href="productos.html?cat=accesorios">Accesorios</a>
-          <a href="categorias.html">Ver todas</a>
+          <h5 data-i18n="categorias">Categorías</h5>
+          <a href="productos.html?cat=tecnologia" data-i18n="tecnologia">Tecnología</a>
+          <a href="productos.html?cat=hogar" data-i18n="hogar">Hogar</a>
+          <a href="productos.html?cat=deportes" data-i18n="deportes">Deportes</a>
+          <a href="productos.html?cat=accesorios" data-i18n="accesorios">Accesorios</a>
+          <a href="categorias.html" data-i18n="ver_todas">Ver todas</a>
         </div>
         <div class="foot-col">
-          <h5>Ayuda</h5>
-          <a href="pedidos.html">Rastrear pedido</a>
-          <a href="ayuda.html">Cambios y devoluciones</a>
-          <a href="ayuda.html">Medios de pago</a>
-          <a href="ayuda.html">Preguntas frecuentes</a>
+          <h5 data-i18n="ayuda">Ayuda</h5>
+          <a href="pedidos.html" data-i18n="rastrear">Rastrear pedido</a>
+          <a href="ayuda.html" data-i18n="cambios">Cambios y devoluciones</a>
+          <a href="ayuda.html" data-i18n="medios_pago">Medios de pago</a>
+          <a href="ayuda.html" data-i18n="preguntas">Preguntas frecuentes</a>
         </div>
         <div class="foot-col">
-          <h5>Nosotros</h5>
-          <a href="nosotros.html">Sobre LAGUER</a>
-          <a href="contacto.html">Contacto</a>
-          <a href="terminos.html">Términos</a>
-          <a href="privacidad.html">Privacidad</a>
+          <h5 data-i18n="nosotros">Nosotros</h5>
+          <a href="nosotros.html" data-i18n="sobre">Sobre LAGUER</a>
+          <a href="contacto.html" data-i18n="contacto">Contacto</a>
+          <a href="terminos.html" data-i18n="terminos">Términos</a>
+          <a href="privacidad.html" data-i18n="privacidad">Privacidad</a>
         </div>
       </div>
 
-      <!-- ===== Libro de Reclamaciones (imagen centrada) ===== -->
+      <!-- ===== Libro de Reclamaciones ===== -->
       <div class="libro-reclamos-final">
         <a href="libro-reclamaciones.html" aria-label="Libro de Reclamaciones">
           <img src="../image/libro-recla.jfif" alt="Libro de Reclamaciones" loading="lazy" />
@@ -701,21 +854,40 @@
       <div class="beam-rule" style="margin:16px 0;"></div>
       <div class="foot-bottom">
         <span>© 2026 LAGUER. Todos los derechos reservados.</span>
-        <span>Hecho con ♥ para todo el Perú</span>
+        <span data-i18n="hecho_con">Hecho con ♥ para todo el Perú</span>
       </div>
     </div>
   </footer>
 
   <!-- ===== BOTTOM NAV (solo móvil) ===== -->
   <nav class="bottom-nav" id="bottomNav">
-    <a href="../index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
-    <a href="productos.html" class="active"><i class="fas fa-th-large"></i><span>Productos</span></a>
+    <a href="../index.html"><i class="fas fa-home"></i><span data-i18n="inicio">Inicio</span></a>
+    <a href="productos.html" class="active"><i class="fas fa-th-large"></i><span data-i18n="productos">Productos</span></a>
     <a href="carrito.html" id="bottomCartLink">
-      <i class="fas fa-shopping-cart"></i><span>Carrito</span>
+      <i class="fas fa-shopping-cart"></i><span data-i18n="carrito">Carrito</span>
       <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
     </a>
-    <a href="perfil.html"><i class="fas fa-user"></i><span>Perfil</span></a>
+    <a href="perfil.html"><i class="fas fa-user"></i><span data-i18n="perfil">Perfil</span></a>
   </nav>
+
+  <!-- ===== COOKIES BANNER ===== -->
+  <div class="cookie-banner" id="cookieBanner">
+    <p>
+      <span data-i18n="cookies_texto">Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra</span>
+      <a href="privacidad.html" data-i18n="politica_privacidad">política de privacidad</a>.
+    </p>
+    <div class="buttons">
+      <button class="btn-cookie reject" id="cookieReject" data-i18n="rechazar">Rechazar</button>
+      <button class="btn-cookie settings" id="cookieSettings" data-i18n="configurar">Configurar</button>
+      <button class="btn-cookie accept" id="cookieAccept" data-i18n="aceptar">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- ===== LIGHTBOX ===== -->
+  <div class="lightbox-overlay" id="lightboxOverlay">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="Zoom" />
+  </div>
 
   <!-- ============================================================ -->
   <!-- ===== SCRIPTS ===== -->
@@ -725,7 +897,7 @@
       'use strict';
 
       // =======================================================================
-      // PRODUCTOS CON SUS IMÁGENES REALES (carpeta image/productos/)
+      // 1. PRODUCTOS (con imágenes, colores, etc.)
       // =======================================================================
       const sampleProducts = [
         {
@@ -734,7 +906,11 @@
           category: 'tecnologia',
           price: 199,
           discount: 30,
-          image: '../image/productos/smartwatch-pro.jpg'
+          image: '../image/productos/smartwatch-pro.jpg',
+          images: ['../image/productos/smartwatch-pro-1.jpg', '../image/productos/smartwatch-pro-2.jpg', '../image/productos/smartwatch-pro-3.jpg'],
+          colors: ['#1a1a1a', '#ffffff', '#ff4444'],
+          sizes: ['Único'],
+          characteristics: ['Pantalla AMOLED', 'GPS integrado', 'Monitoreo cardíaco', 'Resistente al agua 5ATM']
         },
         {
           id: 'p2',
@@ -742,7 +918,11 @@
           category: 'audio',
           price: 89,
           discount: 20,
-          image: '../image/productos/audifonos-bt.jfif'
+          image: '../image/productos/audifonos-bt.jfif',
+          images: ['../image/productos/audifonos-bt-1.jfif', '../image/productos/audifonos-bt-2.jfif'],
+          colors: ['#000000', '#ffffff'],
+          sizes: ['Único'],
+          characteristics: ['Bluetooth 5.0', 'Cancelación de ruido', '20h batería', 'Carga rápida']
         },
         {
           id: 'p3',
@@ -750,7 +930,11 @@
           category: 'hogar',
           price: 45,
           discount: 0,
-          image: '../image/productos/lampara-led.jfif'
+          image: '../image/productos/lampara-led.jfif',
+          images: ['../image/productos/lampara-led.jfif'],
+          colors: ['#ffffff'],
+          sizes: ['Único'],
+          characteristics: ['Control por app', '16M colores', 'Compatible con Alexa', 'Eficiencia energética']
         },
         {
           id: 'p4',
@@ -758,7 +942,11 @@
           category: 'deportes',
           price: 120,
           discount: 10,
-          image: '../image/productos/mochila-deportiva.jfif'
+          image: '../image/productos/mochila-deportiva.jfif',
+          images: ['../image/productos/mochila-deportiva-1.jfif'],
+          colors: ['#1a1a1a', '#2e86de'],
+          sizes: ['Único'],
+          characteristics: ['Impermeable', 'Compartimento laptop', 'Correas acolchadas', 'Bolsillos laterales']
         },
         {
           id: 'p5',
@@ -766,7 +954,11 @@
           category: 'accesorios',
           price: 35,
           discount: 0,
-          image: '../image/productos/cargador-rapido.jfif'
+          image: '../image/productos/cargador-rapido.jfif',
+          images: ['../image/productos/cargador-rapido-1.jfif'],
+          colors: ['#ffffff'],
+          sizes: ['Único'],
+          characteristics: ['20W', 'USB-C', 'Carga rápida', 'Compatible universal']
         },
         {
           id: 'p6',
@@ -774,7 +966,11 @@
           category: 'gaming',
           price: 150,
           discount: 15,
-          image: '../image/productos/teclado-gaming.jfif'
+          image: '../image/productos/teclado-gaming.jfif',
+          images: ['../image/productos/teclado-gaming-1.jfif'],
+          colors: ['#1a1a1a', '#ff0000'],
+          sizes: ['Único'],
+          characteristics: ['Mecánico', 'RGB', 'Anti-ghosting', 'Reposamuñecas']
         },
         {
           id: 'p7',
@@ -782,7 +978,11 @@
           category: 'deportes',
           price: 89,
           discount: 25,
-          image: '../image/productos/polo-deportivo.jfif'
+          image: '../image/productos/polo-deportivo.jfif',
+          images: ['../image/productos/polo-deportivo-1.jfif', '../image/productos/polo-deportivo-2.jfif'],
+          colors: ['#1a1a1a', '#ffffff', '#2e86de'],
+          sizes: ['S', 'M', 'L', 'XL'],
+          characteristics: ['100% algodón', 'Cuello redondo', 'Doble costura', 'Estampado resistente']
         },
         {
           id: 'p8',
@@ -790,17 +990,22 @@
           category: 'hogar',
           price: 60,
           discount: 0,
-          image: '../image/productos/set-organizadores.jfif'
+          image: '../image/productos/set-organizadores.jfif',
+          images: ['../image/productos/set-organizadores-1.jfif'],
+          colors: ['#ffffff', '#1a1a1a'],
+          sizes: ['Único'],
+          characteristics: ['Material reciclado', 'Diseño modular', 'Apilable', 'Fácil limpieza']
         }
       ];
 
       // =======================================================================
-      // CARRITO Y FAVORITOS (localStorage)
+      // 2. CARRITO (localStorage)
       // =======================================================================
       const CART_KEY = 'laguerCart';
       const FAV_KEY = 'laguerFavs';
       const grid = document.getElementById('productGrid');
       const loading = document.getElementById('loading');
+      const searchInput = document.getElementById('searchInputProducts');
       const cartCountEl = document.getElementById('cartCount');
       const bottomCartBadge = document.getElementById('bottomCartBadge');
       const favCountEl = document.getElementById('favCount');
@@ -827,7 +1032,7 @@
         }
         updateCartUI();
         // Feedback visual
-        const btn = document.querySelector(`[data-id="${product.id}"] .add-btn-producto`);
+        const btn = document.querySelector(`.product-card[data-id="${product.id}"] .add-btn-producto`);
         if (btn) {
           const orig = btn.innerHTML;
           btn.innerHTML = '✅ Agregado';
@@ -866,7 +1071,7 @@
       }
 
       // =======================================================================
-      // RENDERIZAR PRODUCTOS
+      // 3. RENDERIZAR PRODUCTOS (con colores visibles)
       // =======================================================================
       function renderProducts(products) {
         loading.style.display = 'none';
@@ -874,8 +1079,9 @@
           grid.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--muted); padding:40px 0;">No se encontraron productos.</p>`;
           return;
         }
+
         let html = '';
-        products.forEach(prod => {
+        products.forEach((prod, index) => {
           const price = prod.price || 0;
           const discount = prod.discount || 0;
           const finalPrice = discount > 0 ? price * (1 - discount / 100) : price;
@@ -884,8 +1090,20 @@
           const isFav = favs.some(f => f.id === prod.id);
           const heart = isFav ? '♥' : '♡';
           const heartClass = isFav ? 'active' : '';
+
+          // Mostrar colores (círculos)
+          let colorsHtml = '';
+          if (prod.colors && prod.colors.length > 0) {
+            colorsHtml = `<div style="display:flex; gap:6px; margin-top:4px; flex-wrap:wrap;">`;
+            prod.colors.forEach(color => {
+              colorsHtml += `<span style="display:inline-block; width:18px; height:18px; border-radius:50%; background:${color}; border:1px solid var(--line);"></span>`;
+            });
+            colorsHtml += `</div>`;
+          }
+
+          const delay = index * 0.05;
           html += `
-            <div class="product-card" data-id="${prod.id}">
+            <div class="product-card fade-in" data-id="${prod.id}" style="animation-delay:${delay}s;">
               <div class="product-card-img">
                 <img src="${imgSrc}" alt="${prod.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\\'fas fa-box\\' style=\\'font-size:40px;opacity:0.3;\\'></i>'" />
                 ${badge}
@@ -894,6 +1112,7 @@
               <div class="product-card-body">
                 <div class="categoria">${prod.category || 'General'}</div>
                 <div class="nombre">${prod.name}</div>
+                ${colorsHtml}
                 <div class="precio">S/ ${finalPrice.toFixed(2)}</div>
                 <button class="add-btn-producto" data-id="${prod.id}" data-name="${prod.name}" data-price="${finalPrice}" data-image="${imgSrc}">
                   <i class="fas fa-cart-plus"></i> Agregar
@@ -905,7 +1124,6 @@
         grid.innerHTML = html;
 
         // ===== EVENTOS =====
-        // Agregar al carrito (con imagen)
         grid.querySelectorAll('.add-btn-producto').forEach(btn => {
           btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -917,7 +1135,6 @@
           });
         });
 
-        // Favoritos
         grid.querySelectorAll('.fav-btn-producto').forEach(btn => {
           btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -926,7 +1143,6 @@
           });
         });
 
-        // Redirigir a detalle (producto.html)
         grid.querySelectorAll('.product-card').forEach(card => {
           card.addEventListener('click', function(e) {
             if (e.target.closest('.add-btn-producto') || e.target.closest('.fav-btn-producto')) return;
@@ -937,14 +1153,14 @@
       }
 
       // =======================================================================
-      // FILTROS Y BÚSQUEDA
+      // 4. FILTROS Y BÚSQUEDA (en tiempo real)
       // =======================================================================
       let currentProducts = [...sampleProducts];
 
       function applyFilters() {
         const activeFilter = document.querySelector('.filtro-btn.active');
         const cat = activeFilter ? activeFilter.dataset.cat : 'all';
-        const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+        const searchTerm = searchInput.value.toLowerCase().trim();
 
         let filtered = [...sampleProducts];
         if (cat !== 'all') {
@@ -960,7 +1176,6 @@
         renderProducts(filtered);
       }
 
-      // Filtros por categoría
       document.querySelectorAll('.filtro-btn').forEach(btn => {
         btn.addEventListener('click', function() {
           document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('active'));
@@ -969,26 +1184,214 @@
         });
       });
 
-      // Búsqueda en tiempo real
-      document.getElementById('searchInput').addEventListener('input', applyFilters);
+      searchInput.addEventListener('input', applyFilters);
 
       // =======================================================================
-      // INICIALIZAR
+      // 5. COOKIES
+      // =======================================================================
+      (function() {
+        const COOKIE_KEY = 'laguer_cookie_consent';
+        const banner = document.getElementById('cookieBanner');
+
+        function getCookieConsent() {
+          return localStorage.getItem(COOKIE_KEY);
+        }
+        function setCookieConsent(value) {
+          localStorage.setItem(COOKIE_KEY, value);
+          banner.classList.remove('show');
+        }
+
+        if (!getCookieConsent()) {
+          setTimeout(() => banner.classList.add('show'), 500);
+        }
+
+        document.getElementById('cookieAccept')?.addEventListener('click', function() {
+          setCookieConsent('accepted');
+        });
+        document.getElementById('cookieReject')?.addEventListener('click', function() {
+          setCookieConsent('rejected');
+        });
+        document.getElementById('cookieSettings')?.addEventListener('click', function() {
+          alert('Configuración de cookies: aquí puedes gestionar tus preferencias.');
+        });
+      })();
+
+      // =======================================================================
+      // 6. TEMA OSCURO/CLARO
+      // =======================================================================
+      (function() {
+        const toggleBtn = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('laguer_theme') || 'dark';
+
+        if (currentTheme === 'light') {
+          document.body.classList.add('light-mode');
+          toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        toggleBtn?.addEventListener('click', function() {
+          document.body.classList.toggle('light-mode');
+          const isLight = document.body.classList.contains('light-mode');
+          this.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+          localStorage.setItem('laguer_theme', isLight ? 'light' : 'dark');
+        });
+      })();
+
+      // =======================================================================
+      // 7. MULTI-IDIOMA (básico)
+      // =======================================================================
+      (function() {
+        const translations = {
+          es: {
+            'menu_tecnologia': 'Tecnología',
+            'menu_hogar': 'Hogar',
+            'menu_deportes': 'Deportes',
+            'menu_accesorios': 'Accesorios',
+            'menu_ofertas': 'Ofertas',
+            'buscar': 'Buscar productos…',
+            'nuestros_productos': 'Nuestros productos',
+            'todos': 'Todos',
+            'tecnologia': 'Tecnología',
+            'hogar': 'Hogar',
+            'deportes': 'Deportes',
+            'accesorios': 'Accesorios',
+            'belleza': 'Belleza',
+            'gaming': 'Gaming',
+            'audio': 'Audio',
+            'cargando': 'Cargando productos...',
+            'footer_desc': 'Tecnología, estilo y calidad en un solo lugar.',
+            'siguenos': 'Síguenos:',
+            'categorias': 'Categorías',
+            'ayuda': 'Ayuda',
+            'nosotros': 'Nosotros',
+            'rastrear': 'Rastrear pedido',
+            'cambios': 'Cambios y devoluciones',
+            'medios_pago': 'Medios de pago',
+            'preguntas': 'Preguntas frecuentes',
+            'sobre': 'Sobre LAGUER',
+            'contacto': 'Contacto',
+            'terminos': 'Términos',
+            'privacidad': 'Privacidad',
+            'inicio': 'Inicio',
+            'productos': 'Productos',
+            'carrito': 'Carrito',
+            'perfil': 'Perfil',
+            'hecho_con': 'Hecho con ♥ para todo el Perú',
+            'cookies_texto': 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra',
+            'politica_privacidad': 'política de privacidad',
+            'rechazar': 'Rechazar',
+            'configurar': 'Configurar',
+            'aceptar': 'Aceptar',
+            'ver_todas': 'Ver todas'
+          },
+          en: {
+            'menu_tecnologia': 'Technology',
+            'menu_hogar': 'Home',
+            'menu_deportes': 'Sports',
+            'menu_accesorios': 'Accessories',
+            'menu_ofertas': 'Offers',
+            'buscar': 'Search products…',
+            'nuestros_productos': 'Our products',
+            'todos': 'All',
+            'tecnologia': 'Technology',
+            'hogar': 'Home',
+            'deportes': 'Sports',
+            'accesorios': 'Accessories',
+            'belleza': 'Beauty',
+            'gaming': 'Gaming',
+            'audio': 'Audio',
+            'cargando': 'Loading products...',
+            'footer_desc': 'Technology, style and quality in one place.',
+            'siguenos': 'Follow us:',
+            'categorias': 'Categories',
+            'ayuda': 'Help',
+            'nosotros': 'About',
+            'rastrear': 'Track order',
+            'cambios': 'Returns & exchanges',
+            'medios_pago': 'Payment methods',
+            'preguntas': 'FAQ',
+            'sobre': 'About LAGUER',
+            'contacto': 'Contact',
+            'terminos': 'Terms',
+            'privacidad': 'Privacy',
+            'inicio': 'Home',
+            'productos': 'Products',
+            'carrito': 'Cart',
+            'perfil': 'Profile',
+            'hecho_con': 'Made with ♥ for all Peru',
+            'cookies_texto': 'We use cookies to improve your experience. By continuing, you accept our',
+            'politica_privacidad': 'privacy policy',
+            'rechazar': 'Reject',
+            'configurar': 'Settings',
+            'aceptar': 'Accept',
+            'ver_todas': 'View all'
+          }
+        };
+
+        const langSelector = document.getElementById('languageSelector');
+        let currentLang = localStorage.getItem('laguer_lang') || 'es';
+
+        function applyTranslations(lang) {
+          document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            el.textContent = translations[lang]?.[key] || translations.es[key] || key;
+          });
+          document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.dataset.i18nPlaceholder;
+            el.placeholder = translations[lang]?.[key] || translations.es[key] || key;
+          });
+          langSelector.value = lang;
+          localStorage.setItem('laguer_lang', lang);
+        }
+
+        langSelector?.addEventListener('change', function() {
+          currentLang = this.value;
+          applyTranslations(currentLang);
+        });
+
+        applyTranslations(currentLang);
+      })();
+
+      // =======================================================================
+      // 8. LIGHTBOX
+      // =======================================================================
+      (function() {
+        const overlay = document.getElementById('lightboxOverlay');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const closeBtn = document.getElementById('lightboxClose');
+
+        document.addEventListener('click', function(e) {
+          const img = e.target.closest('.product-card-img img');
+          if (img && img.src && !img.closest('.fav-btn-producto') && !img.closest('.add-btn-producto')) {
+            lightboxImg.src = img.src;
+            overlay.classList.add('active');
+          }
+        });
+
+        closeBtn?.addEventListener('click', function() {
+          overlay.classList.remove('active');
+        });
+        overlay?.addEventListener('click', function(e) {
+          if (e.target === this) this.classList.remove('active');
+        });
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') overlay.classList.remove('active');
+        });
+      })();
+
+      // =======================================================================
+      // 9. INICIALIZAR
       // =======================================================================
       document.addEventListener('DOMContentLoaded', function() {
-        // Cargar favoritos del localStorage
         favs = JSON.parse(localStorage.getItem(FAV_KEY)) || [];
         updateFavUI();
-        // Cargar carrito
         cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
         updateCartUI();
-        // Renderizar productos
         applyFilters();
-        // Marcar el botón de productos en bottom nav como activo
+        // Marcar productos activo en bottom nav
         document.querySelector('.bottom-nav a[href="productos.html"]')?.classList.add('active');
       });
 
-      console.log('📦 Página de productos LAGUER lista');
+      console.log('📦 Página de productos LAGUER lista con todas las mejoras');
     })();
   </script>
 </body>
