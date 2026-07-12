@@ -1,5 +1,4 @@
 name = "laguer-web"
-main = "functions/api/[[path]].js"
 compatibility_date = "2024-07-01"
 
 [[d1_databases]]
