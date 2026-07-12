@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Libro de Reclamaciones · LAGUER</title>
+  <link rel="icon" href="../image/favicon-laguer.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ===== VARIABLES Y RESET ===== */
+    :root {
+      --bg: #05070b;
+      --bg-soft: #0b1017;
+      --surface: #121a24;
+      --surface-2: #1a2531;
+      --line: rgba(255,255,255,.08);
+      --red: #ee1d25;
+      --red-dark: #a5141a;
+      --green: #39b54a;
+      --green-dark: #1f7b2c;
+      --blue: #189ee0;
+      --blue-dark: #0f6ca3;
+      --white: #f5f8fb;
+      --muted: #8fa0b3;
+      --radius: 16px;
+      --bottom-nav-height: 70px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      padding-bottom: calc(var(--bottom-nav-height) + 20px);
+    }
+    h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; border: none; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+    .beam-rule {
+      height: 3px;
+      width: 100%;
+      background: linear-gradient(90deg, var(--red) 0 33%, var(--green) 33% 66%, var(--blue) 66% 100%);
+      opacity: .9;
+    }
+
+    .topbar {
+      background: #020406;
+      font-size: 12.5px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar .wrap { display: flex; justify-content: space-between; align-items: center; height: 36px; }
+    .topbar-links { display: flex; gap: 20px; }
+    .topbar-links b { color: var(--white); }
+
+    header.site {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(5,7,11,.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 60px;
+    }
+    .logo-mark { height: 32px; flex-shrink: 0; }
+    .logo-mark img { height: 100%; width: auto; }
+    .main-nav {
+      display: flex;
+      gap: 20px;
+      flex: 0 0 auto;
+    }
+    .main-nav a {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--white);
+      opacity: .85;
+      position: relative;
+      padding: 4px 2px;
+    }
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--red), var(--green), var(--blue));
+      transition: width .25s ease;
+    }
+    .main-nav a:hover { opacity: 1; }
+    .main-nav a:hover::after { width: 100%; }
+    .search-box {
+      flex: 1;
+      max-width: 300px;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 14px;
+      transition: border-color .2s;
+    }
+    .search-box:focus-within { border-color: var(--blue); }
+    .search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--white);
+      font-size: 14px;
+      width: 100%;
+      font-family: inherit;
+    }
+    .search-box input::placeholder { color: var(--muted); }
+    .search-box i { opacity: .7; }
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .icon-btn {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      transition: .2s;
+      color: var(--white);
+    }
+    .icon-btn:hover { border-color: var(--green); background: var(--surface-2); }
+    .cart-count, .fav-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--bg);
+    }
+    .fav-count { background: var(--blue); }
+    .burger { display: none; }
+
+    .cat-strip {
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--line);
+    }
+    .cat-strip .wrap {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding: 10px 20px;
+    }
+    .cat-chip {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .cat-chip:hover { color: var(--white); }
+    .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ===== LIBRO DE RECLAMACIONES ===== */
+    .page-section { padding: 40px 0; }
+    .page-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .page-header h1 {
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .page-header h1 i { color: var(--red); }
+    .page-header p { color: var(--muted); margin-top: 6px; }
+
+    .reclamo-card {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 30px 28px;
+    }
+    .reclamo-card .badge-top {
+      display: inline-block;
+      background: var(--red);
+      color: #fff;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 4px 14px;
+      border-radius: 20px;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+    .reclamo-card .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: var(--muted);
+    }
+    .form-group label .required {
+      color: var(--red);
+      margin-left: 2px;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      color: var(--white);
+      font-family: inherit;
+      transition: 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .form-group .file-upload {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-soft);
+      border: 1px dashed var(--line);
+      border-radius: 10px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .form-group .file-upload:hover { border-color: var(--blue); }
+    .form-group .file-upload input[type="file"] {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .form-group .file-upload i { font-size: 20px; color: var(--blue); }
+    .form-group .file-upload span { color: var(--muted); font-size: 14px; }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--red), var(--blue));
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 8px;
+    }
+    .btn-submit:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .reclamo-footer {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .reclamo-footer .info i { color: var(--blue); margin-right: 4px; }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #020406;
+      border-top: 1px solid var(--line);
+      padding: 40px 0 20px;
+    }
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    .foot-logo { height: 30px; margin-bottom: 10px; }
+    .foot-desc { color: var(--muted); font-size: 13px; line-height: 1.6; max-width: 260px; }
+    .pay-icons-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .pay-icons-footer span {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pay-icons-footer span i { font-size: 16px; }
+    .pay-icons-footer span .fa-cc-visa { color: #1a1f71; }
+    .pay-icons-footer span .fa-cc-mastercard { color: #eb001b; }
+    .pay-icons-footer span .fa-cc-amex { color: #2e77bc; }
+    .pay-icons-footer span .fa-cc-diners-club { color: #006633; }
+    .pay-icons-footer span .fa-mobile-alt { color: var(--blue); }
+    .footer-social {
+      margin-top: 12px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .footer-social span { color: var(--muted); font-weight: 600; font-size: 13px; }
+    .footer-social a { color: var(--muted); font-size: 18px; transition: 0.2s; }
+    .footer-social a:hover { color: var(--white); transform: scale(1.2); }
+    .foot-col h5 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+    .foot-col a {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+      transition: .2s;
+    }
+    .foot-col a:hover { color: var(--white); }
+    .foot-bottom {
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--bottom-nav-height);
+      background: rgba(11,16,23,0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      display: none;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 1000;
+      padding: 0 8px;
+    }
+    .bottom-nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+      padding: 4px 8px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .bottom-nav a i { font-size: 22px; transition: 0.2s; }
+    .bottom-nav a span { font-size: 10px; }
+    .bottom-nav a.active { color: var(--blue); }
+    .bottom-nav a.active i { transform: translateY(-2px); }
+    .bottom-nav a .badge-bottom {
+      position: absolute;
+      top: 0;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg);
+    }
+
+    /* ============================================================ */
+    /* ===== RESPONSIVE ===== */
+    /* ============================================================ */
+    @media (max-width: 980px) {
+      .main-nav, .cat-strip, .burger { display: none !important; }
+      .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
+      .bottom-nav { display: flex; }
+      .search-box {
+        max-width: none;
+        flex: 2;
+        margin-left: 0;
+        padding: 8px 16px;
+      }
+      .search-box input { font-size: 15px; }
+      .header-row { gap: 10px; height: 56px; }
+      .logo-mark { height: 28px; }
+      .icon-btn { width: 34px; height: 34px; }
+      .icon-btn i { font-size: 16px; }
+      .reclamo-card { padding: 20px 16px; }
+      .reclamo-card .form-row { grid-template-columns: 1fr; }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .search-box { padding: 6px 12px; }
+      .search-box input { font-size: 14px; }
+      .bottom-nav a i { font-size: 20px; }
+      .bottom-nav a span { font-size: 9px; }
+      .foot-grid { grid-template-columns: 1fr; gap: 20px; }
+      .reclamo-card .badge-top { font-size: 11px; }
+      .reclamo-footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== TOPBAR ===== -->
+  <div class="topbar">
+    <div class="wrap">
+      <div class="topbar-links">
+        <span>🚚 <b>Envíos a todo el Perú</b></span>
+        <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
+      </div>
+    </div>
+  </div>
+  <div class="beam-rule"></div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site">
+    <div class="wrap header-row">
+      <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
+      <nav class="main-nav">
+        <a href="productos.html?cat=tecnologia">Tecnología</a>
+        <a href="productos.html?cat=hogar">Hogar</a>
+        <a href="productos.html?cat=deportes">Deportes</a>
+        <a href="productos.html?cat=accesorios">Accesorios</a>
+        <a href="ofertas.html">Ofertas</a>
+      </nav>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Buscar productos…" />
+      </div>
+      <div class="header-icons">
+        <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
+        <a href="favoritos.html" class="icon-btn fav-btn-header"><i class="fas fa-heart"></i><span class="fav-count" id="favCount">0</span></a>
+        <a href="carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+      </div>
+    </div>
+    <div class="cat-strip">
+      <div class="wrap">
+        <a href="productos.html?cat=tecnologia" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Tecnología</a>
+        <a href="productos.html?cat=hogar" class="cat-chip"><span class="cat-dot" style="background:var(--green)"></span>Hogar</a>
+        <a href="productos.html?cat=deportes" class="cat-chip"><span class="cat-dot" style="background:var(--blue)"></span>Deportes</a>
+        <a href="productos.html?cat=accesorios" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Accesorios</a>
+        <a href="productos.html?cat=belleza" class="cat-chip"><span class="cat-dot" style="background:var(--green)"></span>Belleza</a>
+        <a href="productos.html?cat=gaming" class="cat-chip"><span class="cat-dot" style="background:var(--blue)"></span>Gaming</a>
+        <a href="productos.html?cat=audio" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Audio</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== LIBRO DE RECLAMACIONES ===== -->
+  <section class="page-section">
+    <div class="wrap">
+      <div class="page-header">
+        <h1><i class="fas fa-book"></i> Libro de Reclamaciones</h1>
+        <p>Déjanos tu reclamo o queja, nos comprometemos a atenderte de manera rápida y eficiente.</p>
+      </div>
+
+      <div class="reclamo-card">
+        <div class="badge-top"><i class="fas fa-exclamation-triangle"></i> Atención al cliente</div>
+
+        <form id="reclamoForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Tipo de documento <span class="required">*</span></label>
+              <select id="tipoDoc">
+                <option value="DNI">DNI</option>
+                <option value="Carnet de Extranjería">Carnet de Extranjería</option>
+                <option value="Pasaporte">Pasaporte</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Número de documento <span class="required">*</span></label>
+              <input type="text" id="numDoc" placeholder="12345678" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombres completos <span class="required">*</span></label>
+              <input type="text" id="nombre" placeholder="Juan Pérez" required />
+            </div>
+            <div class="form-group">
+              <label>Correo electrónico <span class="required">*</span></label>
+              <input type="email" id="email" placeholder="juan@ejemplo.com" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Teléfono <span class="required">*</span></label>
+              <input type="tel" id="telefono" placeholder="987654321" required />
+            </div>
+            <div class="form-group">
+              <label>Pedido (opcional)</label>
+              <input type="text" id="pedido" placeholder="ORD-000123" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Tipo de reclamo <span class="required">*</span></label>
+            <select id="tipoReclamo">
+              <option value="">Selecciona...</option>
+              <option value="Producto defectuoso">Producto defectuoso</option>
+              <option value="Demora en la entrega">Demora en la entrega</option>
+              <option value="Producto incorrecto">Producto incorrecto</option>
+              <option value="Problema con el pago">Problema con el pago</option>
+              <option value="Atención al cliente">Atención al cliente</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Descripción del reclamo <span class="required">*</span></label>
+            <textarea id="descripcion" placeholder="Describe detalladamente tu reclamo..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Adjuntar archivo (opcional)</label>
+            <div class="file-upload">
+              <i class="fas fa-cloud-upload-alt"></i>
+              <span id="fileLabel">Haz clic para subir tu archivo (imagen o PDF)</span>
+              <input type="file" id="fileInput" accept=".jpg,.jpeg,.png,.pdf" />
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit" id="submitBtn">
+            <i class="fas fa-paper-plane"></i> Enviar reclamo
+          </button>
+        </form>
+
+        <div class="reclamo-footer">
+          <div class="info"><i class="fas fa-shield-alt"></i> Tus datos están seguros</div>
+          <div class="info"><i class="fas fa-clock"></i> Tiempo de respuesta: 48h hábiles</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
+          <p class="foot-desc">Tecnología, estilo y calidad en un solo lugar.</p>
+          <div class="pay-icons-footer">
+            <span><i class="fab fa-cc-visa"></i> VISA</span>
+            <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
+            <span><i class="fas fa-mobile-alt"></i> Yape</span>
+            <span><i class="fas fa-mobile-alt"></i> Plin</span>
+            <span><i class="fab fa-cc-amex"></i> Amex</span>
+            <span><i class="fab fa-cc-diners-club"></i> Diners</span>
+          </div>
+          <div class="footer-social">
+            <span>Síguenos:</span>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+          </div>
+        </div>
+        <div class="foot-col">
+          <h5>Categorías</h5>
+          <a href="productos.html?cat=tecnologia">Tecnología</a>
+          <a href="productos.html?cat=hogar">Hogar</a>
+          <a href="productos.html?cat=deportes">Deportes</a>
+          <a href="productos.html?cat=accesorios">Accesorios</a>
+          <a href="categorias.html">Ver todas</a>
+        </div>
+        <div class="foot-col">
+          <h5>Ayuda</h5>
+          <a href="ayuda.html">Centro de ayuda</a>
+          <a href="pedidos.html">Rastrear pedido</a>
+          <a href="ayuda.html#faq">Preguntas frecuentes</a>
+          <a href="contacto.html">Contacto</a>
+        </div>
+        <div class="foot-col">
+          <h5>Nosotros</h5>
+          <a href="nosotros.html">Sobre LAGUER</a>
+          <a href="contacto.html">Contacto</a>
+          <a href="terminos.html">Términos</a>
+          <a href="privacidad.html">Privacidad</a>
+          <a href="reclamaciones.html">Libro de Reclamaciones</a>
+        </div>
+      </div>
+      <div class="beam-rule" style="margin:16px 0;"></div>
+      <div class="foot-bottom">
+        <span>© 2026 LAGUER. Todos los derechos reservados.</span>
+        <span>Hecho con ♥ para todo el Perú</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== BOTTOM NAV ===== -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="../index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
+    <a href="productos.html"><i class="fas fa-th-large"></i><span>Productos</span></a>
+    <a href="carrito.html" id="bottomCartLink">
+      <i class="fas fa-shopping-cart"></i><span>Carrito</span>
+      <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
+    </a>
+    <a href="perfil.html"><i class="fas fa-user"></i><span>Perfil</span></a>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- ===== SCRIPTS ===== -->
+  <!-- ============================================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // =============================================================
+      // 1. SUBIDA DE ARCHIVO (simulación)
+      // =============================================================
+      const fileInput = document.getElementById('fileInput');
+      const fileLabel = document.getElementById('fileLabel');
+
+      fileInput.addEventListener('change', function() {
+        if (this.files && this.files.length > 0) {
+          const name = this.files[0].name;
+          fileLabel.innerHTML = `<i class="fas fa-check-circle" style="color:var(--green);"></i> ${name} (${(this.files[0].size / 1024).toFixed(1)} KB)`;
+        } else {
+          fileLabel.innerHTML = 'Haz clic para subir tu archivo (imagen o PDF)';
+        }
+      });
+
+      // =============================================================
+      // 2. ENVÍO DEL FORMULARIO (simulación)
+      // =============================================================
+      const form = document.getElementById('reclamoForm');
+      const submitBtn = document.getElementById('submitBtn');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Validar campos obligatorios
+        const required = ['numDoc', 'nombre', 'email', 'telefono', 'tipoReclamo', 'descripcion'];
+        let valid = true;
+        required.forEach(id => {
+          const el = document.getElementById(id);
+          if (!el.value.trim()) {
+            el.style.borderColor = 'var(--red)';
+            valid = false;
+          } else {
+            el.style.borderColor = 'var(--line)';
+          }
+        });
+
+        if (!valid) {
+          alert('❌ Por favor, completa todos los campos obligatorios.');
+          return;
+        }
+
+        // Simular envío
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+
+        setTimeout(() => {
+          alert('✅ ¡Tu reclamo ha sido enviado exitosamente! Te contactaremos en un plazo de 48 horas hábiles.');
+          form.reset();
+          fileLabel.innerHTML = 'Haz clic para subir tu archivo (imagen o PDF)';
+          submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar reclamo';
+          submitBtn.disabled = false;
+          // Resetear bordes
+          document.querySelectorAll('input, select, textarea').forEach(el => el.style.borderColor = 'var(--line)');
+        }, 2000);
+      });
+
+      // =============================================================
+      // 3. BADGES DE CARRITO Y FAVORITOS
+      // =============================================================
+      const cart = JSON.parse(localStorage.getItem('laguerCart')) || [];
+      const favs = JSON.parse(localStorage.getItem('laguerFavs')) || [];
+      const totalCart = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+
+      document.getElementById('cartCount').textContent = totalCart;
+      document.getElementById('favCount').textContent = favs.length;
+
+      const bottomBadge = document.getElementById('bottomCartBadge');
+      if (bottomBadge) {
+        bottomBadge.textContent = totalCart;
+        bottomBadge.style.display = totalCart === 0 ? 'none' : 'flex';
+      }
+
+      // =============================================================
+      // 4. BÚSQUEDA DEL HEADER
+      // =============================================================
+      document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          const term = this.value.trim();
+          if (term) window.location.href = `productos.html?search=${encodeURIComponent(term)}`;
+        }
+      });
+
+      console.log('📖 Libro de Reclamaciones LAGUER listo');
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>¡Pedido confirmado! · LAGUER</title>
+  <link rel="icon" href="../image/favicon-laguer.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ===== VARIABLES ===== */
+    :root {
+      --bg: #05070b;
+      --bg-soft: #0b1017;
+      --surface: #121a24;
+      --surface-2: #1a2531;
+      --line: rgba(255,255,255,.08);
+      --red: #ee1d25;
+      --red-dark: #a5141a;
+      --green: #39b54a;
+      --green-dark: #1f7b2c;
+      --blue: #189ee0;
+      --blue-dark: #0f6ca3;
+      --white: #f5f8fb;
+      --muted: #8fa0b3;
+      --radius: 16px;
+      --bottom-nav-height: 70px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      padding-bottom: calc(var(--bottom-nav-height) + 20px);
+    }
+    h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; border: none; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+    .beam-rule {
+      height: 3px;
+      width: 100%;
+      background: linear-gradient(90deg, var(--red) 0 33%, var(--green) 33% 66%, var(--blue) 66% 100%);
+      opacity: .9;
+    }
+    .beam-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .beam-glow span {
+      position: absolute;
+      width: 2px;
+      height: 170%;
+      top: -40%;
+      filter: blur(1px);
+      opacity: .35;
+      animation: drift 14s linear infinite;
+    }
+    .beam-glow span:nth-child(1) { left: 12%; background: var(--red); animation-delay: 0s; }
+    .beam-glow span:nth-child(2) { left: 46%; background: var(--green); animation-delay: -5s; }
+    .beam-glow span:nth-child(3) { left: 78%; background: var(--blue); animation-delay: -9s; }
+    @keyframes drift {
+      0% { transform: rotate(18deg) translateY(-10%); }
+      50% { transform: rotate(18deg) translateY(6%); }
+      100% { transform: rotate(18deg) translateY(-10%); }
+    }
+    @media (prefers-reduced-motion: reduce) { .beam-glow span { animation: none; } }
+
+    .topbar {
+      background: #020406;
+      font-size: 12.5px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 36px;
+    }
+    .topbar-links { display: flex; gap: 20px; }
+    .topbar-links b { color: var(--white); }
+
+    header.site {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(5,7,11,.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 60px;
+    }
+    .logo-mark { height: 32px; flex-shrink: 0; }
+    .logo-mark img { height: 100%; width: auto; }
+
+    .main-nav {
+      display: flex;
+      gap: 20px;
+      flex: 0 0 auto;
+    }
+    .main-nav a {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--white);
+      opacity: .85;
+      position: relative;
+      padding: 4px 2px;
+    }
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--red), var(--green), var(--blue));
+      transition: width .25s ease;
+    }
+    .main-nav a:hover { opacity: 1; }
+    .main-nav a:hover::after { width: 100%; }
+
+    .search-box {
+      flex: 1;
+      max-width: 300px;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 14px;
+      transition: border-color .2s;
+    }
+    .search-box:focus-within { border-color: var(--blue); }
+    .search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--white);
+      font-size: 14px;
+      width: 100%;
+      font-family: inherit;
+    }
+    .search-box input::placeholder { color: var(--muted); }
+    .search-box i { opacity: .7; }
+
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .icon-btn {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      transition: .2s;
+      color: var(--white);
+    }
+    .icon-btn:hover { border-color: var(--green); background: var(--surface-2); }
+    .cart-count, .fav-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--bg);
+    }
+    .fav-count { background: var(--blue); }
+    .burger { display: none; }
+
+    .cat-strip {
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--line);
+    }
+    .cat-strip .wrap {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding: 10px 20px;
+    }
+    .cat-chip {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .cat-chip:hover { color: var(--white); }
+    .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ===== CONFIRMACIÓN ===== */
+    .section { padding: 30px 0; }
+    .confirmacion-wrapper {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .confirmacion-header {
+      text-align: center;
+      padding: 30px 0 20px;
+    }
+    .confirmacion-header .icon {
+      font-size: 72px;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+    .confirmacion-header h1 {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .confirmacion-header p {
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .confirmacion-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .confirmacion-card .order-number {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--blue);
+      text-align: center;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 16px;
+    }
+    .confirmacion-card .order-number span {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .confirmacion-card .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .confirmacion-card .detail-row .label { font-weight: 600; color: var(--white); }
+    .confirmacion-card .detail-row .value { color: var(--white); }
+
+    .confirmacion-items {
+      margin-top: 16px;
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+    }
+    .confirmacion-items .item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .confirmacion-items .item:last-child { border-bottom: none; }
+    .confirmacion-items .item img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border-radius: 8px;
+      background: var(--bg-soft);
+    }
+    .confirmacion-items .item .info {
+      flex: 1;
+    }
+    .confirmacion-items .item .info h4 {
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .confirmacion-items .item .info .qty {
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .confirmacion-items .item .info .price {
+      font-weight: 700;
+      color: var(--green);
+    }
+    .confirmacion-items .total-final {
+      display: flex;
+      justify-content: space-between;
+      font-size: 18px;
+      font-weight: 700;
+      padding-top: 12px;
+      margin-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+    .confirmacion-items .total-final .amount { color: var(--green); }
+
+    .confirmacion-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .confirmacion-buttons .btn {
+      padding: 10px 24px;
+      border-radius: 10px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+    }
+    .confirmacion-buttons .btn-primary {
+      background: linear-gradient(90deg, var(--red), var(--blue));
+      color: #fff;
+    }
+    .confirmacion-buttons .btn-primary:hover { transform: scale(1.05); }
+    .confirmacion-buttons .btn-secondary {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--white);
+    }
+    .confirmacion-buttons .btn-secondary:hover { background: var(--surface); }
+    .confirmacion-buttons .btn-success {
+      background: var(--green);
+      color: #fff;
+    }
+    .confirmacion-buttons .btn-success:hover { transform: scale(1.05); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #020406;
+      border-top: 1px solid var(--line);
+      padding: 40px 0 20px;
+    }
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    .foot-logo { height: 30px; margin-bottom: 10px; }
+    .foot-desc { color: var(--muted); font-size: 13px; line-height: 1.6; max-width: 260px; }
+    .pay-icons-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .pay-icons-footer span {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pay-icons-footer span i { font-size: 16px; }
+    .pay-icons-footer span .fa-cc-visa { color: #1a1f71; }
+    .pay-icons-footer span .fa-cc-mastercard { color: #eb001b; }
+    .pay-icons-footer span .fa-cc-amex { color: #2e77bc; }
+    .pay-icons-footer span .fa-cc-diners-club { color: #006633; }
+    .pay-icons-footer span .fa-mobile-alt { color: var(--blue); }
+
+    .footer-social {
+      margin-top: 12px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .footer-social span { color: var(--muted); font-weight: 600; font-size: 13px; }
+    .footer-social a { color: var(--muted); font-size: 18px; transition: 0.2s; }
+    .footer-social a:hover { color: var(--white); transform: scale(1.2); }
+    .foot-col h5 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+    .foot-col a {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+      transition: .2s;
+    }
+    .foot-col a:hover { color: var(--white); }
+    .foot-bottom {
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ===== Sello: Libro de Reclamaciones ===== */
+    .libro-reclamos-final {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 26px 0;
+    }
+    .libro-reclamos-final a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      opacity: .95;
+    }
+    .libro-reclamos-final a:hover {
+      transform: translateY(-2px);
+      opacity: 1;
+    }
+    .libro-reclamos-final img {
+      height: 62px;
+      width: auto;
+      display: block;
+    }
+
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--bottom-nav-height);
+      background: rgba(11,16,23,0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      display: none;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 1000;
+      padding: 0 8px;
+    }
+    .bottom-nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+      padding: 4px 8px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .bottom-nav a i { font-size: 22px; transition: 0.2s; }
+    .bottom-nav a span { font-size: 10px; }
+    .bottom-nav a.active { color: var(--blue); }
+    .bottom-nav a.active i { transform: translateY(-2px); }
+    .bottom-nav a .badge-bottom {
+      position: absolute;
+      top: 0;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg);
+    }
+
+    /* ============================================================ */
+    /* ===== RESPONSIVE ===== */
+    /* ============================================================ */
+    @media (max-width: 980px) {
+      .main-nav, .cat-strip, .burger { display: none !important; }
+      .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
+      .bottom-nav { display: flex; }
+      .search-box {
+        max-width: none;
+        flex: 2;
+        margin-left: 0;
+        padding: 8px 16px;
+      }
+      .search-box input { font-size: 15px; }
+      .header-row { gap: 10px; height: 56px; }
+      .logo-mark { height: 28px; }
+      .icon-btn { width: 34px; height: 34px; }
+      .icon-btn i { font-size: 16px; }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .search-box { padding: 6px 12px; }
+      .search-box input { font-size: 14px; }
+      .bottom-nav a i { font-size: 20px; }
+      .bottom-nav a span { font-size: 9px; }
+      .foot-grid { grid-template-columns: 1fr; gap: 20px; }
+      .confirmacion-header .icon { font-size: 56px; }
+      .confirmacion-header h1 { font-size: 24px; }
+      .confirmacion-card { padding: 16px; }
+      .confirmacion-items .item img { width: 40px; height: 40px; }
+      .confirmacion-buttons .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== TOPBAR ===== -->
+  <div class="topbar">
+    <div class="wrap">
+      <div class="topbar-links">
+        <span>🚚 <b>Envíos a todo el Perú</b></span>
+        <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
+      </div>
+    </div>
+  </div>
+  <div class="beam-rule"></div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site">
+    <div class="wrap header-row">
+      <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
+      <nav class="main-nav">
+        <a href="productos.html?cat=tecnologia">Tecnología</a>
+        <a href="productos.html?cat=hogar">Hogar</a>
+        <a href="productos.html?cat=deportes">Deportes</a>
+        <a href="productos.html?cat=accesorios">Accesorios</a>
+        <a href="ofertas.html">Ofertas</a>
+      </nav>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Buscar productos…" />
+      </div>
+      <div class="header-icons">
+        <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
+        <a href="favoritos.html" class="icon-btn fav-btn-header"><i class="fas fa-heart"></i><span class="fav-count" id="favCount">0</span></a>
+        <a href="carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+      </div>
+    </div>
+    <div class="cat-strip">
+      <div class="wrap">
+        <a href="productos.html?cat=tecnologia" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Tecnología</a>
+        <a href="productos.html?cat=hogar" class="cat-chip"><span class="cat-dot" style="background:var(--green)"></span>Hogar</a>
+        <a href="productos.html?cat=deportes" class="cat-chip"><span class="cat-dot" style="background:var(--blue)"></span>Deportes</a>
+        <a href="productos.html?cat=accesorios" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Accesorios</a>
+        <a href="productos.html?cat=belleza" class="cat-chip"><span class="cat-dot" style="background:var(--green)"></span>Belleza</a>
+        <a href="productos.html?cat=gaming" class="cat-chip"><span class="cat-dot" style="background:var(--blue)"></span>Gaming</a>
+        <a href="productos.html?cat=audio" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Audio</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== CONFIRMACIÓN ===== -->
+  <section class="section">
+    <div class="wrap">
+      <div class="confirmacion-wrapper" id="confirmacionWrapper">
+        <!-- Se llena desde JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
+          <p class="foot-desc">Tecnología, estilo y calidad en un solo lugar.</p>
+          <div class="pay-icons-footer">
+            <span><i class="fab fa-cc-visa"></i> VISA</span>
+            <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
+            <span><i class="fas fa-mobile-alt"></i> Yape</span>
+            <span><i class="fas fa-mobile-alt"></i> Plin</span>
+            <span><i class="fab fa-cc-amex"></i> Amex</span>
+            <span><i class="fab fa-cc-diners-club"></i> Diners</span>
+          </div>
+          <div class="footer-social">
+            <span>Síguenos:</span>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+          </div>
+        </div>
+        <div class="foot-col">
+          <h5>Categorías</h5>
+          <a href="productos.html?cat=tecnologia">Tecnología</a>
+          <a href="productos.html?cat=hogar">Hogar</a>
+          <a href="productos.html?cat=deportes">Deportes</a>
+          <a href="productos.html?cat=accesorios">Accesorios</a>
+          <a href="categorias.html">Ver todas</a>
+        </div>
+        <div class="foot-col">
+          <h5>Ayuda</h5>
+          <a href="pedidos.html">Rastrear pedido</a>
+          <a href="ayuda.html">Cambios y devoluciones</a>
+          <a href="ayuda.html">Medios de pago</a>
+          <a href="ayuda.html">Preguntas frecuentes</a>
+        </div>
+        <div class="foot-col">
+          <h5>Nosotros</h5>
+          <a href="nosotros.html">Sobre LAGUER</a>
+          <a href="contacto.html">Contacto</a>
+          <a href="terminos.html">Términos</a>
+          <a href="privacidad.html">Privacidad</a>
+        </div>
+      </div>
+
+      <!-- ===== Libro de Reclamaciones ===== -->
+      <div class="libro-reclamos-final">
+        <a href="libro-reclamaciones.html" aria-label="Libro de Reclamaciones">
+          <img src="../image/libro-recla.jfif" alt="Libro de Reclamaciones" loading="lazy" />
+        </a>
+      </div>
+
+      <div class="beam-rule" style="margin:16px 0;"></div>
+      <div class="foot-bottom">
+        <span>© 2026 LAGUER. Todos los derechos reservados.</span>
+        <span>Hecho con ♥ para todo el Perú</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== BOTTOM NAV (solo móvil) ===== -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="../index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
+    <a href="productos.html"><i class="fas fa-th-large"></i><span>Productos</span></a>
+    <a href="carrito.html" id="bottomCartLink">
+      <i class="fas fa-shopping-cart"></i><span>Carrito</span>
+      <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
+    </a>
+    <a href="perfil.html"><i class="fas fa-user"></i><span>Perfil</span></a>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- ===== SCRIPTS ===== -->
+  <!-- ============================================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // ============================
+      // 1. OBTENER DATOS DEL PEDIDO
+      // ============================
+      const wrapper = document.getElementById('confirmacionWrapper');
+
+      // Obtener carrito desde localStorage
+      const CART_KEY = 'laguerCart';
+      let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
+
+      // Obtener datos del cliente desde localStorage (guardados en checkout)
+      const clienteData = JSON.parse(localStorage.getItem('laguerCheckoutData')) || {
+        nombre: 'Cliente',
+        email: 'cliente@ejemplo.com',
+        telefono: '987654321',
+        direccion: 'Av. Principal 123, Lima'
+      };
+
+      // Generar número de pedido aleatorio
+      function generarNumeroPedido() {
+        const fecha = new Date();
+        const año = fecha.getFullYear().toString().slice(-2);
+        const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+        const dia = String(fecha.getDate()).padStart(2, '0');
+        const random = String(Math.floor(Math.random() * 10000)).padStart(4, '0');
+        return `LAG-${año}${mes}${dia}-${random}`;
+      }
+      const numeroPedido = generarNumeroPedido();
+      const fechaActual = new Date().toLocaleDateString('es-PE', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+
+      // Calcular total
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0);
+      const envio = 20;
+      const total = subtotal + envio;
+
+      // ============================
+      // 2. RENDERIZAR CONFIRMACIÓN
+      // ============================
+      function renderConfirmacion() {
+        // Si el carrito está vacío, mostrar mensaje
+        if (cart.length === 0) {
+          wrapper.innerHTML = `
+            <div class="confirmacion-header">
+              <div class="icon"><i class="fas fa-box-open"></i></div>
+              <h1>No hay productos</h1>
+              <p>No se encontró ningún pedido para confirmar.</p>
+            </div>
+            <div class="confirmacion-buttons">
+              <a href="productos.html" class="btn btn-primary"><i class="fas fa-shopping-bag"></i> Ver productos</a>
+            </div>
+          `;
+          return;
+        }
+
+        // Construir lista de items
+        let itemsHtml = '';
+        cart.forEach(item => {
+          const imgSrc = item.image || '../image/placeholder.png';
+          itemsHtml += `
+            <div class="item">
+              <img src="${imgSrc}" alt="${item.name}" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\\'fas fa-box\\' style=\\'font-size:30px;opacity:0.3;\\'></i>'" />
+              <div class="info">
+                <h4>${item.name}</h4>
+                <div class="qty">Cantidad: ${item.quantity || 1} ${item.color ? `· ${item.color}` : ''} ${item.size ? `· ${item.size}` : ''}</div>
+              </div>
+              <div class="price">S/ ${(item.price * (item.quantity || 1)).toFixed(2)}</div>
+            </div>
+          `;
+        });
+
+        wrapper.innerHTML = `
+          <div class="confirmacion-header">
+            <div class="icon"><i class="fas fa-check-circle"></i></div>
+            <h1>¡Pedido confirmado!</h1>
+            <p>Gracias por tu compra. Hemos recibido tu pedido correctamente.</p>
+          </div>
+
+          <div class="confirmacion-card">
+            <div class="order-number">
+              <span>Número de pedido</span><br>
+              ${numeroPedido}
+            </div>
+
+            <div class="detail-row">
+              <span class="label">Fecha</span>
+              <span class="value">${fechaActual}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Cliente</span>
+              <span class="value">${clienteData.nombre}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Correo</span>
+              <span class="value">${clienteData.email}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Teléfono</span>
+              <span class="value">${clienteData.telefono || 'No especificado'}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Dirección de envío</span>
+              <span class="value">${clienteData.direccion}</span>
+            </div>
+
+            <div class="confirmacion-items">
+              <h4 style="margin-bottom:8px; font-size:16px;">Resumen de productos</h4>
+              ${itemsHtml}
+              <div class="total-final">
+                <span>Total</span>
+                <span class="amount">S/ ${total.toFixed(2)}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="confirmacion-buttons">
+            <a href="pedidos.html" class="btn btn-secondary"><i class="fas fa-clock"></i> Ver historial</a>
+            <button class="btn btn-primary" id="printBtn"><i class="fas fa-print"></i> Imprimir</button>
+            <button class="btn btn-success" id="downloadBtn"><i class="fas fa-file-pdf"></i> Descargar factura</button>
+            <a href="../index.html" class="btn btn-primary"><i class="fas fa-home"></i> Volver al inicio</a>
+          </div>
+        `;
+
+        // ============================
+        // 3. LIMPIAR CARRITO (después de confirmar)
+        // ============================
+        // Limpiar el carrito y los datos de checkout
+        localStorage.removeItem(CART_KEY);
+        localStorage.removeItem('laguerCheckoutData');
+        // Actualizar badge del carrito (ya que se limpió)
+        const cartBadge = document.getElementById('cartCount');
+        const bottomBadge = document.getElementById('bottomCartBadge');
+        if (cartBadge) cartBadge.textContent = '0';
+        if (bottomBadge) {
+          bottomBadge.textContent = '0';
+          bottomBadge.style.display = 'none';
+        }
+
+        // ============================
+        // 4. EVENTOS
+        // ============================
+
+        // Imprimir
+        document.getElementById('printBtn')?.addEventListener('click', function() {
+          window.print();
+        });
+
+        // Descargar factura (simulación)
+        document.getElementById('downloadBtn')?.addEventListener('click', function() {
+          alert('📄 Generando factura en PDF...\n\n' +
+                'Número: ' + numeroPedido + '\n' +
+                'Cliente: ' + clienteData.nombre + '\n' +
+                'Total: S/ ' + total.toFixed(2) + '\n\n' +
+                '(Simulación - Conecta con una librería de PDF real)');
+        });
+
+        // Actualizar badge de favoritos
+        const favs = JSON.parse(localStorage.getItem('laguerFavs')) || [];
+        const favCountEl = document.getElementById('favCount');
+        if (favCountEl) favCountEl.textContent = favs.length;
+
+        console.log('✅ Pedido confirmado:', numeroPedido);
+      }
+
+      // ============================
+      // 5. BÚSQUEDA (redirige)
+      // ============================
+      document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          const term = this.value.trim();
+          if (term) window.location.href = `productos.html?search=${encodeURIComponent(term)}`;
+        }
+      });
+
+      // ============================
+      // 6. INICIALIZAR
+      // ============================
+      document.addEventListener('DOMContentLoaded', function() {
+        renderConfirmacion();
+      });
+
+      console.log('🎉 Página de confirmación LAGUER lista');
+    })();
+  </script>
+</body>
+</html>

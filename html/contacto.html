@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Contacto · LAGUER</title>
+  <link rel="icon" href="../image/favicon-laguer.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ===== VARIABLES Y RESET ===== */
+    :root {
+      --bg: #05070b;
+      --bg-soft: #0b1017;
+      --surface: #121a24;
+      --surface-2: #1a2531;
+      --line: rgba(255,255,255,.08);
+      --red: #ee1d25;
+      --red-dark: #a5141a;
+      --green: #39b54a;
+      --green-dark: #1f7b2c;
+      --blue: #189ee0;
+      --blue-dark: #0f6ca3;
+      --white: #f5f8fb;
+      --muted: #8fa0b3;
+      --radius: 16px;
+      --bottom-nav-height: 70px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Manrope', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      padding-bottom: calc(var(--bottom-nav-height) + 20px);
+    }
+    h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; border: none; }
+    .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+    .beam-rule {
+      height: 3px;
+      width: 100%;
+      background: linear-gradient(90deg, var(--red) 0 33%, var(--green) 33% 66%, var(--blue) 66% 100%);
+      opacity: .9;
+    }
+
+    .topbar {
+      background: #020406;
+      font-size: 12.5px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar .wrap { display: flex; justify-content: space-between; align-items: center; height: 36px; }
+    .topbar-links { display: flex; gap: 20px; }
+    .topbar-links b { color: var(--white); }
+
+    header.site {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(5,7,11,.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 60px;
+    }
+    .logo-mark { height: 32px; flex-shrink: 0; }
+    .logo-mark img { height: 100%; width: auto; }
+    .main-nav {
+      display: flex;
+      gap: 20px;
+      flex: 0 0 auto;
+    }
+    .main-nav a {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--white);
+      opacity: .85;
+      position: relative;
+      padding: 4px 2px;
+    }
+    .main-nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--red), var(--green), var(--blue));
+      transition: width .25s ease;
+    }
+    .main-nav a:hover { opacity: 1; }
+    .main-nav a:hover::after { width: 100%; }
+    .search-box {
+      flex: 1;
+      max-width: 300px;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 14px;
+      transition: border-color .2s;
+    }
+    .search-box:focus-within { border-color: var(--blue); }
+    .search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--white);
+      font-size: 14px;
+      width: 100%;
+      font-family: inherit;
+    }
+    .search-box input::placeholder { color: var(--muted); }
+    .search-box i { opacity: .7; }
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .icon-btn {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      transition: .2s;
+      color: var(--white);
+    }
+    .icon-btn:hover { border-color: var(--green); background: var(--surface-2); }
+    .cart-count, .fav-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--bg);
+    }
+    .fav-count { background: var(--blue); }
+    .burger { display: none; }
+
+    .cat-strip {
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--line);
+    }
+    .cat-strip .wrap {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding: 10px 20px;
+    }
+    .cat-chip {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .cat-chip:hover { color: var(--white); }
+    .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+    /* ===== CONTACTO ===== */
+    .page-section { padding: 40px 0; }
+    .page-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .page-header h1 {
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    .page-header h1 i { color: var(--blue); }
+    .page-header p { color: var(--muted); margin-top: 6px; }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .contact-form {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .contact-form h3 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .contact-form h3 i { color: var(--blue); }
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: var(--muted);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      color: var(--white);
+      font-family: inherit;
+      transition: 0.2s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--blue);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      color: #fff;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .btn-submit:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .contact-info .info-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: 0.2s;
+    }
+    .contact-info .info-card:hover { border-color: rgba(255,255,255,0.15); }
+    .contact-info .info-card .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--bg-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--blue);
+      flex-shrink: 0;
+    }
+    .contact-info .info-card .text h4 { font-size: 16px; }
+    .contact-info .info-card .text p { color: var(--muted); font-size: 14px; }
+
+    .contact-social {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .contact-social a {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--muted);
+      transition: 0.2s;
+    }
+    .contact-social a:hover {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+      transform: translateY(-3px);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #020406;
+      border-top: 1px solid var(--line);
+      padding: 40px 0 20px;
+    }
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    .foot-logo { height: 30px; margin-bottom: 10px; }
+    .foot-desc { color: var(--muted); font-size: 13px; line-height: 1.6; max-width: 260px; }
+    .pay-icons-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .pay-icons-footer span {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pay-icons-footer span i { font-size: 16px; }
+    .pay-icons-footer span .fa-cc-visa { color: #1a1f71; }
+    .pay-icons-footer span .fa-cc-mastercard { color: #eb001b; }
+    .pay-icons-footer span .fa-cc-amex { color: #2e77bc; }
+    .pay-icons-footer span .fa-cc-diners-club { color: #006633; }
+    .pay-icons-footer span .fa-mobile-alt { color: var(--blue); }
+    .footer-social {
+      margin-top: 12px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+    .footer-social span { color: var(--muted); font-weight: 600; font-size: 13px; }
+    .footer-social a { color: var(--muted); font-size: 18px; transition: 0.2s; }
+    .footer-social a:hover { color: var(--white); transform: scale(1.2); }
+    .foot-col h5 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+    .foot-col a {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+      transition: .2s;
+    }
+    .foot-col a:hover { color: var(--white); }
+    .foot-bottom {
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ===== BOTTOM NAV ===== */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--bottom-nav-height);
+      background: rgba(11,16,23,0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      display: none;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 1000;
+      padding: 0 8px;
+    }
+    .bottom-nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+      padding: 4px 8px;
+      border-radius: 10px;
+      position: relative;
+    }
+    .bottom-nav a i { font-size: 22px; transition: 0.2s; }
+    .bottom-nav a span { font-size: 10px; }
+    .bottom-nav a.active { color: var(--blue); }
+    .bottom-nav a.active i { transform: translateY(-2px); }
+    .bottom-nav a .badge-bottom {
+      position: absolute;
+      top: 0;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg);
+    }
+
+    /* ============================================================ */
+    /* ===== RESPONSIVE ===== */
+    /* ============================================================ */
+    @media (max-width: 980px) {
+      .main-nav, .cat-strip, .burger { display: none !important; }
+      .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
+      .bottom-nav { display: flex; }
+      .search-box {
+        max-width: none;
+        flex: 2;
+        margin-left: 0;
+        padding: 8px 16px;
+      }
+      .search-box input { font-size: 15px; }
+      .header-row { gap: 10px; height: 56px; }
+      .logo-mark { height: 28px; }
+      .icon-btn { width: 34px; height: 34px; }
+      .icon-btn i { font-size: 16px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .search-box { padding: 6px 12px; }
+      .search-box input { font-size: 14px; }
+      .bottom-nav a i { font-size: 20px; }
+      .bottom-nav a span { font-size: 9px; }
+      .foot-grid { grid-template-columns: 1fr; gap: 20px; }
+      .contact-info .info-card { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== TOPBAR ===== -->
+  <div class="topbar">
+    <div class="wrap">
+      <div class="topbar-links">
+        <span>🚚 <b>Envíos a todo el Perú</b></span>
+        <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
+      </div>
+    </div>
+  </div>
+  <div class="beam-rule"></div>
+
+  <!-- ===== HEADER ===== -->
+  <header class="site">
+    <div class="wrap header-row">
+      <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
+      <nav class="main-nav">
+        <a href="productos.html?cat=tecnologia">Tecnología</a>
+        <a href="productos.html?cat=hogar">Hogar</a>
+        <a href="productos.html?cat=deportes">Deportes</a>
+        <a href="productos.html?cat=accesorios">Accesorios</a>
+        <a href="ofertas.html">Ofertas</a>
+      </nav>
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Buscar productos…" />
+      </div>
+      <div class="header-icons">
+        <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
+        <a href="favoritos.html" class="icon-btn fav-btn-header"><i class="fas fa-heart"></i><span class="fav-count" id="favCount">0</span></a>
+        <a href="carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
+      </div>
+    </div>
+    <div class="cat-strip">
+      <div class="wrap">
+        <a href="productos.html?cat=tecnologia" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Tecnología</a>
+        <a href="productos.html?cat=hogar" class="cat-chip"><span class="cat-dot" style="background:var(--green)"></span>Hogar</a>
+        <a href="productos.html?cat=deportes" class="cat-chip"><span class="cat-dot" style="background:var(--blue)"></span>Deportes</a>
+        <a href="productos.html?cat=accesorios" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Accesorios</a>
+        <a href="productos.html?cat=belleza" class="cat-chip"><span class="cat-dot" style="background:var(--green)"></span>Belleza</a>
+        <a href="productos.html?cat=gaming" class="cat-chip"><span class="cat-dot" style="background:var(--blue)"></span>Gaming</a>
+        <a href="productos.html?cat=audio" class="cat-chip"><span class="cat-dot" style="background:var(--red)"></span>Audio</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== CONTACTO ===== -->
+  <section class="page-section">
+    <div class="wrap">
+      <div class="page-header">
+        <h1><i class="fas fa-envelope"></i> Contáctanos</h1>
+        <p>Estamos aquí para ayudarte. Escríbenos y te responderemos lo antes posible.</p>
+      </div>
+
+      <div class="contact-grid">
+        <!-- Formulario -->
+        <div class="contact-form">
+          <h3><i class="fas fa-paper-plane"></i> Envíanos un mensaje</h3>
+          <form id="contactForm">
+            <div class="form-group">
+              <label>Nombre completo</label>
+              <input type="text" id="contactNombre" placeholder="Tu nombre" required />
+            </div>
+            <div class="form-group">
+              <label>Correo electrónico</label>
+              <input type="email" id="contactEmail" placeholder="tucorreo@ejemplo.com" required />
+            </div>
+            <div class="form-group">
+              <label>Asunto</label>
+              <select id="contactAsunto">
+                <option>Consulta general</option>
+                <option>Pedido</option>
+                <option>Cambio o devolución</option>
+                <option>Sugerencia</option>
+                <option>Otro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Mensaje</label>
+              <textarea id="contactMensaje" placeholder="Escribe tu mensaje aquí..." required></textarea>
+            </div>
+            <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Enviar mensaje</button>
+          </form>
+        </div>
+
+        <!-- Información de contacto -->
+        <div class="contact-info">
+          <div class="info-card">
+            <div class="icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="text">
+              <h4>Dirección</h4>
+              <p>C. Portada Del Sol 211, Lima - Perú</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="icon"><i class="fas fa-phone"></i></div>
+            <div class="text">
+              <h4>Teléfono</h4>
+              <p>+51 935 419 810</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="icon"><i class="fas fa-envelope"></i></div>
+            <div class="text">
+              <h4>Correo</h4>
+              <p>soporte@laguer.com</p>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="icon"><i class="fas fa-clock"></i></div>
+            <div class="text">
+              <h4>Horario de atención</h4>
+              <p>Lun - Vie: 8:00 am – 10:00 pm</p>
+            </div>
+          </div>
+          <div>
+            <h4 style="margin-bottom:8px;">Síguenos en redes</h4>
+            <div class="contact-social">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-tiktok"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
+          <p class="foot-desc">Tecnología, estilo y calidad en un solo lugar.</p>
+          <div class="pay-icons-footer">
+            <span><i class="fab fa-cc-visa"></i> VISA</span>
+            <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
+            <span><i class="fas fa-mobile-alt"></i> Yape</span>
+            <span><i class="fas fa-mobile-alt"></i> Plin</span>
+            <span><i class="fab fa-cc-amex"></i> Amex</span>
+            <span><i class="fab fa-cc-diners-club"></i> Diners</span>
+          </div>
+          <div class="footer-social">
+            <span>Síguenos:</span>
+            <a href="#"><i class="fab fa-facebook-f"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-tiktok"></i></a>
+          </div>
+        </div>
+        <div class="foot-col">
+          <h5>Categorías</h5>
+          <a href="productos.html?cat=tecnologia">Tecnología</a>
+          <a href="productos.html?cat=hogar">Hogar</a>
+          <a href="productos.html?cat=deportes">Deportes</a>
+          <a href="productos.html?cat=accesorios">Accesorios</a>
+          <a href="categorias.html">Ver todas</a>
+        </div>
+        <div class="foot-col">
+          <h5>Ayuda</h5>
+          <a href="ayuda.html">Centro de ayuda</a>
+          <a href="pedidos.html">Rastrear pedido</a>
+          <a href="ayuda.html#faq">Preguntas frecuentes</a>
+          <a href="contacto.html">Contacto</a>
+        </div>
+        <div class="foot-col">
+          <h5>Nosotros</h5>
+          <a href="nosotros.html">Sobre LAGUER</a>
+          <a href="contacto.html">Contacto</a>
+          <a href="terminos.html">Términos</a>
+          <a href="privacidad.html">Privacidad</a>
+        </div>
+      </div>
+      <div class="beam-rule" style="margin:16px 0;"></div>
+      <div class="foot-bottom">
+        <span>© 2026 LAGUER. Todos los derechos reservados.</span>
+        <span>Hecho con ♥ para todo el Perú</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== BOTTOM NAV ===== -->
+  <nav class="bottom-nav" id="bottomNav">
+    <a href="../index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
+    <a href="productos.html"><i class="fas fa-th-large"></i><span>Productos</span></a>
+    <a href="carrito.html" id="bottomCartLink">
+      <i class="fas fa-shopping-cart"></i><span>Carrito</span>
+      <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
+    </a>
+    <a href="perfil.html"><i class="fas fa-user"></i><span>Perfil</span></a>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- ===== SCRIPTS ===== -->
+  <!-- ============================================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      // =============================================================
+      // 1. ENVÍO DEL FORMULARIO DE CONTACTO (simulación)
+      // =============================================================
+      document.getElementById('contactForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const nombre = document.getElementById('contactNombre').value.trim();
+        const email = document.getElementById('contactEmail').value.trim();
+        const asunto = document.getElementById('contactAsunto').value;
+        const mensaje = document.getElementById('contactMensaje').value.trim();
+
+        if (!nombre || !email || !mensaje) {
+          alert('❌ Por favor, completa todos los campos obligatorios.');
+          return;
+        }
+
+        // Simular envío
+        const btn = this.querySelector('.btn-submit');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+        btn.disabled = true;
+
+        setTimeout(() => {
+          alert('✅ ¡Mensaje enviado exitosamente! Te responderemos a la brevedad.');
+          this.reset();
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }, 1500);
+      });
+
+      // =============================================================
+      // 2. BADGES DE CARRITO Y FAVORITOS
+      // =============================================================
+      const cart = JSON.parse(localStorage.getItem('laguerCart')) || [];
+      const favs = JSON.parse(localStorage.getItem('laguerFavs')) || [];
+      const totalCart = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+
+      document.getElementById('cartCount').textContent = totalCart;
+      document.getElementById('favCount').textContent = favs.length;
+
+      const bottomBadge = document.getElementById('bottomCartBadge');
+      if (bottomBadge) {
+        bottomBadge.textContent = totalCart;
+        bottomBadge.style.display = totalCart === 0 ? 'none' : 'flex';
+      }
+
+      // =============================================================
+      // 3. BÚSQUEDA DEL HEADER (redirige a productos)
+      // =============================================================
+      document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          const term = this.value.trim();
+          if (term) window.location.href = `productos.html?search=${encodeURIComponent(term)}`;
+        }
+      });
+
+      console.log('📧 Página de contacto LAGUER lista');
+    })();
+  </script>
+</body>
+</html>
