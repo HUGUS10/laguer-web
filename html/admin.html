@@ -163,9 +163,7 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .metric-trend.down { color: var(--red); }
 
 /* ===== CARD ===== */
-.card {
-  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 20px; overflow: hidden;
-}
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); margin-bottom: 20px; overflow: hidden; }
 .card-header { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; }
 .card-header h2 { font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
 .card-body { padding: 16px 20px; }
@@ -377,8 +375,11 @@ tbody tr:last-child td { border-bottom: none; }
       </div>
     </nav>
     <div class="sidebar-footer">
-      <div class="avatar" style="background:linear-gradient(135deg,var(--red),var(--blue));">AD</div>
-      <div class="user-info"><div>Administrador</div><span>admin@laguer.pe</span></div>
+      <div class="avatar" id="adminAvatar" style="background:linear-gradient(135deg,var(--red),var(--blue));">AD</div>
+      <div class="user-info">
+        <div id="adminName">Administrador</div>
+        <span id="adminEmail">admin@laguer.pe</span>
+      </div>
       <button class="icon-btn" onclick="logout()" title="Cerrar sesión"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   </aside>
@@ -910,6 +911,33 @@ tbody tr:last-child td { border-bottom: none; }
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
+/* ===== AUTHENTICATION ===== */
+// Verificar sesión al cargar
+(function() {
+  const session = JSON.parse(localStorage.getItem('laguerUser'));
+  if (!session || session.rol !== 'admin') {
+    // Redirigir al index (página principal) con un mensaje
+    localStorage.setItem('laguerToast', 'Acceso denegado. Solo administradores.');
+    window.location.href = '../index.html';
+  }
+  // Mostrar nombre y email en sidebar
+  const avatar = document.getElementById('adminAvatar');
+  const nameEl = document.getElementById('adminName');
+  const emailEl = document.getElementById('adminEmail');
+  if (avatar) avatar.textContent = session.nombre.charAt(0).toUpperCase();
+  if (nameEl) nameEl.textContent = session.nombre;
+  if (emailEl) emailEl.textContent = session.email;
+})();
+
+/* ===== LOGOUT ===== */
+function logout() {
+  if (confirm('¿Cerrar sesión?')) {
+    localStorage.removeItem('laguerUser');
+    localStorage.setItem('laguerToast', 'Sesión cerrada correctamente');
+    window.location.href = '../index.html';
+  }
+}
+
 /* ===== NAVIGATION ===== */
 const pageTitles = {
   'dashboard': ['Panel Principal','Panel'],
@@ -984,6 +1012,17 @@ function showToast(message, type = 'info') {
   setTimeout(() => { toast.classList.add('hide'); setTimeout(() => toast.remove(), 400); }, 4000);
 }
 
+// Mostrar toast si viene de redirección
+(function() {
+  const toastMsg = localStorage.getItem('laguerToast');
+  if (toastMsg) {
+    setTimeout(() => {
+      showToast(toastMsg, 'info');
+      localStorage.removeItem('laguerToast');
+    }, 100);
+  }
+})();
+
 /* ===== ACTIONS ===== */
 function createNewOrder() { closeModal('modalOrder'); showToast('Orden creada correctamente','success'); }
 function createNewProduct() { closeModal('modalProduct'); showToast('Producto guardado','success'); }
@@ -1014,7 +1053,6 @@ function viewExpense(id) { showToast('Ver gasto: ' + id,'info'); }
 function editUser(id) { showToast('Editar usuario: ' + id,'info'); }
 function showReport(type) { showToast('Generando reporte: ' + type,'info'); }
 function showNotifications() { showToast('No hay notificaciones nuevas','info'); }
-function logout() { if (confirm('¿Cerrar sesión?')) { showToast('Sesión cerrada','info'); setTimeout(() => window.location.href = 'login.html', 1000); } }
 function applyDiscount() { showToast('Descuento aplicado','success'); }
 function clearCart() { posCart = []; updatePOSCart(); showToast('Carrito limpiado','info'); }
 
