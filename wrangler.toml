@@ -1,4 +1,4 @@
 [[d1_databases]]
-binding = "DB"   # ← Cambia de "laguer_db" a "DB"
+binding = "DB"
 database_name = "laguer-db"
-database_id = "5cf7ea09-b98a-4cc7-92b5-14c554b255c6"
+database_id = "023dbfc9-4cce-4905-8f5d-9c2a54c9c296"
