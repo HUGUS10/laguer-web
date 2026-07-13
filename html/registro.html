@@ -544,8 +544,8 @@
   <div class="topbar">
     <div class="wrap">
       <div class="topbar-links">
-        <span class="topbar-msg">🚚 <b>Envíos a todo el Perú</b></span>
-        <a href="pedidos.html" class="topbar-track">Rastrea tu pedido</a>
+        <span class="topbar-msg" data-key="topbar_msg">🚚 <b>Envíos a todo el Perú</b></span>
+        <a href="pedidos.html" class="topbar-track" data-key="topbar_track">Rastrea tu pedido</a>
       </div>
       <div class="header-controls">
         <div class="theme-toggle" id="themeToggle" title="Cambiar tema">
@@ -595,56 +595,156 @@
     </div>
   </header>
 
-  <!-- ===== REGISTRO ===== -->
-  <section class="register-section">
-    <div class="register-card">
-      <div class="register-header">
-        <img src="../image/laguer-logo.png" alt="LAGUER" />
-        <h2 data-key="register_title">Crear cuenta</h2>
-        <p data-key="register_subtitle">Regístrate para empezar a comprar</p>
-      </div>
-
-      <form id="registerForm">
-        <div class="form-group">
-          <label data-key="register_name_label">Nombre completo</label>
-          <div class="input-wrapper">
-            <i class="fas fa-user"></i>
-            <input type="text" id="regNombre" data-key="register_name_placeholder" placeholder="Juan Pérez" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label data-key="register_email_label">Correo electrónico</label>
-          <div class="input-wrapper">
-            <i class="fas fa-envelope"></i>
-            <input type="email" id="regEmail" data-key="register_email_placeholder" placeholder="tucorreo@ejemplo.com" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label data-key="register_password_label">Contraseña</label>
-          <div class="input-wrapper">
-            <i class="fas fa-lock"></i>
-            <input type="password" id="regPassword" data-key="register_password_placeholder" placeholder="Mínimo 6 caracteres" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label data-key="register_confirm_label">Confirmar contraseña</label>
-          <div class="input-wrapper">
-            <i class="fas fa-check-circle"></i>
-            <input type="password" id="regConfirm" data-key="register_confirm_placeholder" placeholder="Repite tu contraseña" required />
-          </div>
-        </div>
-        <button type="submit" class="register-btn" id="registerBtn" data-key="register_button">Registrarme</button>
-        <div id="registerError" class="register-error"></div>
-        <div id="registerSuccess" class="register-success"></div>
-      </form>
-
-      <div class="register-divider"><span data-key="register_or">o</span></div>
-      <div class="register-links">
-        <span data-key="register_login_text">¿Ya tienes cuenta?</span>
-        <a href="login.html" data-key="register_login_link">Inicia sesión aquí</a>
-      </div>
+<!-- ===== REGISTRO ===== -->
+<section class="register-section">
+  <div class="register-card">
+    <div class="register-header">
+      <img src="../image/laguer-logo.png" alt="LAGUER" />
+      <h2 data-key="register_title">Crear cuenta</h2>
+      <p data-key="register_subtitle">Regístrate para empezar a comprar</p>
     </div>
-  </section>
+
+    <form id="registerForm">
+
+      <!-- Nombre -->
+      <div class="form-group">
+        <label data-key="register_name_label">Nombre completo</label>
+        <div class="input-wrapper">
+          <i class="fas fa-user"></i>
+          <input
+            type="text"
+            id="regNombre"
+            data-key="register_name_placeholder"
+            placeholder="Juan Pérez"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Correo -->
+      <div class="form-group">
+        <label data-key="register_email_label">Correo electrónico</label>
+        <div class="input-wrapper">
+          <i class="fas fa-envelope"></i>
+          <input
+            type="email"
+            id="regEmail"
+            data-key="register_email_placeholder"
+            placeholder="tucorreo@ejemplo.com"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Teléfono -->
+      <div class="form-group">
+        <label data-key="register_phone_label">Teléfono</label>
+        <div class="input-wrapper">
+          <i class="fas fa-phone"></i>
+          <input
+            type="tel"
+            id="regTelefono"
+            data-key="register_phone_placeholder"
+            placeholder="987654321"
+            maxlength="9"
+            inputmode="numeric"
+            pattern="[0-9]{9}"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- DNI -->
+      <div class="form-group">
+        <label data-key="register_dni_label">DNI</label>
+        <div class="input-wrapper">
+          <i class="fas fa-id-card"></i>
+          <input
+            type="text"
+            id="regDni"
+            data-key="register_dni_placeholder"
+            placeholder="12345678"
+            maxlength="8"
+            inputmode="numeric"
+            pattern="[0-9]{8}"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Dirección -->
+      <div class="form-group">
+        <label data-key="register_address_label">Dirección</label>
+        <div class="input-wrapper">
+          <i class="fas fa-map-marker-alt"></i>
+          <input
+            type="text"
+            id="regDireccion"
+            data-key="register_address_placeholder"
+            placeholder="Av. Principal 123 - Lima"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-group">
+        <label data-key="register_password_label">Contraseña</label>
+        <div class="input-wrapper">
+          <i class="fas fa-lock"></i>
+          <input
+            type="password"
+            id="regPassword"
+            data-key="register_password_placeholder"
+            placeholder="Mínimo 6 caracteres"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Confirmar contraseña -->
+      <div class="form-group">
+        <label data-key="register_confirm_label">Confirmar contraseña</label>
+        <div class="input-wrapper">
+          <i class="fas fa-check-circle"></i>
+          <input
+            type="password"
+            id="regConfirm"
+            data-key="register_confirm_placeholder"
+            placeholder="Repite tu contraseña"
+            required
+          />
+        </div>
+      </div>
+
+      <!-- Botón -->
+      <button
+        type="submit"
+        class="register-btn"
+        id="registerBtn"
+        data-key="register_button"
+      >
+        Registrarme
+      </button>
+
+      <div id="registerError" class="register-error"></div>
+      <div id="registerSuccess" class="register-success"></div>
+
+    </form>
+
+    <div class="register-divider">
+      <span data-key="register_or">o</span>
+    </div>
+
+    <div class="register-links">
+      <span data-key="register_login_text">¿Ya tienes cuenta?</span>
+      <a href="login.html" data-key="register_login_link">
+        Inicia sesión aquí
+      </a>
+    </div>
+
+  </div>
+</section>
 
   <!-- ===== FOOTER ===== -->
   <footer>
@@ -769,6 +869,12 @@
           register_name_placeholder: 'Juan Pérez',
           register_email_label: 'Correo electrónico',
           register_email_placeholder: 'tucorreo@ejemplo.com',
+          register_phone_label: 'Teléfono',
+          register_phone_placeholder: '987654321',
+          register_dni_label: 'DNI',
+          register_dni_placeholder: '12345678',
+          register_address_label: 'Dirección',
+          register_address_placeholder: 'Av. Principal 123 - Lima',
           register_password_label: 'Contraseña',
           register_password_placeholder: 'Mínimo 6 caracteres',
           register_confirm_label: 'Confirmar contraseña',
@@ -801,6 +907,8 @@
           bottom_profile: 'Perfil',
           error_empty: '❌ Por favor, completa todos los campos.',
           error_password: '❌ La contraseña debe tener al menos 6 caracteres y coincidir.',
+          error_phone: '❌ El teléfono debe tener 9 dígitos.',
+          error_dni: '❌ El DNI debe tener 8 dígitos.',
           error_email_exists: '❌ Este correo ya está registrado. Inicia sesión.',
           success_register: '✅ ¡Registro exitoso! Redirigiendo...',
           error_network: '❌ Error de conexión con el servidor.'
@@ -820,6 +928,12 @@
           register_name_placeholder: 'John Doe',
           register_email_label: 'Email address',
           register_email_placeholder: 'you@example.com',
+          register_phone_label: 'Phone',
+          register_phone_placeholder: '987654321',
+          register_dni_label: 'National ID (DNI)',
+          register_dni_placeholder: '12345678',
+          register_address_label: 'Address',
+          register_address_placeholder: 'Main Ave 123 - Lima',
           register_password_label: 'Password',
           register_password_placeholder: 'At least 6 characters',
           register_confirm_label: 'Confirm password',
@@ -852,6 +966,8 @@
           bottom_profile: 'Profile',
           error_empty: '❌ Please fill in all fields.',
           error_password: '❌ Password must be at least 6 characters and match.',
+          error_phone: '❌ Phone number must have 9 digits.',
+          error_dni: '❌ National ID must have 8 digits.',
           error_email_exists: '❌ This email is already registered. Please log in.',
           success_register: '✅ Registration successful! Redirecting...',
           error_network: '❌ Connection error with the server.'
@@ -872,14 +988,7 @@
             }
           }
         });
-        // Actualizar placeholders específicos
-        document.getElementById('regNombre').placeholder = t.register_name_placeholder;
-        document.getElementById('regEmail').placeholder = t.register_email_placeholder;
-        document.getElementById('regPassword').placeholder = t.register_password_placeholder;
-        document.getElementById('regConfirm').placeholder = t.register_confirm_placeholder;
-        document.querySelector('.search-box input').placeholder = t.search_placeholder;
-        document.querySelector('.topbar-msg').innerHTML = t.topbar_msg;
-        document.querySelector('.topbar-track').textContent = t.topbar_track;
+
         const currentSettings = JSON.parse(localStorage.getItem('laguerSettings') || '{}');
         currentSettings.lang = lang;
         localStorage.setItem('laguerSettings', JSON.stringify(currentSettings));
@@ -890,8 +999,7 @@
         applyLanguage(newLang);
       });
 
-      const savedLang = localStorage.getItem('laguer_lang') || settings.lang || 'es';
-      applyLanguage(savedLang);
+      applyLanguage(currentLang);
 
       // =============================================================
       // 3. MANEJAR REGISTRO (con API D1)
@@ -899,6 +1007,9 @@
       const form = document.getElementById('registerForm');
       const nombre = document.getElementById('regNombre');
       const email = document.getElementById('regEmail');
+      const telefono = document.getElementById('regTelefono');
+      const dni = document.getElementById('regDni');
+      const direccion = document.getElementById('regDireccion');
       const password = document.getElementById('regPassword');
       const confirm = document.getElementById('regConfirm');
       const errorDiv = document.getElementById('registerError');
@@ -914,11 +1025,28 @@
 
         const nom = nombre.value.trim();
         const mail = email.value.trim();
+        const tel = telefono.value.trim();
+        const doc = dni.value.trim();
+        const dir = direccion.value.trim();
         const pass = password.value.trim();
         const conf = confirm.value.trim();
 
-        if (!nom || !mail || !pass || !conf) {
+        if (!nom || !mail || !tel || !doc || !dir || !pass || !conf) {
           errorDiv.textContent = translations[currentLang].error_empty;
+          registerBtn.disabled = false;
+          registerBtn.textContent = translations[currentLang].register_button;
+          return;
+        }
+
+        if (!/^[0-9]{9}$/.test(tel)) {
+          errorDiv.textContent = translations[currentLang].error_phone;
+          registerBtn.disabled = false;
+          registerBtn.textContent = translations[currentLang].register_button;
+          return;
+        }
+
+        if (!/^[0-9]{8}$/.test(doc)) {
+          errorDiv.textContent = translations[currentLang].error_dni;
           registerBtn.disabled = false;
           registerBtn.textContent = translations[currentLang].register_button;
           return;
@@ -935,7 +1063,14 @@
           const resp = await fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ nombre: nom, email: mail, password: pass })
+            body: JSON.stringify({
+              nombre: nom,
+              email: mail,
+              telefono: tel,
+              dni: doc,
+              direccion: dir,
+              password: pass
+            })
           });
 
           const data = await resp.json();
@@ -973,6 +1108,14 @@
           registerBtn.disabled = false;
           registerBtn.textContent = translations[currentLang].register_button;
         }
+      });
+
+      // Solo permitir dígitos en teléfono y DNI mientras se escribe
+      telefono.addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').slice(0, 9);
+      });
+      dni.addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').slice(0, 8);
       });
 
       // =============================================================
