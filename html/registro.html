@@ -29,7 +29,6 @@
       --bottom-nav-height: 70px;
     }
 
-    /* ===== TEMA CLARO ===== */
     body.light-mode {
       --bg: #f4f6f9;
       --bg-soft: #eef1f5;
@@ -40,7 +39,6 @@
       --muted: #5a6a7e;
     }
 
-    /* ===== RESET ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -59,7 +57,6 @@
     button { font-family: inherit; cursor: pointer; border: none; }
     .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
 
-    /* ===== BEAM ===== */
     .beam-rule {
       height: 3px;
       width: 100%;
@@ -67,7 +64,6 @@
       opacity: .9;
     }
 
-    /* ===== TOPBAR ===== */
     .topbar {
       background: #020406;
       font-size: 12.5px;
@@ -76,17 +72,10 @@
       transition: background 0.3s, border-color 0.3s;
     }
     body.light-mode .topbar { background: #eef1f5; border-bottom-color: var(--line); }
-    body.light-mode .topbar .topbar-links a { color: var(--muted); }
-    .topbar .wrap {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 36px;
-    }
+    .topbar .wrap { display: flex; justify-content: space-between; align-items: center; height: 36px; }
     .topbar-links { display: flex; gap: 20px; }
     .topbar-links b { color: var(--white); }
 
-    /* ===== HEADER ===== */
     header.site {
       position: sticky;
       top: 0;
@@ -106,11 +95,7 @@
     .logo-mark { height: 32px; flex-shrink: 0; }
     .logo-mark img { height: 100%; width: auto; }
 
-    .main-nav {
-      display: flex;
-      gap: 20px;
-      flex: 0 0 auto;
-    }
+    .main-nav { display: flex; gap: 20px; flex: 0 0 auto; }
     .main-nav a {
       font-weight: 600;
       font-size: 14px;
@@ -195,8 +180,13 @@
     }
     .fav-count { background: var(--blue); }
 
-    /* ===== TOGGLE TEMA ===== */
-    .theme-toggle {
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-left: 6px;
+    }
+    .theme-toggle, .lang-toggle {
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 30px;
@@ -207,21 +197,25 @@
       cursor: pointer;
       transition: border-color .2s, background 0.3s;
       color: var(--white);
+      font-size: 13px;
     }
-    body.light-mode .theme-toggle { background: var(--surface); border-color: var(--line); }
-    .theme-toggle:hover { border-color: var(--blue); }
-    .theme-toggle .tog-icon {
+    body.light-mode .theme-toggle, body.light-mode .lang-toggle {
+      background: var(--surface);
+      border-color: var(--line);
+    }
+    .theme-toggle:hover, .lang-toggle:hover { border-color: var(--blue); }
+    .theme-toggle .tog-icon, .lang-toggle .lang-opt {
       padding: 4px 6px;
       border-radius: 20px;
-      font-size: 14px;
+      font-size: 13px;
       transition: background .2s, color .2s;
     }
-    .theme-toggle .tog-icon.active {
+    .theme-toggle .tog-icon.active,
+    .lang-toggle .lang-opt.active {
       background: var(--blue);
       color: #fff;
     }
 
-    /* ===== CATEGORÍAS (solo PC) ===== */
     .cat-strip {
       background: var(--bg-soft);
       border-bottom: 1px solid var(--line);
@@ -248,7 +242,6 @@
     .cat-chip:hover { color: var(--white); }
     .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-    /* ===== REGISTRO ===== */
     .register-section {
       display: flex;
       justify-content: center;
@@ -261,14 +254,14 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       padding: 40px 32px;
-      max-width: 440px;
+      max-width: 420px;
       width: 100%;
       transition: background 0.3s, border-color 0.3s;
     }
     body.light-mode .register-card { background: var(--surface); border-color: var(--line); }
     .register-card .register-header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
     .register-card .register-header img {
       height: 48px;
@@ -283,7 +276,7 @@
       font-size: 14px;
     }
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 18px;
     }
     .form-group label {
       display: block;
@@ -291,33 +284,37 @@
       margin-bottom: 6px;
       font-size: 14px;
     }
-    .form-group input {
+    .form-group .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .form-group .input-wrapper i {
+      position: absolute;
+      left: 14px;
+      color: var(--muted);
+      font-size: 15px;
+    }
+    .form-group .input-wrapper input {
       width: 100%;
       padding: 12px 16px;
+      padding-left: 40px;
       border-radius: 10px;
       background: var(--bg-soft);
       border: 1px solid var(--line);
       color: var(--white);
       font-family: inherit;
       transition: 0.2s, background 0.3s, border-color 0.3s;
+      flex: 1;
     }
-    body.light-mode .form-group input { background: var(--bg-soft); border-color: var(--line); color: var(--white); }
-    .form-group input:focus {
+    body.light-mode .form-group .input-wrapper input {
+      background: var(--bg-soft);
+      border-color: var(--line);
+      color: var(--white);
+    }
+    .form-group .input-wrapper input:focus {
       outline: none;
       border-color: var(--blue);
-    }
-    .form-group .input-icon {
-      position: relative;
-    }
-    .form-group .input-icon i {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-    }
-    .form-group .input-icon input {
-      padding-left: 40px;
     }
     .register-btn {
       width: 100%;
@@ -330,7 +327,7 @@
       font-size: 16px;
       cursor: pointer;
       transition: 0.2s;
-      margin-top: 8px;
+      margin-top: 6px;
     }
     .register-btn:hover {
       transform: scale(1.02);
@@ -370,7 +367,7 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      margin: 20px 0;
+      margin: 22px 0;
     }
     .register-divider::before,
     .register-divider::after {
@@ -384,7 +381,6 @@
       font-size: 13px;
     }
 
-    /* ===== FOOTER ===== */
     footer {
       background: #020406;
       border-top: 1px solid var(--line);
@@ -461,7 +457,6 @@
       color: var(--muted);
     }
 
-    /* ===== BOTTOM NAV ===== */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -514,11 +509,8 @@
       border: 2px solid var(--bg);
     }
 
-    /* ============================================================ */
-    /* ===== RESPONSIVE ===== */
-    /* ============================================================ */
     @media (max-width: 980px) {
-      .main-nav, .cat-strip, .burger { display: none !important; }
+      .main-nav, .cat-strip { display: none !important; }
       .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
       .bottom-nav { display: flex; }
       .search-box {
@@ -533,6 +525,7 @@
       .icon-btn { width: 34px; height: 34px; }
       .icon-btn i { font-size: 16px; }
       .foot-grid { grid-template-columns: 1fr 1fr; }
+      .header-controls .lang-toggle span { display: none; }
     }
 
     @media (max-width: 600px) {
@@ -551,14 +544,17 @@
   <div class="topbar">
     <div class="wrap">
       <div class="topbar-links">
-        <span>🚚 <b>Envíos a todo el Perú</b></span>
-        <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
+        <span class="topbar-msg">🚚 <b>Envíos a todo el Perú</b></span>
+        <a href="pedidos.html" class="topbar-track">Rastrea tu pedido</a>
       </div>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <span style="font-size:11px;color:var(--muted);">🌙 <span id="themeStatus">Oscuro</span></span>
-        <div class="theme-toggle" id="themeToggle">
+      <div class="header-controls">
+        <div class="theme-toggle" id="themeToggle" title="Cambiar tema">
           <span class="tog-icon active" data-theme="dark"><i class="fas fa-moon"></i></span>
           <span class="tog-icon" data-theme="light"><i class="fas fa-sun"></i></span>
+        </div>
+        <div class="lang-toggle" id="langToggle" title="Cambiar idioma">
+          <span class="lang-opt active" data-lang="es">ES</span>
+          <span class="lang-opt" data-lang="en">EN</span>
         </div>
       </div>
     </div>
@@ -570,15 +566,15 @@
     <div class="wrap header-row">
       <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
       <nav class="main-nav">
-        <a href="productos.html?cat=tecnologia">Tecnología</a>
-        <a href="productos.html?cat=hogar">Hogar</a>
-        <a href="productos.html?cat=deportes">Deportes</a>
-        <a href="productos.html?cat=accesorios">Accesorios</a>
-        <a href="ofertas.html">Ofertas</a>
+        <a href="productos.html?cat=tecnologia" data-key="nav_tecnologia">Tecnología</a>
+        <a href="productos.html?cat=hogar" data-key="nav_hogar">Hogar</a>
+        <a href="productos.html?cat=deportes" data-key="nav_deportes">Deportes</a>
+        <a href="productos.html?cat=accesorios" data-key="nav_accesorios">Accesorios</a>
+        <a href="ofertas.html" data-key="nav_ofertas">Ofertas</a>
       </nav>
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Buscar productos…" />
+        <input type="text" id="searchInput" data-key="search_placeholder" placeholder="Buscar productos…" />
       </div>
       <div class="header-icons">
         <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
@@ -604,47 +600,48 @@
     <div class="register-card">
       <div class="register-header">
         <img src="../image/laguer-logo.png" alt="LAGUER" />
-        <h2>Crear cuenta</h2>
-        <p>Regístrate para empezar a comprar</p>
+        <h2 data-key="register_title">Crear cuenta</h2>
+        <p data-key="register_subtitle">Regístrate para empezar a comprar</p>
       </div>
 
       <form id="registerForm">
         <div class="form-group">
-          <label>Nombre completo</label>
-          <div class="input-icon">
+          <label data-key="register_name_label">Nombre completo</label>
+          <div class="input-wrapper">
             <i class="fas fa-user"></i>
-            <input type="text" id="regNombre" placeholder="Ej: Juan Pérez" required />
+            <input type="text" id="regNombre" data-key="register_name_placeholder" placeholder="Juan Pérez" required />
           </div>
         </div>
         <div class="form-group">
-          <label>Correo electrónico</label>
-          <div class="input-icon">
+          <label data-key="register_email_label">Correo electrónico</label>
+          <div class="input-wrapper">
             <i class="fas fa-envelope"></i>
-            <input type="email" id="regEmail" placeholder="tucorreo@ejemplo.com" required />
+            <input type="email" id="regEmail" data-key="register_email_placeholder" placeholder="tucorreo@ejemplo.com" required />
           </div>
         </div>
         <div class="form-group">
-          <label>Contraseña</label>
-          <div class="input-icon">
+          <label data-key="register_password_label">Contraseña</label>
+          <div class="input-wrapper">
             <i class="fas fa-lock"></i>
-            <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" required />
+            <input type="password" id="regPassword" data-key="register_password_placeholder" placeholder="Mínimo 6 caracteres" required />
           </div>
         </div>
         <div class="form-group">
-          <label>Confirmar contraseña</label>
-          <div class="input-icon">
+          <label data-key="register_confirm_label">Confirmar contraseña</label>
+          <div class="input-wrapper">
             <i class="fas fa-check-circle"></i>
-            <input type="password" id="regConfirm" placeholder="Repite tu contraseña" required />
+            <input type="password" id="regConfirm" data-key="register_confirm_placeholder" placeholder="Repite tu contraseña" required />
           </div>
         </div>
-        <button type="submit" class="register-btn" id="registerBtn">Registrarme</button>
+        <button type="submit" class="register-btn" id="registerBtn" data-key="register_button">Registrarme</button>
         <div id="registerError" class="register-error"></div>
         <div id="registerSuccess" class="register-success"></div>
       </form>
 
-      <div class="register-divider"><span>o</span></div>
+      <div class="register-divider"><span data-key="register_or">o</span></div>
       <div class="register-links">
-        ¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a>
+        <span data-key="register_login_text">¿Ya tienes cuenta?</span>
+        <a href="login.html" data-key="register_login_link">Inicia sesión aquí</a>
       </div>
     </div>
   </section>
@@ -655,7 +652,7 @@
       <div class="foot-grid">
         <div>
           <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
-          <p class="foot-desc">Tecnología, estilo y calidad en un solo lugar.</p>
+          <p class="foot-desc" data-key="footer_desc">Tecnología, estilo y calidad en un solo lugar.</p>
           <div class="pay-icons-footer">
             <span><i class="fab fa-cc-visa"></i> VISA</span>
             <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
@@ -665,7 +662,7 @@
             <span><i class="fab fa-cc-diners-club"></i> Diners</span>
           </div>
           <div class="footer-social">
-            <span>Síguenos:</span>
+            <span data-key="footer_follow">Síguenos:</span>
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
@@ -673,26 +670,26 @@
           </div>
         </div>
         <div class="foot-col">
-          <h5>Categorías</h5>
-          <a href="productos.html?cat=tecnologia">Tecnología</a>
-          <a href="productos.html?cat=hogar">Hogar</a>
-          <a href="productos.html?cat=deportes">Deportes</a>
-          <a href="productos.html?cat=accesorios">Accesorios</a>
-          <a href="categorias.html">Ver todas</a>
+          <h5 data-key="footer_categories">Categorías</h5>
+          <a href="productos.html?cat=tecnologia" data-key="footer_tecnologia">Tecnología</a>
+          <a href="productos.html?cat=hogar" data-key="footer_hogar">Hogar</a>
+          <a href="productos.html?cat=deportes" data-key="footer_deportes">Deportes</a>
+          <a href="productos.html?cat=accesorios" data-key="footer_accesorios">Accesorios</a>
+          <a href="categorias.html" data-key="footer_ver_todas">Ver todas</a>
         </div>
         <div class="foot-col">
-          <h5>Ayuda</h5>
-          <a href="pedidos.html">Rastrear pedido</a>
-          <a href="ayuda.html">Cambios y devoluciones</a>
-          <a href="ayuda.html">Medios de pago</a>
-          <a href="ayuda.html">Preguntas frecuentes</a>
+          <h5 data-key="footer_help">Ayuda</h5>
+          <a href="pedidos.html" data-key="footer_track">Rastrear pedido</a>
+          <a href="ayuda.html" data-key="footer_returns">Cambios y devoluciones</a>
+          <a href="ayuda.html" data-key="footer_payment">Medios de pago</a>
+          <a href="ayuda.html" data-key="footer_faq">Preguntas frecuentes</a>
         </div>
         <div class="foot-col">
-          <h5>Nosotros</h5>
-          <a href="nosotros.html">Sobre LAGUER</a>
-          <a href="contacto.html">Contacto</a>
-          <a href="terminos.html">Términos</a>
-          <a href="privacidad.html">Privacidad</a>
+          <h5 data-key="footer_about">Nosotros</h5>
+          <a href="nosotros.html" data-key="footer_about_us">Sobre LAGUER</a>
+          <a href="contacto.html" data-key="footer_contact">Contacto</a>
+          <a href="terminos.html" data-key="footer_terms">Términos</a>
+          <a href="privacidad.html" data-key="footer_privacy">Privacidad</a>
         </div>
       </div>
       <div class="beam-rule" style="margin:16px 0;"></div>
@@ -703,15 +700,15 @@
     </div>
   </footer>
 
-  <!-- ===== BOTTOM NAV (móvil) ===== -->
+  <!-- ===== BOTTOM NAV ===== -->
   <nav class="bottom-nav" id="bottomNav">
-    <a href="../index.html"><i class="fas fa-home"></i><span>Inicio</span></a>
-    <a href="productos.html"><i class="fas fa-th-large"></i><span>Productos</span></a>
+    <a href="../index.html"><i class="fas fa-home"></i><span data-key="bottom_home">Inicio</span></a>
+    <a href="productos.html"><i class="fas fa-th-large"></i><span data-key="bottom_products">Productos</span></a>
     <a href="carrito.html" id="bottomCartLink">
-      <i class="fas fa-shopping-cart"></i><span>Carrito</span>
+      <i class="fas fa-shopping-cart"></i><span data-key="bottom_cart">Carrito</span>
       <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
     </a>
-    <a href="login.html" class="active"><i class="fas fa-user"></i><span>Perfil</span></a>
+    <a href="login.html"><i class="fas fa-user"></i><span data-key="bottom_profile">Perfil</span></a>
   </nav>
 
   <!-- ============================================================ -->
@@ -727,64 +724,177 @@
       const settings = JSON.parse(localStorage.getItem('laguerSettings') || '{}');
       const savedTheme = settings.theme || 'dark';
       const body = document.body;
-      const themeStatus = document.getElementById('themeStatus');
-      const toggleBtn = document.getElementById('themeToggle');
-      const icons = toggleBtn.querySelectorAll('.tog-icon');
+      const themeToggle = document.getElementById('themeToggle');
+      const themeIcons = themeToggle.querySelectorAll('.tog-icon');
 
       function applyTheme(theme) {
         if (theme === 'light') {
           body.classList.add('light-mode');
-          themeStatus.textContent = 'Claro';
-          icons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'light'));
+          themeIcons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'light'));
         } else {
           body.classList.remove('light-mode');
-          themeStatus.textContent = 'Oscuro';
-          icons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'dark'));
+          themeIcons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'dark'));
         }
-        // Guardar en settings (para mantener consistencia con el dashboard)
         const currentSettings = JSON.parse(localStorage.getItem('laguerSettings') || '{}');
         currentSettings.theme = theme;
         localStorage.setItem('laguerSettings', JSON.stringify(currentSettings));
       }
-
       applyTheme(savedTheme);
 
-      toggleBtn.addEventListener('click', function() {
+      themeToggle.addEventListener('click', function() {
         const current = body.classList.contains('light-mode') ? 'dark' : 'light';
         applyTheme(current);
       });
 
       // =============================================================
-      // 2. SI YA HAY SESIÓN ACTIVA, REDIRIGIR
+      // 2. IDIOMA (ES/EN)
       // =============================================================
-      const session = JSON.parse(localStorage.getItem('laguerUser'));
-      if (session) {
-        if (session.rol === 'admin') {
-          window.location.href = 'admin.html';
-        } else {
-          window.location.href = 'perfil.html';
+      const langToggle = document.getElementById('langToggle');
+      const langOpts = langToggle.querySelectorAll('.lang-opt');
+      let currentLang = settings.lang || 'es';
+
+      const translations = {
+        es: {
+          topbar_msg: '🚚 <b>Envíos a todo el Perú</b>',
+          topbar_track: 'Rastrea tu pedido',
+          nav_tecnologia: 'Tecnología',
+          nav_hogar: 'Hogar',
+          nav_deportes: 'Deportes',
+          nav_accesorios: 'Accesorios',
+          nav_ofertas: 'Ofertas',
+          search_placeholder: 'Buscar productos…',
+          register_title: 'Crear cuenta',
+          register_subtitle: 'Regístrate para empezar a comprar',
+          register_name_label: 'Nombre completo',
+          register_name_placeholder: 'Juan Pérez',
+          register_email_label: 'Correo electrónico',
+          register_email_placeholder: 'tucorreo@ejemplo.com',
+          register_password_label: 'Contraseña',
+          register_password_placeholder: 'Mínimo 6 caracteres',
+          register_confirm_label: 'Confirmar contraseña',
+          register_confirm_placeholder: 'Repite tu contraseña',
+          register_button: 'Registrarme',
+          register_or: 'o',
+          register_login_text: '¿Ya tienes cuenta?',
+          register_login_link: 'Inicia sesión aquí',
+          footer_desc: 'Tecnología, estilo y calidad en un solo lugar.',
+          footer_follow: 'Síguenos:',
+          footer_categories: 'Categorías',
+          footer_tecnologia: 'Tecnología',
+          footer_hogar: 'Hogar',
+          footer_deportes: 'Deportes',
+          footer_accesorios: 'Accesorios',
+          footer_ver_todas: 'Ver todas',
+          footer_help: 'Ayuda',
+          footer_track: 'Rastrear pedido',
+          footer_returns: 'Cambios y devoluciones',
+          footer_payment: 'Medios de pago',
+          footer_faq: 'Preguntas frecuentes',
+          footer_about: 'Nosotros',
+          footer_about_us: 'Sobre LAGUER',
+          footer_contact: 'Contacto',
+          footer_terms: 'Términos',
+          footer_privacy: 'Privacidad',
+          bottom_home: 'Inicio',
+          bottom_products: 'Productos',
+          bottom_cart: 'Carrito',
+          bottom_profile: 'Perfil',
+          error_empty: '❌ Por favor, completa todos los campos.',
+          error_password: '❌ La contraseña debe tener al menos 6 caracteres y coincidir.',
+          error_email_exists: '❌ Este correo ya está registrado. Inicia sesión.',
+          success_register: '✅ ¡Registro exitoso! Redirigiendo...',
+          error_network: '❌ Error de conexión con el servidor.'
+        },
+        en: {
+          topbar_msg: '🚚 <b>Shipping to all Peru</b>',
+          topbar_track: 'Track your order',
+          nav_tecnologia: 'Technology',
+          nav_hogar: 'Home',
+          nav_deportes: 'Sports',
+          nav_accesorios: 'Accessories',
+          nav_ofertas: 'Offers',
+          search_placeholder: 'Search products…',
+          register_title: 'Create account',
+          register_subtitle: 'Sign up to start shopping',
+          register_name_label: 'Full name',
+          register_name_placeholder: 'John Doe',
+          register_email_label: 'Email address',
+          register_email_placeholder: 'you@example.com',
+          register_password_label: 'Password',
+          register_password_placeholder: 'At least 6 characters',
+          register_confirm_label: 'Confirm password',
+          register_confirm_placeholder: 'Repeat your password',
+          register_button: 'Sign up',
+          register_or: 'or',
+          register_login_text: 'Already have an account?',
+          register_login_link: 'Log in here',
+          footer_desc: 'Technology, style and quality in one place.',
+          footer_follow: 'Follow us:',
+          footer_categories: 'Categories',
+          footer_tecnologia: 'Technology',
+          footer_hogar: 'Home',
+          footer_deportes: 'Sports',
+          footer_accesorios: 'Accessories',
+          footer_ver_todas: 'View all',
+          footer_help: 'Help',
+          footer_track: 'Track order',
+          footer_returns: 'Returns & exchanges',
+          footer_payment: 'Payment methods',
+          footer_faq: 'FAQ',
+          footer_about: 'About',
+          footer_about_us: 'About LAGUER',
+          footer_contact: 'Contact',
+          footer_terms: 'Terms',
+          footer_privacy: 'Privacy',
+          bottom_home: 'Home',
+          bottom_products: 'Products',
+          bottom_cart: 'Cart',
+          bottom_profile: 'Profile',
+          error_empty: '❌ Please fill in all fields.',
+          error_password: '❌ Password must be at least 6 characters and match.',
+          error_email_exists: '❌ This email is already registered. Please log in.',
+          success_register: '✅ Registration successful! Redirecting...',
+          error_network: '❌ Connection error with the server.'
         }
-        return;
-      }
+      };
 
-      // =============================================================
-      // 3. INICIALIZAR USUARIOS (crear admin por defecto si no existe)
-      // =============================================================
-      let users = JSON.parse(localStorage.getItem('laguerUsers')) || [];
-      const adminExists = users.some(u => u.email === 'admin@laguer.com');
-      if (!adminExists) {
-        users.push({
-          nombre: 'Administrador',
-          email: 'admin@laguer.com',
-          password: 'Admin2026!',
-          rol: 'admin'
+      function applyLanguage(lang) {
+        currentLang = lang;
+        langOpts.forEach(opt => opt.classList.toggle('active', opt.dataset.lang === lang));
+        const t = translations[lang];
+        document.querySelectorAll('[data-key]').forEach(el => {
+          const key = el.dataset.key;
+          if (t[key] !== undefined) {
+            if (el.tagName === 'INPUT' && el.type !== 'password') {
+              el.placeholder = t[key];
+            } else {
+              el.innerHTML = t[key];
+            }
+          }
         });
-        localStorage.setItem('laguerUsers', JSON.stringify(users));
-        console.log('🔑 Admin creado por defecto: admin@laguer.com / Admin2026!');
+        // Actualizar placeholders específicos
+        document.getElementById('regNombre').placeholder = t.register_name_placeholder;
+        document.getElementById('regEmail').placeholder = t.register_email_placeholder;
+        document.getElementById('regPassword').placeholder = t.register_password_placeholder;
+        document.getElementById('regConfirm').placeholder = t.register_confirm_placeholder;
+        document.querySelector('.search-box input').placeholder = t.search_placeholder;
+        document.querySelector('.topbar-msg').innerHTML = t.topbar_msg;
+        document.querySelector('.topbar-track').textContent = t.topbar_track;
+        const currentSettings = JSON.parse(localStorage.getItem('laguerSettings') || '{}');
+        currentSettings.lang = lang;
+        localStorage.setItem('laguerSettings', JSON.stringify(currentSettings));
       }
 
+      langToggle.addEventListener('click', function() {
+        const newLang = currentLang === 'es' ? 'en' : 'es';
+        applyLanguage(newLang);
+      });
+
+      const savedLang = localStorage.getItem('laguer_lang') || settings.lang || 'es';
+      applyLanguage(savedLang);
+
       // =============================================================
-      // 4. MANEJAR REGISTRO
+      // 3. MANEJAR REGISTRO (con API D1)
       // =============================================================
       const form = document.getElementById('registerForm');
       const nombre = document.getElementById('regNombre');
@@ -795,10 +905,12 @@
       const successDiv = document.getElementById('registerSuccess');
       const registerBtn = document.getElementById('registerBtn');
 
-      form.addEventListener('submit', function(e) {
+      form.addEventListener('submit', async function(e) {
         e.preventDefault();
         errorDiv.textContent = '';
         successDiv.textContent = '';
+        registerBtn.disabled = true;
+        registerBtn.textContent = currentLang === 'es' ? 'Registrando...' : 'Registering...';
 
         const nom = nombre.value.trim();
         const mail = email.value.trim();
@@ -806,53 +918,65 @@
         const conf = confirm.value.trim();
 
         if (!nom || !mail || !pass || !conf) {
-          errorDiv.textContent = '❌ Por favor, completa todos los campos.';
+          errorDiv.textContent = translations[currentLang].error_empty;
+          registerBtn.disabled = false;
+          registerBtn.textContent = translations[currentLang].register_button;
           return;
         }
 
-        if (pass.length < 6) {
-          errorDiv.textContent = '❌ La contraseña debe tener al menos 6 caracteres.';
+        if (pass.length < 6 || pass !== conf) {
+          errorDiv.textContent = translations[currentLang].error_password;
+          registerBtn.disabled = false;
+          registerBtn.textContent = translations[currentLang].register_button;
           return;
         }
 
-        if (pass !== conf) {
-          errorDiv.textContent = '❌ Las contraseñas no coinciden.';
-          return;
+        try {
+          const resp = await fetch('/api/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ nombre: nom, email: mail, password: pass })
+          });
+
+          const data = await resp.json();
+
+          if (resp.ok && data.success) {
+            // Iniciar sesión automáticamente
+            const loginResp = await fetch('/api/login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: mail, password: pass })
+            });
+            const loginData = await loginResp.json();
+            if (loginResp.ok && loginData.success) {
+              localStorage.setItem('laguerUser', JSON.stringify(loginData.user));
+              successDiv.textContent = translations[currentLang].success_register;
+              registerBtn.textContent = currentLang === 'es' ? 'Redirigiendo...' : 'Redirecting...';
+              setTimeout(() => {
+                window.location.href = 'perfil.html';
+              }, 1000);
+            } else {
+              // Si no puede iniciar sesión, redirige al login
+              successDiv.textContent = translations[currentLang].success_register;
+              setTimeout(() => {
+                window.location.href = 'login.html';
+              }, 1200);
+            }
+          } else {
+            errorDiv.textContent = data.error || translations[currentLang].error_email_exists;
+            registerBtn.disabled = false;
+            registerBtn.textContent = translations[currentLang].register_button;
+          }
+        } catch (error) {
+          console.error('Register error:', error);
+          errorDiv.textContent = translations[currentLang].error_network;
+          registerBtn.disabled = false;
+          registerBtn.textContent = translations[currentLang].register_button;
         }
-
-        const users = JSON.parse(localStorage.getItem('laguerUsers')) || [];
-        if (users.some(u => u.email === mail)) {
-          errorDiv.textContent = '❌ Este correo ya está registrado. Por favor, inicia sesión.';
-          return;
-        }
-
-        // Registrar usuario (rol 'user')
-        users.push({
-          nombre: nom,
-          email: mail,
-          password: pass,
-          rol: 'user'
-        });
-        localStorage.setItem('laguerUsers', JSON.stringify(users));
-
-        // Iniciar sesión automáticamente
-        localStorage.setItem('laguerUser', JSON.stringify({
-          nombre: nom,
-          email: mail,
-          rol: 'user'
-        }));
-
-        successDiv.textContent = '✅ ¡Cuenta creada exitosamente! Redirigiendo...';
-        registerBtn.disabled = true;
-        registerBtn.textContent = 'Registrando...';
-
-        setTimeout(() => {
-          window.location.href = 'perfil.html';
-        }, 1200);
       });
 
       // =============================================================
-      // 5. ACTUALIZAR BADGES DE CARRITO Y FAVORITOS
+      // 4. ACTUALIZAR BADGES DE CARRITO Y FAVORITOS
       // =============================================================
       const cart = JSON.parse(localStorage.getItem('laguerCart')) || [];
       const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
@@ -869,7 +993,7 @@
       if (favBadge) favBadge.textContent = favs.length;
 
       // =============================================================
-      // 6. BÚSQUEDA (redirige a productos)
+      // 5. BÚSQUEDA (redirige a productos)
       // =============================================================
       document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
@@ -878,7 +1002,7 @@
         }
       });
 
-      console.log('📝 Registro LAGUER con modo oscuro/claro listo');
+      console.log('📝 Registro LAGUER con API D1 listo');
     })();
   </script>
 </body>

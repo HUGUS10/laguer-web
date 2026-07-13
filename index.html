@@ -10,7 +10,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
-    /* ===== VARIABLES ===== */
+    /* ===== TODOS LOS ESTILOS (igual que en tu versión anterior) ===== */
+    /* (Mantén los mismos estilos que ya tenías, no los repito por brevedad) */
     :root {
       --bg: #05070b;
       --bg-soft: #0b1017;
@@ -29,7 +30,6 @@
       --bottom-nav-height: 70px;
     }
 
-    /* ===== TEMA CLARO ===== */
     body.light-mode {
       --bg: #f5f8fb;
       --bg-soft: #e9edf2;
@@ -90,7 +90,6 @@
     }
     @media (prefers-reduced-motion: reduce) { .beam-glow span { animation: none; } }
 
-    /* ===== TOPBAR (fondo negro por defecto) ===== */
     .topbar {
       background: #020406;
       font-size: 12.5px;
@@ -98,17 +97,12 @@
       border-bottom: 1px solid var(--line);
       transition: background 0.3s ease, border-color 0.3s ease;
     }
-    /* Modo claro: fondo blanco */
     body.light-mode .topbar {
       background: #eef1f5 !important;
       border-bottom-color: var(--line);
     }
-    body.light-mode .topbar .topbar-links a {
-      color: var(--muted);
-    }
-    body.light-mode .topbar .topbar-links b {
-      color: var(--white);
-    }
+    body.light-mode .topbar .topbar-links a { color: var(--muted); }
+    body.light-mode .topbar .topbar-links b { color: var(--white); }
     body.light-mode .topbar #languageSelector {
       color: var(--white);
       border-color: var(--line);
@@ -259,7 +253,6 @@
 
     .hero img { width: 100%; display: block; }
 
-    /* ===== ANIMACIONES ===== */
     .fade-in {
       animation: fadeIn 0.6s ease forwards;
     }
@@ -666,7 +659,6 @@
       color: var(--muted);
     }
 
-    /* ===== Sello: Libro de Reclamaciones ===== */
     .libro-reclamos-final {
       display: flex;
       justify-content: center;
@@ -690,7 +682,6 @@
       display: block;
     }
 
-    /* ===== COOKIES BANNER ===== */
     .cookie-banner {
       position: fixed;
       bottom: 0;
@@ -761,7 +752,6 @@
       transform: scale(1.05);
     }
 
-    /* ===== LIGHTBOX ===== */
     .lightbox-overlay {
       display: none;
       position: fixed;
@@ -799,7 +789,6 @@
       transform: rotate(90deg);
     }
 
-    /* ===== TOAST NOTIFICATIONS ===== */
     .toast-container {
       position: fixed;
       top: 80px;
@@ -843,7 +832,6 @@
       to { opacity: 0; transform: translateX(50px); }
     }
 
-    /* ===== SHARE BUTTONS ===== */
     .share-buttons {
       display: flex;
       gap: 10px;
@@ -995,9 +983,6 @@
       border: 2px solid var(--bg);
     }
 
-    /* ============================================================ */
-    /* ===== RESPONSIVE ===== */
-    /* ============================================================ */
     @media (max-width: 980px) {
       .main-nav, .cat-strip, .burger { display: none !important; }
       .header-icons .icon-btn:not(.fav-btn-header):not(.theme-toggle):not(.lang-selector) { display: none; }
@@ -1052,12 +1037,10 @@
         <a href="html/pedidos.html" style="color:var(--muted);" data-i18n="topbar_rastrear">Rastrea tu pedido</a>
       </div>
       <div style="display:flex; gap:10px; align-items:center;">
-        <!-- Selector de idioma -->
         <select id="languageSelector" style="background:transparent; border:1px solid var(--line); border-radius:6px; color:var(--white); padding:2px 6px; font-size:12px; cursor:pointer;">
           <option value="es">🇪🇸 ES</option>
           <option value="en">🇬🇧 EN</option>
         </select>
-        <!-- Toggle de tema -->
         <button id="themeToggle" class="icon-btn" style="font-size:16px; width:32px; height:32px;">
           <i class="fas fa-moon"></i>
         </button>
@@ -1082,7 +1065,8 @@
         <input type="text" id="searchInput" placeholder="Buscar productos…" data-i18n-placeholder="buscar" />
       </div>
       <div class="header-icons">
-        <a href="html/login.html" class="icon-btn"><i class="fas fa-user"></i></a>
+        <!-- Ícono de usuario con redirección inteligente -->
+        <a href="#" class="icon-btn" id="userIcon"><i class="fas fa-user"></i></a>
         <a href="html/favoritos.html" class="icon-btn fav-btn-header"><i class="fas fa-heart"></i><span class="fav-count" id="favCount">0</span></a>
         <a href="html/carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
       </div>
@@ -1105,7 +1089,7 @@
     <img src="image/banner-pc.png" alt="LAGUER - Tecnología, estilo y calidad" />
   </div>
 
-  <!-- ===== OFERTAS MINI ===== -->
+  <!-- ===== OFERTAS MINI (dinámicas desde la API) ===== -->
   <section class="ofertas-mini">
     <div class="wrap">
       <div class="titulo"><i class="fas fa-bolt"></i> <span data-i18n="ofertas_destacadas">Ofertas destacadas</span></div>
@@ -1132,7 +1116,13 @@
         <button class="tab" data-filter="deportes" data-i18n="deportes">Deportes</button>
         <button class="tab" data-filter="accesorios" data-i18n="accesorios">Accesorios</button>
       </div>
-      <div class="grid" id="productGrid"></div>
+      <div class="grid" id="productGrid">
+        <!-- Los productos se cargarán desde la API -->
+        <div style="grid-column:1/-1; text-align:center; padding:40px 0; color:var(--muted);">
+          <i class="fas fa-spinner fa-spin" style="font-size:30px;"></i>
+          <p style="margin-top:12px;">Cargando productos...</p>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -1226,7 +1216,6 @@
         </div>
       </div>
 
-      <!-- ===== Libro de Reclamaciones ===== -->
       <div class="libro-reclamos-final">
         <a href="html/libro-reclamaciones.html" aria-label="Libro de Reclamaciones">
           <img src="image/libro-recla.jfif" alt="Libro de Reclamaciones" loading="lazy" />
@@ -1316,7 +1305,7 @@
       }
 
       // =======================================================================
-      // NEWSLETTER (con toast y localStorage)
+      // NEWSLETTER
       // =======================================================================
       const newsletterForm = document.getElementById('newsletterForm');
       const newsletterEmail = document.getElementById('newsletterEmail');
@@ -1329,8 +1318,6 @@
           showToast('❌ Por favor, ingresa un correo válido.', 'error');
           return;
         }
-
-        // Guardar en localStorage (lista de suscriptores)
         const subscribers = JSON.parse(localStorage.getItem('laguer_newsletter_emails') || '[]');
         if (subscribers.includes(email)) {
           showToast('ℹ️ Ya estás suscrito a nuestro newsletter.', 'info');
@@ -1340,14 +1327,10 @@
         }
         subscribers.push(email);
         localStorage.setItem('laguer_newsletter_emails', JSON.stringify(subscribers));
-
-        // Mostrar éxito
         showToast('✅ ¡Te has suscrito exitosamente!', 'success');
         newsletterMsg.textContent = '✅ ¡Gracias por suscribirte!';
         newsletterMsg.style.color = 'var(--green)';
         newsletterEmail.value = '';
-
-        // Cambiar botón temporalmente
         const btn = this.querySelector('button');
         const orig = btn.textContent;
         btn.textContent = '¡Listo! 🎉';
@@ -1360,119 +1343,7 @@
       });
 
       // =======================================================================
-      // PRODUCTOS
-      // =======================================================================
-      const sampleProducts = [
-        {
-          id: 'p1',
-          name: 'Smartwatch Pro',
-          category: 'tecnologia',
-          price: 199,
-          discount: 30,
-          image: 'image/productos/smartwatch-pro.jpg',
-          images: [
-            'image/productos/smartwatch-pro-1.jpg',
-            'image/productos/smartwatch-pro-2.jpg',
-            'image/productos/smartwatch-pro-3.jpg'
-          ],
-          colors: ['#1a1a1a', '#ffffff', '#ff4444'],
-          sizes: ['Único'],
-          characteristics: ['Pantalla AMOLED', 'GPS integrado', 'Monitoreo cardíaco', 'Resistente al agua 5ATM']
-        },
-        {
-          id: 'p2',
-          name: 'Audífonos BT',
-          category: 'audio',
-          price: 89,
-          discount: 20,
-          image: 'image/productos/audifonos-bt.jfif',
-          images: [
-            'image/productos/audifonos-bt-1.jfif',
-            'image/productos/audifonos-bt-2.jfif'
-          ],
-          colors: ['#000000', '#ffffff'],
-          sizes: ['Único'],
-          characteristics: ['Bluetooth 5.0', 'Cancelación de ruido', '20h batería', 'Carga rápida']
-        },
-        {
-          id: 'p3',
-          name: 'Lámpara LED',
-          category: 'hogar',
-          price: 45,
-          discount: 0,
-          image: 'image/productos/lampara-led.jfif',
-          images: ['image/productos/lampara-led.jfif'],
-          colors: ['#ffffff'],
-          sizes: ['Único'],
-          characteristics: ['Control por app', '16M colores', 'Compatible con Alexa', 'Eficiencia energética']
-        },
-        {
-          id: 'p4',
-          name: 'Mochila Deportiva',
-          category: 'deportes',
-          price: 120,
-          discount: 10,
-          image: 'image/productos/mochila-deportiva.jfif',
-          images: ['image/productos/mochila-deportiva-1.jfif'],
-          colors: ['#1a1a1a', '#2e86de'],
-          sizes: ['Único'],
-          characteristics: ['Impermeable', 'Compartimento laptop', 'Correas acolchadas', 'Bolsillos laterales']
-        },
-        {
-          id: 'p5',
-          name: 'Cargador Rápido',
-          category: 'accesorios',
-          price: 35,
-          discount: 0,
-          image: 'image/productos/cargador-rapido.jfif',
-          images: ['image/productos/cargador-rapido-1.jfif'],
-          colors: ['#ffffff'],
-          sizes: ['Único'],
-          characteristics: ['20W', 'USB-C', 'Carga rápida', 'Compatible universal']
-        },
-        {
-          id: 'p6',
-          name: 'Teclado Gaming',
-          category: 'gaming',
-          price: 150,
-          discount: 15,
-          image: 'image/productos/teclado-gaming.jfif',
-          images: ['image/productos/teclado-gaming-1.jfif'],
-          colors: ['#1a1a1a', '#ff0000'],
-          sizes: ['Único'],
-          characteristics: ['Mecánico', 'RGB', 'Anti-ghosting', 'Reposamuñecas']
-        },
-        {
-          id: 'p7',
-          name: 'Polo Deportivo',
-          category: 'deportes',
-          price: 89,
-          discount: 25,
-          image: 'image/productos/polo-deportivo.jfif',
-          images: [
-            'image/productos/polo-deportivo-1.jfif',
-            'image/productos/polo-deportivo-2.jfif'
-          ],
-          colors: ['#1a1a1a', '#ffffff', '#2e86de'],
-          sizes: ['S', 'M', 'L', 'XL'],
-          characteristics: ['100% algodón', 'Cuello redondo', 'Doble costura', 'Estampado resistente']
-        },
-        {
-          id: 'p8',
-          name: 'Set Organizadores',
-          category: 'hogar',
-          price: 60,
-          discount: 0,
-          image: 'image/productos/set-organizadores.jfif',
-          images: ['image/productos/set-organizadores-1.jfif'],
-          colors: ['#ffffff', '#1a1a1a'],
-          sizes: ['Único'],
-          characteristics: ['Material reciclado', 'Diseño modular', 'Apilable', 'Fácil limpieza']
-        }
-      ];
-
-      // =======================================================================
-      // CARRITO Y FAVORITOS
+      // CARRITO Y FAVORITOS (localStorage)
       // =======================================================================
       const CART_KEY = 'laguerCart';
       const FAV_KEY = 'laguerFavs';
@@ -1502,7 +1373,6 @@
         }
         updateCartUI();
         showToast(`✅ "${product.name}" agregado al carrito.`, 'success');
-        // Cambiar texto del botón temporalmente
         document.querySelectorAll(`[data-product-id="${product.id}"] .add-to-cart`).forEach(btn => {
           const orig = btn.innerHTML;
           btn.innerHTML = '✅ Agregado';
@@ -1519,7 +1389,8 @@
       function toggleFav(productId, btnElement) {
         const index = favs.findIndex(p => p.id === productId);
         if (index === -1) {
-          const prod = sampleProducts.find(p => p.id === productId);
+          // Buscar el producto en los datos cargados (global)
+          const prod = window.productsData?.find(p => p.id === productId);
           if (prod) {
             favs.push({ ...prod });
             if (btnElement) {
@@ -1542,8 +1413,50 @@
       }
 
       // =======================================================================
-      // RENDERIZAR PRODUCTOS
+      // RENDERIZAR PRODUCTOS DESDE LA API
       // =======================================================================
+      let productsData = [];
+
+      async function loadProducts() {
+        const grid = document.getElementById('productGrid');
+        try {
+          grid.innerHTML = `
+            <div style="grid-column:1/-1; text-align:center; padding:40px 0; color:var(--muted);">
+              <i class="fas fa-spinner fa-spin" style="font-size:30px;"></i>
+              <p style="margin-top:12px;">Cargando productos...</p>
+            </div>
+          `;
+
+          const resp = await fetch('/api/products');
+          if (!resp.ok) throw new Error('Error al obtener productos');
+          const data = await resp.json();
+          productsData = data.products || [];
+
+          if (productsData.length === 0) {
+            grid.innerHTML = `
+              <div style="grid-column:1/-1; text-align:center; padding:40px 0; color:var(--muted);">
+                <i class="fas fa-box-open" style="font-size:40px;"></i>
+                <p style="margin-top:12px;">No hay productos disponibles.</p>
+              </div>
+            `;
+            return;
+          }
+
+          renderProducts(productsData, 'productGrid');
+          renderMiniOfertas(productsData);
+
+        } catch (error) {
+          console.error('Error al cargar productos:', error);
+          grid.innerHTML = `
+            <div style="grid-column:1/-1; text-align:center; padding:40px 0; color:var(--red);">
+              <i class="fas fa-exclamation-triangle" style="font-size:40px;"></i>
+              <p style="margin-top:12px;">Error al cargar los productos. Intenta más tarde.</p>
+              <button onclick="loadProducts()" style="margin-top:12px; padding:8px 20px; background:var(--blue); color:#fff; border:none; border-radius:8px; cursor:pointer;">Reintentar</button>
+            </div>
+          `;
+        }
+      }
+
       function renderProducts(products, containerId) {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -1551,33 +1464,35 @@
           container.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--muted);">No hay productos disponibles.</p>`;
           return;
         }
+
         let html = '';
         products.forEach((prod, index) => {
-          const price = prod.price || 0;
-          const discount = prod.discount || 0;
+          const price = Number(prod.precio) || 0;
+          const discount = Number(prod.descuento) || 0;
           const finalPrice = discount > 0 ? price * (1 - discount / 100) : price;
-          const imgSrc = prod.image || 'image/placeholder.png';
+          const imgSrc = prod.imagen || 'image/placeholder.png';
           const badge = discount > 0 ? `<span class="badge off">-${discount}%</span>` : '';
-          const cat = prod.category || 'general';
+          const cat = prod.categoria || 'general';
           const isFav = favs.some(f => f.id === prod.id);
           const heart = isFav ? '♥' : '♡';
           const heartClass = isFav ? 'active' : '';
           const delay = index * 0.05;
+
           html += `
             <article class="card fade-in" data-cat="${cat}" data-product-id="${prod.id}" style="animation-delay:${delay}s;">
               <div class="card-media">
-                <img src="${imgSrc}" alt="${prod.name}" loading="lazy" />
+                <img src="${imgSrc}" alt="${prod.nombre}" loading="lazy" />
                 ${badge}
                 <button class="fav-btn ${heartClass}" data-id="${prod.id}">${heart}</button>
               </div>
               <div class="card-body">
                 <span class="card-cat">${cat}</span>
-                <h4 class="card-name">${prod.name}</h4>
+                <h4 class="card-name">${prod.nombre}</h4>
                 <div class="price-row">
                   <span class="price">S/ ${finalPrice.toFixed(2)}</span>
                   ${discount > 0 ? `<span class="price-old">S/ ${price.toFixed(2)}</span>` : ''}
                 </div>
-                <button class="add-btn add-to-cart" data-id="${prod.id}" data-name="${prod.name}" data-price="${finalPrice}">Agregar al carrito</button>
+                <button class="add-btn add-to-cart" data-id="${prod.id}" data-name="${prod.nombre}" data-price="${finalPrice}">Agregar al carrito</button>
               </div>
             </article>
           `;
@@ -1616,27 +1531,27 @@
       }
 
       // =======================================================================
-      // OFERTAS MINI
+      // OFERTAS MINI (desde productos)
       // =======================================================================
-      function renderMiniOfertas() {
+      function renderMiniOfertas(products) {
         const container = document.getElementById('miniOfertas');
         if (!container) return;
-        const ofertas = sampleProducts.filter(p => p.discount > 0).slice(0, 2);
+        const ofertas = products.filter(p => (p.descuento || 0) > 0).slice(0, 2);
         if (ofertas.length === 0) {
           container.innerHTML = `<div class="mini-item"><div class="info"><h4>No hay ofertas</h4></div></div>`;
           return;
         }
         let html = '';
         ofertas.forEach(prod => {
-          const price = prod.price || 0;
-          const discount = prod.discount || 0;
+          const price = Number(prod.precio) || 0;
+          const discount = Number(prod.descuento) || 0;
           const finalPrice = discount > 0 ? price * (1 - discount / 100) : price;
-          const imgSrc = prod.image || 'image/placeholder.png';
+          const imgSrc = prod.imagen || 'image/placeholder.png';
           html += `
             <div class="mini-item" data-id="${prod.id}">
-              <img src="${imgSrc}" alt="${prod.name}" />
+              <img src="${imgSrc}" alt="${prod.nombre}" />
               <div class="info">
-                <h4>${prod.name}</h4>
+                <h4>${prod.nombre}</h4>
                 <div><span class="precio">S/ ${finalPrice.toFixed(2)}</span><span class="precio-old">S/ ${price.toFixed(2)}</span></div>
               </div>
             </div>
@@ -1692,10 +1607,7 @@
         const COOKIE_KEY = 'laguer_cookie_consent';
         const banner = document.getElementById('cookieBanner');
 
-        function getCookieConsent() {
-          return localStorage.getItem(COOKIE_KEY);
-        }
-
+        function getCookieConsent() { return localStorage.getItem(COOKIE_KEY); }
         function setCookieConsent(value) {
           localStorage.setItem(COOKIE_KEY, value);
           banner.classList.remove('show');
@@ -1714,7 +1626,7 @@
           showToast('🍪 Cookies rechazadas.', 'info');
         });
         document.getElementById('cookieSettings')?.addEventListener('click', function() {
-          showToast('⚙️ Configuración de cookies (puedes gestionarlas aquí).', 'info');
+          showToast('⚙️ Configuración de cookies.', 'info');
         });
       })();
 
@@ -1735,7 +1647,6 @@
           const isLight = document.body.classList.contains('light-mode');
           this.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
           localStorage.setItem('laguer_theme', isLight ? 'light' : 'dark');
-          // Actualizar topbar automáticamente (por CSS)
         });
       })();
 
@@ -1881,7 +1792,6 @@
           applyTranslations(currentLang);
         });
 
-        // Aplicar al cargar
         applyTranslations(currentLang);
       })();
 
@@ -1919,7 +1829,7 @@
         const url = encodeURIComponent(window.location.href);
         const title = encodeURIComponent(document.title);
         let shareUrl = '';
-        switch(network) {
+        switch (network) {
           case 'facebook':
             shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
             break;
@@ -1939,6 +1849,23 @@
       };
 
       // =======================================================================
+      // REDIRECCIÓN DE USUARIO (login/perfil/admin)
+      // =======================================================================
+      document.getElementById('userIcon')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        const session = JSON.parse(localStorage.getItem('laguerUser'));
+        if (session) {
+          if (session.rol === 'admin') {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'html/perfil.html';
+          }
+        } else {
+          window.location.href = 'html/login.html';
+        }
+      });
+
+      // =======================================================================
       // EVENTOS ADICIONALES
       // =======================================================================
       document.getElementById('closeSocial')?.addEventListener('click', function() {
@@ -1949,19 +1876,21 @@
       // INICIALIZAR
       // =======================================================================
       document.addEventListener('DOMContentLoaded', function() {
-        renderProducts(sampleProducts, 'productGrid');
-        renderMiniOfertas();
+        loadProducts();
         initFilters();
         initSearch();
         updateCartUI();
         updateFavUI();
         document.querySelector('.bottom-nav a[href="index.html"]')?.classList.add('active');
-        console.log('🚀 LAGUER · index actualizado: topbar claro, newsletter con toast, todo funcional');
+        console.log('🚀 LAGUER · index con API D1 integrada');
       });
 
-      // Exponer funciones globales para uso en consola (opcional)
+      // Exponer funciones globales
       window.addToCart = addToCart;
       window.showToast = showToast;
+      window.loadProducts = loadProducts;
+      window.productsData = productsData;
+
     })();
   </script>
 </body>
