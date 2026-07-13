@@ -1,7 +1,4 @@
-name = "laguer-web"
-compatibility_date = "2024-07-01"
-
 [[d1_databases]]
-binding = "DB"
+binding = "DB"   # ← Cambia de "laguer_db" a "DB"
 database_name = "laguer-db"
-database_id = "4861481c-4cd3-4c09-8820-8e6e93d10f3a"
+database_id = "5cf7ea09-b98a-4cc7-92b5-14c554b255c6"
