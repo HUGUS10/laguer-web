@@ -1,5 +1,5 @@
 // ============================================================
-// _worker.js - Worker para LAGUER con D1 y soporte estático
+// _worker.js - Worker para LAGUER con D1 (solo API)
 // ============================================================
 
 export default {
@@ -7,31 +7,51 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
 
-    // ==========================================================
-    // 1. API ROUTES
-    // ==========================================================
+    // Solo manejar rutas /api/*
     if (path.startsWith('/api/')) {
       return handleApi(request, env);
     }
 
-    // ==========================================================
-    // 2. ARCHIVOS ESTÁTICOS (HTML, CSS, JS, imágenes)
-    // ==========================================================
-    // Servir archivos estáticos desde el sistema de archivos de Pages
-    try {
-      // Intentar servir el archivo solicitado
-      const assetPath = path === '/' ? '/index.html' : path;
-      const response = await env.ASSETS.fetch(new Request(assetPath));
-      if (response.status === 404) {
-        // Si no existe, devolver 404
-        return new Response('Página no encontrada', { status: 404 });
-      }
-      return response;
-    } catch (error) {
-      return new Response('Error al servir el archivo', { status: 500 });
-    }
+    // Para cualquier otra ruta, dejar que Pages sirva el archivo estático
+    // En Pages, si no devolvemos nada, el request sigue su curso normal.
+    // Pero debemos devolver algo para que Pages lo maneje.
+    // La forma correcta es no interceptar la solicitud.
+    // Simplemente devolvemos undefined para que Pages continúe.
+    // Sin embargo, en un Worker de Pages, para que continúe, debemos usar
+    // `return` con un Response, pero podemos redirigir el request a los assets.
+    // La mejor práctica es: si no es API, devolver un Response que indique que
+    // Pages debe servir el archivo, pero en realidad Pages ya lo hace.
+    // Como Pages ya sirve los archivos, simplemente podemos devolver un 404
+    // para las rutas que no existen, pero para que las rutas existentes funcionen,
+    // necesitamos permitir que Pages las sirva. Así que para rutas no API,
+    // simplemente no hacemos nada y dejamos que Pages maneje la solicitud.
+    // En un Worker de Pages, si no interceptamos la solicitud, Pages la manejará.
+    // Pero como estamos en un Worker, debemos devolver un Response para
+    // que la solicitud no quede colgada. Podemos devolver un 404.
+    // Sin embargo, es mejor usar el patrón de "passthrough" con `env.ASSETS`.
+    // Aquí usaremos env.ASSETS para servir archivos estáticos.
+    return serveStatic(request, env);
   }
 };
+
+// ============================================================
+// FUNCIÓN PARA SERVIR ARCHIVOS ESTÁTICOS (usando ASSETS)
+// ============================================================
+async function serveStatic(request, env) {
+  try {
+    // En Pages, ASSETS contiene todos los archivos estáticos
+    const response = await env.ASSETS.fetch(request);
+    // Si el archivo existe, devolverlo
+    if (response.status !== 404) {
+      return response;
+    }
+    // Si no existe, devolver 404 personalizado
+    return new Response('Página no encontrada', { status: 404 });
+  } catch (error) {
+    // Si ASSETS falla, devolver error
+    return new Response('Error al servir el archivo', { status: 500 });
+  }
+}
 
 // ============================================================
 // FUNCIÓN PARA MANEJAR LAS RUTAS DE API
