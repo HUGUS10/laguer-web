@@ -251,63 +251,260 @@
     .cat-chip:hover { color: var(--white); }
     .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
+    /* ===== PERFIL ===== */
     .perfil-section {
       padding: 40px 0;
       min-height: 70vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
     }
-    .perfil-card {
+    .perfil-layout {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .perfil-top {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .perfil-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--green), var(--blue));
+      display: grid;
+      place-items: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .perfil-top h2 { font-size: 22px; margin-bottom: 2px; }
+    .perfil-top p { color: var(--muted); font-size: 13px; }
+
+    .tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 24px;
+    }
+    .tab-btn {
+      background: none;
+      color: var(--muted);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 10px 4px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tab-btn i { font-size: 14px; }
+    .tab-btn.active { color: var(--white); }
+    .tab-btn.active::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: -1px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--red), var(--green), var(--blue));
+    }
+    .tab-btn + .tab-btn { margin-left: 8px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .card {
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      padding: 40px 32px;
-      max-width: 500px;
-      width: 100%;
+      padding: 28px 24px;
       transition: background 0.3s, border-color 0.3s;
     }
-    body.light-mode .perfil-card { background: var(--surface); border-color: var(--line); }
-    .perfil-card .perfil-header {
-      text-align: center;
-      margin-bottom: 28px;
+    body.light-mode .card { background: var(--surface); border-color: var(--line); }
+    .card + .card { margin-top: 16px; }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
     }
-    .perfil-card .perfil-header img {
-      height: 48px;
-      margin-bottom: 12px;
+    .card-header h3 { font-size: 16px; }
+    .btn-mini {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.2s;
     }
-    .perfil-card .perfil-header h2 {
-      font-size: 24px;
-      margin-bottom: 4px;
-    }
-    .perfil-card .perfil-header p {
-      color: var(--muted);
-      font-size: 14px;
-    }
-    .perfil-card .info-row {
+    .btn-mini:hover { border-color: var(--blue); }
+    .btn-mini.save { background: var(--green); border-color: var(--green); }
+    .btn-mini.save:hover { background: var(--green-dark); }
+    .btn-mini.cancel { background: transparent; }
+
+    .info-row {
       display: flex;
       justify-content: space-between;
+      align-items: center;
       padding: 12px 0;
       border-bottom: 1px solid var(--line);
       font-size: 14px;
+      gap: 12px;
     }
-    .perfil-card .info-row:last-child { border-bottom: none; }
-    .perfil-card .info-row .label { color: var(--muted); font-weight: 600; }
-    .perfil-card .info-row .value { font-weight: 700; }
+    .info-row:last-child { border-bottom: none; }
+    .info-row .label { color: var(--muted); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    .info-row .label i { width: 16px; text-align: center; opacity: .8; }
+    .info-row .value { font-weight: 700; text-align: right; }
+    .info-row .value.muted-value { color: var(--muted); font-weight: 600; }
+
+    .edit-input {
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      color: var(--white);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-align: right;
+      max-width: 220px;
+      flex: 1;
+    }
+    .edit-input:focus { outline: none; border-color: var(--blue); }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(24,158,224,.15);
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+    }
+    .role-badge.admin { background: rgba(238,29,37,.15); color: var(--red); }
+
+    .save-msg {
+      font-size: 13px;
+      margin-top: 14px;
+      text-align: center;
+      min-height: 18px;
+    }
+    .save-msg.ok { color: var(--green); }
+    .save-msg.err { color: var(--red); }
+
     .btn-logout {
       width: 100%;
       padding: 14px;
-      border: none;
       border-radius: 10px;
       background: var(--red);
       color: #fff;
       font-weight: 800;
-      font-size: 16px;
+      font-size: 15px;
       cursor: pointer;
       transition: 0.2s;
-      margin-top: 20px;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
-    .btn-logout:hover { background: var(--red-dark); transform: scale(1.02); }
+    .btn-logout:hover { background: var(--red-dark); transform: scale(1.01); }
+
+    /* ===== PEDIDOS ===== */
+    .pedido-box {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+      background: var(--bg-soft);
+      transition: border-color 0.2s;
+    }
+    .pedido-box:hover { border-color: var(--blue); }
+    .pedido-box:last-child { margin-bottom: 0; }
+    .pedido-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+    .pedido-id { font-weight: 800; font-family: 'Space Grotesk', sans-serif; font-size: 15px; }
+    .pedido-fecha { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .pedido-estado {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      white-space: nowrap;
+      height: fit-content;
+    }
+    .pedido-estado.pendiente { background: rgba(255,193,7,.15); color: #ffc107; }
+    .pedido-estado.enviado { background: rgba(24,158,224,.15); color: var(--blue); }
+    .pedido-estado.entregado { background: rgba(57,181,74,.15); color: var(--green); }
+    .pedido-estado.cancelado { background: rgba(238,29,37,.15); color: var(--red); }
+    .pedido-items {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+    .pedido-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+    }
+    .pedido-total { font-weight: 800; }
+    .pedido-total span { color: var(--muted); font-weight: 600; font-size: 12px; }
+    .btn-ver-pedido {
+      background: none;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .btn-ver-pedido:hover { text-decoration: underline; }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--muted);
+    }
+    .empty-state i { font-size: 36px; margin-bottom: 12px; opacity: .5; display: block; }
+    .empty-state p { font-size: 14px; margin-bottom: 16px; }
+    .empty-state a {
+      display: inline-block;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+
+    .skeleton-row {
+      height: 60px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, var(--surface-2) 25%, var(--bg-soft) 50%, var(--surface-2) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.3s infinite;
+      margin-bottom: 12px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
 
     footer {
       background: #020406;
@@ -461,7 +658,10 @@
       .bottom-nav a i { font-size: 20px; }
       .bottom-nav a span { font-size: 9px; }
       .foot-grid { grid-template-columns: 1fr; gap: 20px; }
-      .perfil-card { padding: 24px 16px; }
+      .card { padding: 20px 16px; }
+      .info-row { flex-wrap: wrap; }
+      .edit-input { max-width: none; width: 100%; text-align: left; }
+      .pedido-top { flex-direction: column; }
     }
   </style>
 </head>
@@ -524,27 +724,105 @@
 
   <!-- ===== PERFIL ===== -->
   <section class="perfil-section">
-    <div class="perfil-card">
-      <div class="perfil-header">
-        <img src="../image/laguer-logo.png" alt="LAGUER" />
-        <h2 data-key="perfil_title">Mi Perfil</h2>
-        <p data-key="perfil_subtitle">Datos de tu cuenta</p>
-      </div>
-      <div id="perfilContent">
-        <div class="info-row">
-          <span class="label" data-key="perfil_nombre">Nombre</span>
-          <span class="value" id="perfilNombre">-</span>
-        </div>
-        <div class="info-row">
-          <span class="label" data-key="perfil_email">Correo</span>
-          <span class="value" id="perfilEmail">-</span>
-        </div>
-        <div class="info-row">
-          <span class="label" data-key="perfil_rol">Rol</span>
-          <span class="value" id="perfilRol">-</span>
+    <div class="wrap perfil-layout">
+
+      <div class="perfil-top">
+        <div class="perfil-avatar" id="perfilAvatar">?</div>
+        <div>
+          <h2 id="perfilSaludo" data-key="perfil_title">Mi Perfil</h2>
+          <p data-key="perfil_subtitle">Datos de tu cuenta</p>
         </div>
       </div>
-      <button class="btn-logout" onclick="cerrarSesion()" data-key="perfil_logout">Cerrar sesión</button>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="datos"><i class="fas fa-user"></i> <span data-key="tab_datos">Mis datos</span></button>
+        <button class="tab-btn" data-tab="pedidos"><i class="fas fa-box"></i> <span data-key="tab_pedidos">Mis pedidos</span></button>
+      </div>
+
+      <!-- ===== TAB: DATOS ===== -->
+      <div class="tab-panel active" id="panel-datos">
+        <div class="card">
+          <div class="card-header">
+            <h3 data-key="datos_titulo">Información personal</h3>
+            <button class="btn-mini" id="btnEditar"><i class="fas fa-pen"></i> <span data-key="btn_editar">Editar</span></button>
+          </div>
+
+          <div id="viewMode">
+            <div class="info-row">
+              <span class="label"><i class="fas fa-user"></i> <span data-key="perfil_nombre">Nombre</span></span>
+              <span class="value" id="vNombre">-</span>
+            </div>
+            <div class="info-row">
+              <span class="label"><i class="fas fa-envelope"></i> <span data-key="perfil_email">Correo</span></span>
+              <span class="value muted-value" id="vEmail">-</span>
+            </div>
+            <div class="info-row">
+              <span class="label"><i class="fas fa-phone"></i> <span data-key="perfil_telefono">Teléfono</span></span>
+              <span class="value" id="vTelefono">-</span>
+            </div>
+            <div class="info-row">
+              <span class="label"><i class="fas fa-id-card"></i> <span data-key="perfil_dni">DNI</span></span>
+              <span class="value" id="vDni">-</span>
+            </div>
+            <div class="info-row">
+              <span class="label"><i class="fas fa-map-marker-alt"></i> <span data-key="perfil_direccion">Dirección</span></span>
+              <span class="value" id="vDireccion">-</span>
+            </div>
+            <div class="info-row">
+              <span class="label"><i class="fas fa-shield-alt"></i> <span data-key="perfil_rol">Rol</span></span>
+              <span class="value" id="vRolWrap"><span class="role-badge" id="vRol">Cliente</span></span>
+            </div>
+          </div>
+
+          <div id="editMode" style="display:none;">
+            <div class="info-row">
+              <span class="label"><i class="fas fa-user"></i> <span data-key="perfil_nombre">Nombre</span></span>
+              <input class="edit-input" id="eNombre" type="text" />
+            </div>
+            <div class="info-row">
+              <span class="label"><i class="fas fa-envelope"></i> <span data-key="perfil_email">Correo</span></span>
+              <span class="value muted-value" id="eEmailFixed">-</span>
+            </div>
+            <div class="info-row">
+              <span class="label"><i class="fas fa-phone"></i> <span data-key="perfil_telefono">Teléfono</span></span>
+              <input class="edit-input" id="eTelefono" type="tel" maxlength="9" inputmode="numeric" />
+            </div>
+            <div class="info-row">
+              <span class="label"><i class="fas fa-id-card"></i> <span data-key="perfil_dni">DNI</span></span>
+              <input class="edit-input" id="eDni" type="text" maxlength="8" inputmode="numeric" />
+            </div>
+            <div class="info-row">
+              <span class="label"><i class="fas fa-map-marker-alt"></i> <span data-key="perfil_direccion">Dirección</span></span>
+              <input class="edit-input" id="eDireccion" type="text" />
+            </div>
+
+            <div style="display:flex; gap:10px; margin-top:16px;">
+              <button class="btn-mini save" id="btnGuardar" style="flex:1; justify-content:center;"><i class="fas fa-check"></i> <span data-key="btn_guardar">Guardar</span></button>
+              <button class="btn-mini cancel" id="btnCancelar" style="flex:1; justify-content:center;"><i class="fas fa-times"></i> <span data-key="btn_cancelar">Cancelar</span></button>
+            </div>
+            <div class="save-msg" id="saveMsg"></div>
+          </div>
+        </div>
+
+        <button class="btn-logout" onclick="cerrarSesion()">
+          <i class="fas fa-sign-out-alt"></i> <span data-key="perfil_logout">Cerrar sesión</span>
+        </button>
+      </div>
+
+      <!-- ===== TAB: PEDIDOS ===== -->
+      <div class="tab-panel" id="panel-pedidos">
+        <div class="card">
+          <div class="card-header">
+            <h3 data-key="pedidos_titulo">Historial de pedidos</h3>
+            <button class="btn-mini" id="btnRefrescarPedidos"><i class="fas fa-rotate"></i> <span data-key="btn_refrescar">Actualizar</span></button>
+          </div>
+          <div id="pedidosContent">
+            <div class="skeleton-row"></div>
+            <div class="skeleton-row"></div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -667,10 +945,38 @@
           search_placeholder: 'Buscar productos…',
           perfil_title: 'Mi Perfil',
           perfil_subtitle: 'Datos de tu cuenta',
+          tab_datos: 'Mis datos',
+          tab_pedidos: 'Mis pedidos',
+          datos_titulo: 'Información personal',
+          btn_editar: 'Editar',
+          btn_guardar: 'Guardar',
+          btn_cancelar: 'Cancelar',
+          btn_refrescar: 'Actualizar',
           perfil_nombre: 'Nombre',
           perfil_email: 'Correo',
+          perfil_telefono: 'Teléfono',
+          perfil_dni: 'DNI',
+          perfil_direccion: 'Dirección',
           perfil_rol: 'Rol',
           perfil_logout: 'Cerrar sesión',
+          pedidos_titulo: 'Historial de pedidos',
+          rol_admin: 'Administrador',
+          rol_cliente: 'Cliente',
+          guardado_ok: '✅ Datos actualizados correctamente.',
+          guardado_err: '❌ No se pudo guardar. Verifica tu conexión.',
+          tel_invalido: '❌ El teléfono debe tener 9 dígitos.',
+          dni_invalido: '❌ El DNI debe tener 8 dígitos.',
+          nombre_vacio: '❌ El nombre no puede estar vacío.',
+          pedidos_vacio_titulo: 'Aún no tienes pedidos',
+          pedidos_vacio_texto: 'Cuando compres algo en LAGUER aparecerá aquí.',
+          pedidos_vacio_btn: 'Ir a comprar',
+          pedido_estado_pendiente: 'Pendiente',
+          pedido_estado_enviado: 'Enviado',
+          pedido_estado_entregado: 'Entregado',
+          pedido_estado_cancelado: 'Cancelado',
+          pedido_ver: 'Ver detalle',
+          pedido_articulos: 'artículo(s)',
+          pedido_total_label: 'Total',
           footer_desc: 'Tecnología, estilo y calidad en un solo lugar.',
           footer_follow: 'Síguenos:',
           footer_categories: 'Categorías',
@@ -705,10 +1011,38 @@
           search_placeholder: 'Search products…',
           perfil_title: 'My Profile',
           perfil_subtitle: 'Your account details',
+          tab_datos: 'My data',
+          tab_pedidos: 'My orders',
+          datos_titulo: 'Personal information',
+          btn_editar: 'Edit',
+          btn_guardar: 'Save',
+          btn_cancelar: 'Cancel',
+          btn_refrescar: 'Refresh',
           perfil_nombre: 'Name',
           perfil_email: 'Email',
+          perfil_telefono: 'Phone',
+          perfil_dni: 'National ID',
+          perfil_direccion: 'Address',
           perfil_rol: 'Role',
           perfil_logout: 'Log out',
+          pedidos_titulo: 'Order history',
+          rol_admin: 'Administrator',
+          rol_cliente: 'Customer',
+          guardado_ok: '✅ Data updated successfully.',
+          guardado_err: '❌ Could not save. Check your connection.',
+          tel_invalido: '❌ Phone number must have 9 digits.',
+          dni_invalido: '❌ National ID must have 8 digits.',
+          nombre_vacio: '❌ Name cannot be empty.',
+          pedidos_vacio_titulo: "You don't have any orders yet",
+          pedidos_vacio_texto: 'Once you buy something at LAGUER it will show up here.',
+          pedidos_vacio_btn: 'Go shopping',
+          pedido_estado_pendiente: 'Pending',
+          pedido_estado_enviado: 'Shipped',
+          pedido_estado_entregado: 'Delivered',
+          pedido_estado_cancelado: 'Cancelled',
+          pedido_ver: 'View details',
+          pedido_articulos: 'item(s)',
+          pedido_total_label: 'Total',
           footer_desc: 'Technology, style and quality in one place.',
           footer_follow: 'Follow us:',
           footer_categories: 'Categories',
@@ -744,13 +1078,18 @@
             if (el.tagName === 'INPUT' && el.type !== 'password') {
               el.placeholder = t[key];
             } else {
-              el.innerHTML = t[key];
+              el.textContent = t[key];
             }
           }
         });
         document.querySelector('.search-box input').placeholder = t.search_placeholder;
         document.querySelector('.topbar-msg').innerHTML = t.topbar_msg;
         document.querySelector('.topbar-track').textContent = t.topbar_track;
+
+        // Re-render rol badge y pedidos, que dependen del idioma
+        renderRolBadge();
+        renderPedidos();
+
         const currentSettings = JSON.parse(localStorage.getItem('laguerSettings') || '{}');
         currentSettings.lang = lang;
         localStorage.setItem('laguerSettings', JSON.stringify(currentSettings));
@@ -761,36 +1100,251 @@
         applyLanguage(newLang);
       });
 
-      const savedLang = localStorage.getItem('laguer_lang') || settings.lang || 'es';
-      applyLanguage(savedLang);
-
       // =============================================================
-      // 3. CARGAR DATOS DEL PERFIL DESDE localStorage
+      // 3. SESIÓN Y DATOS DEL USUARIO
       // =============================================================
-      const user = JSON.parse(localStorage.getItem('laguerUser'));
+      let user = JSON.parse(localStorage.getItem('laguerUser'));
       if (!user) {
-        // Si no hay sesión, redirigir al login
         window.location.href = 'login.html';
         return;
       }
 
-      document.getElementById('perfilNombre').textContent = user.nombre || '-';
-      document.getElementById('perfilEmail').textContent = user.email || '-';
-      const rolText = user.rol === 'admin' ? 'Administrador' : 'Cliente';
-      document.getElementById('perfilRol').textContent = rolText;
+      function initials(name) {
+        if (!name) return '?';
+        return name.trim().split(/\s+/).slice(0, 2).map(p => p[0].toUpperCase()).join('');
+      }
+
+      function renderPerfilView() {
+        document.getElementById('perfilAvatar').textContent = initials(user.nombre);
+        document.getElementById('perfilSaludo').textContent = (translations[currentLang].perfil_title) + (user.nombre ? ' · ' + user.nombre.split(' ')[0] : '');
+        document.getElementById('vNombre').textContent = user.nombre || '-';
+        document.getElementById('vEmail').textContent = user.email || '-';
+        document.getElementById('vTelefono').textContent = user.telefono || '-';
+        document.getElementById('vDni').textContent = user.dni || '-';
+        document.getElementById('vDireccion').textContent = user.direccion || '-';
+        renderRolBadge();
+      }
+
+      function renderRolBadge() {
+        const t = translations[currentLang];
+        const rolEl = document.getElementById('vRol');
+        if (!rolEl) return;
+        const isAdmin = user.rol === 'admin';
+        rolEl.textContent = isAdmin ? t.rol_admin : t.rol_cliente;
+        rolEl.classList.toggle('admin', isAdmin);
+      }
+
+      renderPerfilView();
 
       // =============================================================
-      // 4. CERRAR SESIÓN
+      // 4. TABS
+      // =============================================================
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      tabBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          tabBtns.forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+          this.classList.add('active');
+          document.getElementById('panel-' + this.dataset.tab).classList.add('active');
+          if (this.dataset.tab === 'pedidos') cargarPedidos();
+        });
+      });
+
+      // =============================================================
+      // 5. EDITAR DATOS
+      // =============================================================
+      const viewMode = document.getElementById('viewMode');
+      const editMode = document.getElementById('editMode');
+      const btnEditar = document.getElementById('btnEditar');
+      const btnGuardar = document.getElementById('btnGuardar');
+      const btnCancelar = document.getElementById('btnCancelar');
+      const saveMsg = document.getElementById('saveMsg');
+
+      btnEditar.addEventListener('click', function() {
+        document.getElementById('eNombre').value = user.nombre || '';
+        document.getElementById('eEmailFixed').textContent = user.email || '-';
+        document.getElementById('eTelefono').value = user.telefono || '';
+        document.getElementById('eDni').value = user.dni || '';
+        document.getElementById('eDireccion').value = user.direccion || '';
+        saveMsg.textContent = '';
+        saveMsg.className = 'save-msg';
+        viewMode.style.display = 'none';
+        editMode.style.display = 'block';
+      });
+
+      btnCancelar.addEventListener('click', function() {
+        editMode.style.display = 'none';
+        viewMode.style.display = 'block';
+      });
+
+      document.getElementById('eTelefono').addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').slice(0, 9);
+      });
+      document.getElementById('eDni').addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '').slice(0, 8);
+      });
+
+      btnGuardar.addEventListener('click', async function() {
+        const t = translations[currentLang];
+        const nombre = document.getElementById('eNombre').value.trim();
+        const telefono = document.getElementById('eTelefono').value.trim();
+        const dni = document.getElementById('eDni').value.trim();
+        const direccion = document.getElementById('eDireccion').value.trim();
+
+        if (!nombre) {
+          saveMsg.textContent = t.nombre_vacio;
+          saveMsg.className = 'save-msg err';
+          return;
+        }
+        if (telefono && !/^[0-9]{9}$/.test(telefono)) {
+          saveMsg.textContent = t.tel_invalido;
+          saveMsg.className = 'save-msg err';
+          return;
+        }
+        if (dni && !/^[0-9]{8}$/.test(dni)) {
+          saveMsg.textContent = t.dni_invalido;
+          saveMsg.className = 'save-msg err';
+          return;
+        }
+
+        btnGuardar.disabled = true;
+        const original = btnGuardar.innerHTML;
+        btnGuardar.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+        const payload = { email: user.email, nombre, telefono, dni, direccion };
+
+        try {
+          const resp = await fetch('/api/update-profile', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          let ok = resp.ok;
+          if (ok) {
+            const data = await resp.json().catch(() => ({ success: true }));
+            ok = data.success !== false;
+          }
+          if (!ok) throw new Error('update-failed');
+
+          user = { ...user, nombre, telefono, dni, direccion };
+          localStorage.setItem('laguerUser', JSON.stringify(user));
+          renderPerfilView();
+          saveMsg.textContent = t.guardado_ok;
+          saveMsg.className = 'save-msg ok';
+          setTimeout(() => {
+            editMode.style.display = 'none';
+            viewMode.style.display = 'block';
+          }, 700);
+        } catch (err) {
+          console.warn('No se pudo guardar en el servidor, se guarda localmente:', err);
+          // Fallback: guardar localmente igual, para no perder la edición del usuario
+          user = { ...user, nombre, telefono, dni, direccion };
+          localStorage.setItem('laguerUser', JSON.stringify(user));
+          renderPerfilView();
+          saveMsg.textContent = t.guardado_err;
+          saveMsg.className = 'save-msg err';
+        } finally {
+          btnGuardar.disabled = false;
+          btnGuardar.innerHTML = original;
+        }
+      });
+
+      // =============================================================
+      // 6. PEDIDOS
+      // =============================================================
+      let pedidosCargados = false;
+      let ultimosPedidos = [];
+
+      function estadoInfo(estado) {
+        const t = translations[currentLang];
+        const map = {
+          pendiente: { clase: 'pendiente', texto: t.pedido_estado_pendiente },
+          enviado: { clase: 'enviado', texto: t.pedido_estado_enviado },
+          entregado: { clase: 'entregado', texto: t.pedido_estado_entregado },
+          cancelado: { clase: 'cancelado', texto: t.pedido_estado_cancelado }
+        };
+        return map[estado] || map.pendiente;
+      }
+
+      function renderPedidos() {
+        const cont = document.getElementById('pedidosContent');
+        if (!cont || !pedidosCargados) return;
+        const t = translations[currentLang];
+
+        if (!ultimosPedidos.length) {
+          cont.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-box-open"></i>
+              <p><strong data-key-runtime="titulo"></strong><br>${t.pedidos_vacio_texto}</p>
+              <a href="productos.html">${t.pedidos_vacio_btn}</a>
+            </div>`;
+          cont.querySelector('[data-key-runtime="titulo"]').textContent = t.pedidos_vacio_titulo;
+          return;
+        }
+
+        cont.innerHTML = ultimosPedidos.map(p => {
+          const est = estadoInfo(p.estado);
+          const fecha = p.fecha ? new Date(p.fecha).toLocaleDateString(currentLang === 'es' ? 'es-PE' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric' }) : '-';
+          const itemsTxt = (p.items || []).slice(0, 3).map(i => i.nombre).join(', ') + ((p.items || []).length > 3 ? '…' : '');
+          const cantidad = (p.items || []).reduce((acc, i) => acc + (i.cantidad || 1), 0);
+          return `
+            <div class="pedido-box">
+              <div class="pedido-top">
+                <div>
+                  <div class="pedido-id">#${p.id}</div>
+                  <div class="pedido-fecha">${fecha}</div>
+                </div>
+                <span class="pedido-estado ${est.clase}">${est.texto}</span>
+              </div>
+              <div class="pedido-items">${itemsTxt || '-'} · ${cantidad} ${t.pedido_articulos}</div>
+              <div class="pedido-bottom">
+                <div class="pedido-total"><span>${t.pedido_total_label}: </span>S/ ${Number(p.total || 0).toFixed(2)}</div>
+                <button class="btn-ver-pedido" data-pedido-id="${p.id}">${t.pedido_ver} <i class="fas fa-chevron-right"></i></button>
+              </div>
+            </div>`;
+        }).join('');
+      }
+
+      async function cargarPedidos() {
+        const cont = document.getElementById('pedidosContent');
+        cont.innerHTML = '<div class="skeleton-row"></div><div class="skeleton-row"></div>';
+
+        try {
+          const resp = await fetch('/api/pedidos?email=' + encodeURIComponent(user.email));
+          if (!resp.ok) throw new Error('no-api');
+          const data = await resp.json();
+          ultimosPedidos = Array.isArray(data.pedidos) ? data.pedidos : (Array.isArray(data) ? data : []);
+        } catch (err) {
+          // Fallback: pedidos guardados localmente (ej. generados desde el carrito)
+          const local = JSON.parse(localStorage.getItem('laguerPedidos') || '[]');
+          ultimosPedidos = local.filter(p => !p.email || p.email === user.email);
+        }
+
+        pedidosCargados = true;
+        renderPedidos();
+      }
+
+      document.getElementById('btnRefrescarPedidos').addEventListener('click', cargarPedidos);
+
+      document.getElementById('panel-pedidos').addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-ver-pedido');
+        if (!btn) return;
+        window.location.href = 'pedidos.html?id=' + encodeURIComponent(btn.dataset.pedidoId);
+      });
+
+      // =============================================================
+      // 7. CERRAR SESIÓN
       // =============================================================
       window.cerrarSesion = function() {
-        if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+        const msg = currentLang === 'es' ? '¿Estás seguro de que quieres cerrar sesión?' : 'Are you sure you want to log out?';
+        if (confirm(msg)) {
           localStorage.removeItem('laguerUser');
           window.location.href = '../index.html';
         }
       };
 
       // =============================================================
-      // 5. ACTUALIZAR BADGES DE CARRITO Y FAVORITOS
+      // 8. ACTUALIZAR BADGES DE CARRITO Y FAVORITOS
       // =============================================================
       const cart = JSON.parse(localStorage.getItem('laguerCart')) || [];
       const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
@@ -807,7 +1361,7 @@
       if (favBadge) favBadge.textContent = favs.length;
 
       // =============================================================
-      // 6. BÚSQUEDA
+      // 9. BÚSQUEDA
       // =============================================================
       document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
@@ -816,7 +1370,13 @@
         }
       });
 
-      console.log('👤 Perfil LAGUER con API D1 listo');
+      // =============================================================
+      // 10. INICIALIZAR IDIOMA (al final, para que ya existan user/pedidos)
+      // =============================================================
+      const savedLang = settings.lang || 'es';
+      applyLanguage(savedLang);
+
+      console.log('👤 Perfil LAGUER con edición de datos y pedidos listo');
     })();
   </script>
 </body>
