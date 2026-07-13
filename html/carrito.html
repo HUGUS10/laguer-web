@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
   <style>
+    /* ===== VARIABLES ===== */
     :root {
       --bg: #05070b;
       --bg-soft: #0b1017;
@@ -27,15 +28,18 @@
       --radius: 16px;
       --bottom-nav-height: 70px;
     }
+
+    /* ===== TEMA CLARO ===== */
     body.light-mode {
-      --bg: #f4f6f9;
-      --bg-soft: #eef1f5;
+      --bg: #f5f8fb;
+      --bg-soft: #e9edf2;
       --surface: #ffffff;
       --surface-2: #f0f2f5;
       --line: rgba(0,0,0,.08);
-      --white: #1a1f2a;
-      --muted: #5a6a7e;
+      --white: #1a1a1a;
+      --muted: #555555;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
@@ -45,7 +49,7 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
       padding-bottom: calc(var(--bottom-nav-height) + 20px);
-      transition: background 0.3s, color 0.3s;
+      transition: background 0.3s ease, color 0.3s ease;
     }
     h1,h2,h3,h4 { font-family: 'Space Grotesk', sans-serif; letter-spacing: -0.01em; }
     a { color: inherit; text-decoration: none; }
@@ -55,39 +59,93 @@
     .wrap { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
 
     .beam-rule {
-      height: 3px; width: 100%;
+      height: 3px;
+      width: 100%;
       background: linear-gradient(90deg, var(--red) 0 33%, var(--green) 33% 66%, var(--blue) 66% 100%);
       opacity: .9;
     }
+    .beam-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+    .beam-glow span {
+      position: absolute;
+      width: 2px;
+      height: 170%;
+      top: -40%;
+      filter: blur(1px);
+      opacity: .35;
+      animation: drift 14s linear infinite;
+    }
+    .beam-glow span:nth-child(1) { left: 12%; background: var(--red); animation-delay: 0s; }
+    .beam-glow span:nth-child(2) { left: 46%; background: var(--green); animation-delay: -5s; }
+    .beam-glow span:nth-child(3) { left: 78%; background: var(--blue); animation-delay: -9s; }
+    @keyframes drift {
+      0% { transform: rotate(18deg) translateY(-10%); }
+      50% { transform: rotate(18deg) translateY(6%); }
+      100% { transform: rotate(18deg) translateY(-10%); }
+    }
+    @media (prefers-reduced-motion: reduce) { .beam-glow span { animation: none; } }
 
     .topbar {
-      background: #020406; font-size: 12.5px; color: var(--muted);
+      background: #020406;
+      font-size: 12.5px;
+      color: var(--muted);
       border-bottom: 1px solid var(--line);
-      transition: background 0.3s, border-color 0.3s;
     }
-    body.light-mode .topbar { background: #eef1f5; border-bottom-color: var(--line); }
-    .topbar .wrap { display: flex; justify-content: space-between; align-items: center; height: 36px; }
+    .topbar .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 36px;
+    }
     .topbar-links { display: flex; gap: 20px; }
     .topbar-links b { color: var(--white); }
 
     header.site {
-      position: sticky; top: 0; z-index: 50;
+      position: sticky;
+      top: 0;
+      z-index: 50;
       background: rgba(5,7,11,.88);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
-      transition: background 0.3s, border-color 0.3s;
+      transition: background 0.3s ease;
     }
-    body.light-mode header.site { background: rgba(244,246,249,.88); }
-    .header-row { display: flex; align-items: center; gap: 16px; height: 60px; }
+    body.light-mode header.site {
+      background: rgba(255,255,255,.92);
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 60px;
+    }
     .logo-mark { height: 32px; flex-shrink: 0; }
     .logo-mark img { height: 100%; width: auto; }
-    .main-nav { display: flex; gap: 20px; flex: 0 0 auto; }
+
+    .main-nav {
+      display: flex;
+      gap: 20px;
+      flex: 0 0 auto;
+    }
     .main-nav a {
-      font-weight: 600; font-size: 14px; color: var(--white); opacity: .85;
-      position: relative; padding: 4px 2px;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--white);
+      opacity: .85;
+      position: relative;
+      padding: 4px 2px;
     }
     .main-nav a::after {
-      content: ""; position: absolute; left: 0; bottom: 0; height: 2px; width: 0;
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 2px;
+      width: 0;
       background: linear-gradient(90deg, var(--red), var(--green), var(--blue));
       transition: width .25s ease;
     }
@@ -95,296 +153,691 @@
     .main-nav a:hover::after { width: 100%; }
 
     .search-box {
-      flex: 1; max-width: 300px; margin-left: auto;
-      display: flex; align-items: center; gap: 8px;
-      background: var(--surface); border: 1px solid var(--line);
-      border-radius: 999px; padding: 6px 14px;
-      transition: border-color .2s, background 0.3s, border-color 0.3s;
+      flex: 1;
+      max-width: 300px;
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 14px;
+      transition: border-color .2s;
     }
     .search-box:focus-within { border-color: var(--blue); }
     .search-box input {
-      background: none; border: none; outline: none; color: var(--white);
-      font-size: 14px; width: 100%; font-family: inherit;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--white);
+      font-size: 14px;
+      width: 100%;
+      font-family: inherit;
     }
     .search-box input::placeholder { color: var(--muted); }
     .search-box i { opacity: .7; }
 
-    .header-icons { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-    .icon-btn {
-      position: relative; width: 36px; height: 36px; border-radius: 50%;
-      background: var(--surface); display: grid; place-items: center;
-      border: 1px solid var(--line); transition: .2s; color: var(--white);
+    .header-icons {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
     }
-    body.light-mode .icon-btn { background: var(--surface); border-color: var(--line); color: var(--white); }
+    .icon-btn {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      transition: .2s;
+      color: var(--white);
+    }
     .icon-btn:hover { border-color: var(--green); background: var(--surface-2); }
     .cart-count, .fav-count {
-      position: absolute; top: -4px; right: -4px; background: var(--red); color: #fff;
-      font-size: 10px; font-weight: 800; width: 18px; height: 18px; border-radius: 50%;
-      display: grid; place-items: center; border: 2px solid var(--bg);
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 2px solid var(--bg);
     }
     .fav-count { background: var(--blue); }
+    .burger { display: none; }
 
-    .header-controls { display: flex; align-items: center; gap: 12px; margin-left: 6px; }
-    .theme-toggle, .lang-toggle {
-      background: var(--surface); border: 1px solid var(--line); border-radius: 30px;
-      padding: 4px 6px; display: flex; gap: 4px; align-items: center; cursor: pointer;
-      transition: border-color .2s, background 0.3s; color: var(--white); font-size: 13px;
+    .cat-strip {
+      background: var(--bg-soft);
+      border-bottom: 1px solid var(--line);
     }
-    body.light-mode .theme-toggle, body.light-mode .lang-toggle { background: var(--surface); border-color: var(--line); }
-    .theme-toggle:hover, .lang-toggle:hover { border-color: var(--blue); }
-    .theme-toggle .tog-icon, .lang-toggle .lang-opt {
-      padding: 4px 6px; border-radius: 20px; font-size: 13px; transition: background .2s, color .2s;
+    .cat-strip .wrap {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding: 10px 20px;
     }
-    .theme-toggle .tog-icon.active, .lang-toggle .lang-opt.active { background: var(--blue); color: #fff; }
-
-    .cat-strip { background: var(--bg-soft); border-bottom: 1px solid var(--line); transition: background 0.3s, border-color 0.3s; }
-    body.light-mode .cat-strip { background: var(--bg-soft); border-bottom-color: var(--line); }
-    .cat-strip .wrap { display: flex; gap: 24px; overflow-x: auto; padding: 10px 20px; }
     .cat-chip {
-      flex: 0 0 auto; display: flex; align-items: center; gap: 6px; font-size: 13px;
-      font-weight: 600; color: var(--muted); white-space: nowrap; transition: color 0.2s;
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      transition: color 0.2s;
     }
     .cat-chip:hover { color: var(--white); }
     .cat-dot { width: 8px; height: 8px; border-radius: 50%; }
 
     /* ===== CARRITO ===== */
-    .cart-section { padding: 32px 0; min-height: 60vh; }
-    .cart-heading { display: flex; align-items: baseline; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
-    .cart-heading h1 { font-size: 24px; }
-    .cart-heading span { color: var(--muted); font-size: 14px; font-weight: 600; }
-
-    .cart-grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 24px; align-items: start; }
-
+    .cart-section { padding: 30px 0; min-height: 60vh; }
+    .cart-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 30px;
+      margin-top: 20px;
+    }
     .cart-item {
-      display: grid; grid-template-columns: 76px 1fr auto; gap: 14px; align-items: center;
-      background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
-      padding: 14px; margin-bottom: 12px; opacity: 0; animation: fadeIn .35s ease forwards;
-      transition: border-color .2s, background 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-bottom: 16px;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
-    .cart-item:hover { border-color: var(--blue); }
-    @keyframes fadeIn { from { opacity:0; transform: translateY(6px);} to { opacity:1; transform:translateY(0);} }
-
+    .cart-item:hover {
+      border-color: rgba(255,255,255,0.2);
+    }
     .cart-item-img {
-      width: 76px; height: 76px; border-radius: 10px; overflow: hidden;
-      background: var(--bg-soft); display: grid; place-items: center; flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+      background: var(--surface-2);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
     }
-    .cart-item-img img { width: 100%; height: 100%; object-fit: cover; }
-    .cart-item-img i { font-size: 24px; color: var(--muted); }
-
-    .cart-item-info h4 { font-size: 14px; margin-bottom: 6px; line-height: 1.3; }
-    .cart-item-info .price { font-weight: 800; font-size: 15px; }
-    .cart-item-info .stock-warning { color: var(--red); font-size: 11px; font-weight: 700; margin-top: 4px; }
-
+    .cart-item-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cart-item-info { flex: 1; min-width: 120px; }
+    .cart-item-info h4 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .cart-item-info .price {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--green);
+    }
+    .cart-item-info .variant {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cart-item-info .variant .color-dot {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+    }
     .cart-item-actions {
-      display: flex; align-items: center; gap: 6px; flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
     }
     .qty-btn {
-      width: 28px; height: 28px; border-radius: 8px; background: var(--surface-2);
-      border: 1px solid var(--line); color: var(--white); font-weight: 800; font-size: 15px;
-      display: grid; place-items: center; transition: .2s;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      color: var(--white);
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      font-size: 18px;
+      font-weight: 700;
+      transition: 0.2s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .qty-btn:hover:not(:disabled) { border-color: var(--blue); }
-    .qty-btn:disabled { opacity: .35; cursor: not-allowed; }
-    .qty { min-width: 22px; text-align: center; font-weight: 700; font-size: 14px; }
+    .qty-btn:hover { background: var(--blue); border-color: var(--blue); }
+    .qty-btn:active { transform: scale(0.92); }
+    .cart-item-actions .qty { font-weight: 700; font-size: 18px; min-width: 30px; text-align: center; }
     .remove-btn {
-      width: 28px; height: 28px; border-radius: 8px; background: transparent;
-      color: var(--red); font-size: 14px; display: grid; place-items: center;
-      margin-left: 4px; transition: .2s;
+      background: transparent;
+      color: var(--red);
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+      padding: 4px;
     }
-    .remove-btn:hover { background: rgba(238,29,37,.12); }
+    .remove-btn:hover { transform: scale(1.3); }
 
     .summary-card {
-      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
-      padding: 24px 20px; position: sticky; top: 90px;
-      transition: background 0.3s, border-color 0.3s;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: sticky;
+      top: 100px;
     }
-    .summary-card h3 { font-size: 16px; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+    .summary-card h3 {
+      font-size: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
     .summary-row {
-      display: flex; justify-content: space-between; font-size: 14px; color: var(--muted);
-      padding: 8px 0; border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 15px;
+      color: var(--muted);
     }
     .summary-row.total {
-      border-bottom: none; color: var(--white); font-weight: 800; font-size: 16px; padding-top: 14px;
+      font-size: 20px;
+      font-weight: 700;
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      margin-top: 10px;
+      color: var(--white);
     }
-    .summary-row.total .amount { color: var(--green); font-size: 20px; }
+    .summary-row.total .amount { color: var(--green); }
 
-    .payment-methods { margin: 18px 0; }
-    .payment-methods > p { font-size: 13px; color: var(--muted); margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
-    .payment-icons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .payment-icons button {
-      background: var(--bg-soft); border: 1px solid var(--line); color: var(--white);
-      font-size: 13px; font-weight: 700; padding: 10px; border-radius: 10px;
-      display: flex; align-items: center; justify-content: center; gap: 6px; transition: .2s;
+    .payment-methods { margin: 20px 0; }
+    .payment-methods p {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 14px;
     }
-    .payment-icons button:hover { border-color: var(--blue); background: var(--surface-2); }
+    .payment-icons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .payment-icons button {
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 14px;
+      color: var(--white);
+      font-weight: 600;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.2s;
+      cursor: pointer;
+      flex: 1 0 auto;
+      min-width: 70px;
+      justify-content: center;
+    }
+    .payment-icons button:hover { background: var(--blue); transform: translateY(-2px); }
+    .payment-icons button i { font-size: 18px; }
 
     .btn-checkout {
-      width: 100%; padding: 14px; border-radius: 10px;
-      background: linear-gradient(90deg, var(--green), var(--blue)); color: #fff;
-      font-weight: 800; font-size: 15px; transition: .2s; display: flex;
-      align-items: center; justify-content: center; gap: 8px;
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(90deg, var(--red), var(--green), var(--blue));
+      border: none;
+      border-radius: 12px;
+      color: #fff;
+      font-weight: 800;
+      font-size: 18px;
+      transition: 0.2s;
+      margin-top: 10px;
+      cursor: pointer;
     }
-    .btn-checkout:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,.3); }
+    .btn-checkout:hover { transform: scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+    .btn-checkout:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
     .whatsapp-btn {
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-      width: 100%; padding: 12px; border-radius: 10px; margin-top: 10px;
-      background: #25D366; color: #fff; font-weight: 700; font-size: 14px; transition: .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #25D366;
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-weight: 700;
+      border: none;
+      transition: 0.2s;
+      margin-top: 10px;
+      width: 100%;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
     }
-    .whatsapp-btn:hover { filter: brightness(1.08); }
-    .btn-vaciar {
-      width: 100%; padding: 10px; margin-top: 12px; border-radius: 10px;
-      background: transparent; border: 1px solid var(--line); color: var(--muted);
-      font-weight: 700; font-size: 13px; display: flex; align-items: center; justify-content: center; gap: 6px;
-      transition: .2s;
-    }
-    .btn-vaciar:hover { border-color: var(--red); color: var(--red); }
+    .whatsapp-btn:hover { background: #1ebe5c; transform: scale(1.02); }
 
-    .empty-cart { text-align: center; padding: 60px 20px; color: var(--muted); }
-    .empty-cart i { font-size: 48px; margin-bottom: 16px; opacity: .5; display: block; }
-    .empty-cart h3 { color: var(--white); font-size: 18px; margin-bottom: 8px; }
-    .empty-cart p { font-size: 14px; margin-bottom: 20px; }
+    .empty-cart {
+      text-align: center;
+      padding: 60px 20px;
+    }
+    .empty-cart i { font-size: 80px; color: var(--muted); margin-bottom: 20px; }
+    .empty-cart h3 { font-size: 24px; margin-bottom: 10px; }
+    .empty-cart p { color: var(--muted); }
     .empty-cart .add-btn {
-      display: inline-block; background: linear-gradient(90deg, var(--green), var(--blue));
-      color: #fff; font-weight: 700; font-size: 14px; padding: 12px 24px; border-radius: 10px;
+      display: inline-block;
+      padding: 12px 30px;
+      margin-top: 16px;
+      background: linear-gradient(90deg, var(--red), var(--blue));
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      transition: 0.2s;
     }
+    .empty-cart .add-btn:hover { transform: scale(1.05); }
 
-    .skeleton-row {
-      height: 90px; border-radius: 14px; margin-bottom: 12px;
-      background: linear-gradient(90deg, var(--surface-2) 25%, var(--bg-soft) 50%, var(--surface-2) 75%);
-      background-size: 200% 100%; animation: shimmer 1.3s infinite;
-    }
-    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-    /* ===== MODALES DE PAGO ===== */
+    /* ===== MODALES ===== */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,.65); backdrop-filter: blur(4px);
-      display: flex; align-items: center; justify-content: center; z-index: 2000;
-      opacity: 0; visibility: hidden; transition: .25s; padding: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
     }
-    .modal-overlay.active { opacity: 1; visibility: visible; }
-    .modal-box {
-      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
-      padding: 28px 24px; max-width: 400px; width: 100%; transform: scale(.95); transition: .25s;
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 30px 24px;
+      max-width: 420px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalIn 0.3s ease;
     }
-    .modal-overlay.active .modal-box { transform: scale(1); }
-    .modal-box h3 { font-size: 18px; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
-    .modal-box .modal-sub { color: var(--muted); font-size: 13px; margin-bottom: 18px; }
-    .modal-box .form-group { margin-bottom: 14px; }
-    .modal-box label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-    .modal-box input {
-      width: 100%; padding: 11px 14px; border-radius: 9px; background: var(--bg-soft);
-      border: 1px solid var(--line); color: var(--white); font-family: inherit; transition: .2s;
+    @keyframes modalIn {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
     }
-    .modal-box input:focus { outline: none; border-color: var(--blue); }
-    .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
-    .modal-actions button { flex: 1; padding: 12px; border-radius: 9px; font-weight: 700; font-size: 14px; }
-    .modal-actions .btn-submit-pago { background: linear-gradient(90deg, var(--green), var(--blue)); color: #fff; }
-    .close-modal { background: transparent; color: var(--muted); }
-    .close-modal:hover { color: var(--white); }
+    .modal .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .modal .modal-header h3 { font-size: 20px; }
+    .modal .modal-header .close-modal {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 24px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .modal .modal-header .close-modal:hover { color: var(--red); transform: rotate(90deg); }
 
-    /* ===== TOASTS ===== */
-    #toastContainer {
-      position: fixed; bottom: calc(var(--bottom-nav-height) + 20px); right: 20px; z-index: 3000;
-      display: flex; flex-direction: column; gap: 10px; max-width: 320px;
+    .modal .qr-container {
+      text-align: center;
+      margin: 16px 0;
+      padding: 12px;
+      background: #fff;
+      border-radius: 12px;
+      max-width: 200px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .toast {
-      background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
-      padding: 12px 16px; display: flex; align-items: center; gap: 10px; font-size: 13px;
-      font-weight: 600; box-shadow: 0 8px 20px rgba(0,0,0,.35); animation: toastIn .3s ease;
+    .modal .qr-container img {
+      width: 100%;
+      height: auto;
+      display: block;
     }
-    .toast.success { border-color: var(--green); }
-    .toast.error { border-color: var(--red); }
-    .toast.info { border-color: var(--blue); }
-    .toast.hide { opacity: 0; transform: translateX(20px); transition: .3s; }
-    @keyframes toastIn { from { opacity: 0; transform: translateX(20px);} to { opacity: 1; transform: translateX(0);} }
+    .modal .qr-container p {
+      color: #333;
+      font-size: 12px;
+      margin-top: 8px;
+      font-weight: 600;
+    }
 
-    /* ===== COOKIE BANNER ===== */
-    .cookie-banner {
-      position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface);
-      border-top: 1px solid var(--line); padding: 16px 20px; display: flex; gap: 16px;
-      align-items: center; justify-content: space-between; flex-wrap: wrap;
-      transform: translateY(100%); transition: transform .3s ease; z-index: 1500;
+    .modal .form-group { margin-bottom: 16px; }
+    .modal .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 4px;
     }
-    .cookie-banner.show { transform: translateY(0); }
-    .cookie-banner p { font-size: 13px; color: var(--muted); max-width: 560px; }
-    .cookie-banner p a { color: var(--blue); font-weight: 600; }
-    .cookie-actions { display: flex; gap: 8px; flex-shrink: 0; }
-    .cookie-actions button {
-      padding: 9px 16px; border-radius: 8px; font-size: 13px; font-weight: 700;
+    .modal .form-group input {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+      color: var(--white);
+      font-family: inherit;
+      transition: 0.2s;
     }
-    .cookie-actions .accept { background: var(--green); color: #fff; }
-    .cookie-actions .reject, .cookie-actions .settings { background: var(--surface-2); color: var(--white); border: 1px solid var(--line); }
+    .modal .form-group input:focus { outline: none; border-color: var(--blue); }
+    .modal .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .modal .submit-payment {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, var(--green), var(--blue));
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-top: 8px;
+    }
+    .modal .submit-payment:hover { transform: scale(1.02); }
 
+    /* ===== FOOTER ===== */
     footer {
-      background: #020406; border-top: 1px solid var(--line); padding: 40px 0 20px;
-      transition: background 0.3s, border-color 0.3s;
+      background: #020406;
+      border-top: 1px solid var(--line);
+      padding: 40px 0 20px;
+      transition: background 0.3s ease;
     }
-    body.light-mode footer { background: #eef1f5; border-top-color: var(--line); }
-    .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 30px; margin-bottom: 30px; }
+    body.light-mode footer {
+      background: #e9edf2;
+    }
+    .foot-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
     .foot-logo { height: 30px; margin-bottom: 10px; }
     .foot-desc { color: var(--muted); font-size: 13px; line-height: 1.6; max-width: 260px; }
-    .pay-icons-footer { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .pay-icons-footer span {
-      background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px;
-      font-size: 12px; font-weight: 600; color: var(--muted); display: inline-flex; align-items: center; gap: 4px;
+    .pay-icons-footer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
     }
-    body.light-mode .pay-icons-footer span { background: var(--surface); border-color: var(--line); color: var(--muted); }
-    .footer-social { margin-top: 12px; display: flex; gap: 14px; align-items: center; }
+    .pay-icons-footer span {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .pay-icons-footer span i { font-size: 16px; }
+    .pay-icons-footer span .fa-cc-visa { color: #1a1f71; }
+    .pay-icons-footer span .fa-cc-mastercard { color: #eb001b; }
+    .pay-icons-footer span .fa-cc-amex { color: #2e77bc; }
+    .pay-icons-footer span .fa-cc-diners-club { color: #006633; }
+    .pay-icons-footer span .fa-mobile-alt { color: var(--blue); }
+
+    .footer-social {
+      margin-top: 12px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
     .footer-social span { color: var(--muted); font-weight: 600; font-size: 13px; }
     .footer-social a { color: var(--muted); font-size: 18px; transition: 0.2s; }
     .footer-social a:hover { color: var(--white); transform: scale(1.2); }
-    .foot-col h5 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 12px; color: var(--white); }
-    .foot-col a { display: block; color: var(--muted); font-size: 13px; margin-bottom: 8px; transition: .2s; }
+    .foot-col h5 {
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 12px;
+      color: var(--white);
+    }
+    .foot-col a {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 8px;
+      transition: .2s;
+    }
     .foot-col a:hover { color: var(--white); }
     .foot-bottom {
-      border-top: 1px solid var(--line); padding-top: 16px; display: flex; justify-content: space-between;
-      flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ===== Sello: Libro de Reclamaciones ===== */
+    .libro-reclamos-final {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 26px 0;
+    }
+    .libro-reclamos-final a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+      opacity: .95;
+    }
+    .libro-reclamos-final a:hover {
+      transform: translateY(-2px);
+      opacity: 1;
+    }
+    .libro-reclamos-final img {
+      height: 62px;
+      width: auto;
+      display: block;
+    }
+
+    /* ===== COOKIES BANNER ===== */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      padding: 16px 24px;
+      z-index: 9999;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transform: translateY(100%);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+    }
+    .cookie-banner.show {
+      transform: translateY(0);
+    }
+    .cookie-banner p {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0;
+      flex: 1;
+      min-width: 200px;
+    }
+    .cookie-banner p a {
+      color: var(--blue);
+      text-decoration: underline;
+    }
+    .cookie-banner .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .cookie-banner .btn-cookie {
+      padding: 8px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .cookie-banner .btn-cookie.accept {
+      background: var(--green);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.accept:hover {
+      transform: scale(1.05);
+    }
+    .cookie-banner .btn-cookie.reject {
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .cookie-banner .btn-cookie.reject:hover {
+      background: var(--red);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings {
+      background: var(--blue);
+      color: #fff;
+    }
+    .cookie-banner .btn-cookie.settings:hover {
+      transform: scale(1.05);
+    }
+
+    /* ===== ANIMACIONES ===== */
+    .fade-in {
+      animation: fadeIn 0.5s ease forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; height: var(--bottom-nav-height);
-      background: rgba(11,16,23,0.95); backdrop-filter: blur(12px); border-top: 1px solid var(--line);
-      display: none; align-items: center; justify-content: space-around; z-index: 1000; padding: 0 8px;
-      transition: background 0.3s, border-color 0.3s;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: var(--bottom-nav-height);
+      background: rgba(11,16,23,0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      display: none;
+      align-items: center;
+      justify-content: space-around;
+      z-index: 1000;
+      padding: 0 8px;
     }
-    body.light-mode .bottom-nav { background: rgba(238,241,245,0.95); border-top-color: var(--line); }
     .bottom-nav a {
-      display: flex; flex-direction: column; align-items: center; gap: 2px; color: var(--muted);
-      font-size: 10px; font-weight: 600; text-decoration: none; transition: 0.2s; padding: 4px 8px;
-      border-radius: 10px; position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+      padding: 4px 8px;
+      border-radius: 10px;
+      position: relative;
     }
     .bottom-nav a i { font-size: 22px; transition: 0.2s; }
+    .bottom-nav a span { font-size: 10px; }
     .bottom-nav a.active { color: var(--blue); }
     .bottom-nav a.active i { transform: translateY(-2px); }
     .bottom-nav a .badge-bottom {
-      position: absolute; top: 0; right: -4px; background: var(--red); color: #fff; font-size: 10px;
-      font-weight: 800; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center;
-      justify-content: center; border: 2px solid var(--bg);
+      position: absolute;
+      top: 0;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg);
     }
 
+    /* ============================================================ */
+    /* ===== RESPONSIVE ===== */
+    /* ============================================================ */
     @media (max-width: 980px) {
-      .main-nav, .cat-strip { display: none !important; }
+      .main-nav, .cat-strip, .burger { display: none !important; }
       .header-icons .icon-btn:not(.fav-btn-header) { display: none; }
       .bottom-nav { display: flex; }
-      .search-box { max-width: none; flex: 2; margin-left: 0; padding: 8px 16px; }
+      .search-box {
+        max-width: none;
+        flex: 2;
+        margin-left: 0;
+        padding: 8px 16px;
+      }
       .search-box input { font-size: 15px; }
       .header-row { gap: 10px; height: 56px; }
       .logo-mark { height: 28px; }
       .icon-btn { width: 34px; height: 34px; }
       .icon-btn i { font-size: 16px; }
-      .foot-grid { grid-template-columns: 1fr 1fr; }
-      .cart-grid { grid-template-columns: 1fr; }
+      .cart-grid { grid-template-columns: 1fr; gap: 20px; }
       .summary-card { position: static; }
-      .cookie-banner { bottom: var(--bottom-nav-height); }
+      .foot-grid { grid-template-columns: 1fr 1fr; }
+      .cookie-banner { flex-direction: column; text-align: center; padding: 16px; }
+      .cookie-banner .buttons { justify-content: center; }
     }
 
     @media (max-width: 600px) {
+      .cart-item { flex-wrap: wrap; gap: 12px; padding: 12px; }
+      .cart-item-img { width: 60px; height: 60px; font-size: 20px; }
+      .cart-item-info h4 { font-size: 14px; }
+      .cart-item-info .price { font-size: 16px; }
+      .cart-item-actions { width: 100%; justify-content: flex-end; padding-top: 8px; border-top: 1px solid var(--line); }
+      .payment-icons button { font-size: 12px; padding: 6px 10px; min-width: 60px; }
+      .modal { padding: 20px 16px; }
+      .modal .form-row { grid-template-columns: 1fr; }
+      .search-box { padding: 6px 12px; }
+      .search-box input { font-size: 14px; }
+      .bottom-nav a i { font-size: 20px; }
+      .bottom-nav a span { font-size: 9px; }
       .foot-grid { grid-template-columns: 1fr; gap: 20px; }
-      .cart-item { grid-template-columns: 60px 1fr; grid-template-rows: auto auto; }
-      .cart-item-img { width: 60px; height: 60px; }
-      .cart-item-actions { grid-column: 1 / -1; justify-content: flex-end; margin-top: 8px; }
-      .payment-icons { grid-template-columns: 1fr 1fr; }
-      #toastContainer { left: 12px; right: 12px; max-width: none; }
+      .cart-section { padding: 20px 0; }
     }
   </style>
 </head>
@@ -394,18 +847,17 @@
   <div class="topbar">
     <div class="wrap">
       <div class="topbar-links">
-        <span class="topbar-msg" data-key="topbar_msg">🚚 <b>Envíos a todo el Perú</b></span>
-        <a href="pedidos.html" class="topbar-track" data-key="topbar_track">Rastrea tu pedido</a>
+        <span>🚚 <b>Envíos a todo el Perú</b></span>
+        <a href="pedidos.html" style="color:var(--muted);">Rastrea tu pedido</a>
       </div>
-      <div class="header-controls">
-        <div class="theme-toggle" id="themeToggle" title="Cambiar tema">
-          <span class="tog-icon active" data-theme="dark"><i class="fas fa-moon"></i></span>
-          <span class="tog-icon" data-theme="light"><i class="fas fa-sun"></i></span>
-        </div>
-        <div class="lang-toggle" id="langToggle" title="Cambiar idioma">
-          <span class="lang-opt active" data-lang="es">ES</span>
-          <span class="lang-opt" data-lang="en">EN</span>
-        </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        <select id="languageSelector" style="background:transparent; border:1px solid var(--line); border-radius:6px; color:var(--white); padding:2px 6px; font-size:12px; cursor:pointer;">
+          <option value="es">🇪🇸 ES</option>
+          <option value="en">🇬🇧 EN</option>
+        </select>
+        <button id="themeToggle" class="icon-btn" style="font-size:16px; width:32px; height:32px;">
+          <i class="fas fa-moon"></i>
+        </button>
       </div>
     </div>
   </div>
@@ -416,15 +868,15 @@
     <div class="wrap header-row">
       <a href="../index.html" class="logo-mark"><img src="../image/laguer-logo.png" alt="LAGUER" /></a>
       <nav class="main-nav">
-        <a href="productos.html?cat=tecnologia" data-key="nav_tecnologia">Tecnología</a>
-        <a href="productos.html?cat=hogar" data-key="nav_hogar">Hogar</a>
-        <a href="productos.html?cat=deportes" data-key="nav_deportes">Deportes</a>
-        <a href="productos.html?cat=accesorios" data-key="nav_accesorios">Accesorios</a>
-        <a href="ofertas.html" data-key="nav_ofertas">Ofertas</a>
+        <a href="productos.html?cat=tecnologia" data-i18n="menu_tecnologia">Tecnología</a>
+        <a href="productos.html?cat=hogar" data-i18n="menu_hogar">Hogar</a>
+        <a href="productos.html?cat=deportes" data-i18n="menu_deportes">Deportes</a>
+        <a href="productos.html?cat=accesorios" data-i18n="menu_accesorios">Accesorios</a>
+        <a href="ofertas.html" data-i18n="menu_ofertas">Ofertas</a>
       </nav>
       <div class="search-box">
         <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" data-key="search_placeholder" placeholder="Buscar productos…" />
+        <input type="text" id="searchInput" placeholder="Buscar productos…" data-i18n-placeholder="buscar" />
       </div>
       <div class="header-icons">
         <a href="login.html" class="icon-btn"><i class="fas fa-user"></i></a>
@@ -448,96 +900,16 @@
   <!-- ===== CARRITO ===== -->
   <section class="cart-section">
     <div class="wrap">
-      <div class="cart-heading">
-        <h1 data-key="tu_carrito">Tu carrito</h1>
-        <span id="itemCountLabel">(0 productos)</span>
-      </div>
+      <h1 style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <i class="fas fa-shopping-cart" style="color:var(--blue);"></i>
+        <span data-i18n="tu_carrito">Tu carrito</span>
+        <span style="font-size:14px; color:var(--muted); font-weight:400;" id="itemCountLabel">(0 productos)</span>
+      </h1>
       <div id="cartContainer">
-        <div class="skeleton-row"></div>
-        <div class="skeleton-row"></div>
+        <!-- Renderizado dinámico -->
       </div>
     </div>
   </section>
-
-  <!-- ===== MODALES DE PAGO ===== -->
-  <div class="modal-overlay" id="modalYape">
-    <div class="modal-box">
-      <h3><i class="fas fa-mobile-alt"></i> Yape</h3>
-      <p class="modal-sub" data-key="modal_sub">Completa tus datos para coordinar el pago</p>
-      <form id="formYape">
-        <div class="form-group"><label data-key="modal_nombre">Nombre completo</label><input id="yapeNombre" required /></div>
-        <div class="form-group"><label data-key="modal_correo">Correo</label><input id="yapeCorreo" type="email" required /></div>
-        <div class="form-group"><label data-key="modal_celular">Celular</label><input id="yapeCelular" type="tel" maxlength="9" required /></div>
-        <div class="form-group"><label data-key="modal_direccion">Dirección</label><input id="yapeDireccion" required /></div>
-        <div class="modal-actions">
-          <button type="button" class="close-modal" data-modal="modalYape" data-key="modal_cancelar">Cancelar</button>
-          <button type="submit" class="btn-submit-pago" data-key="modal_enviar">Enviar pedido</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="modalPlin">
-    <div class="modal-box">
-      <h3><i class="fas fa-mobile-alt"></i> Plin</h3>
-      <p class="modal-sub" data-key="modal_sub">Completa tus datos para coordinar el pago</p>
-      <form id="formPlin">
-        <div class="form-group"><label data-key="modal_nombre">Nombre completo</label><input id="plinNombre" required /></div>
-        <div class="form-group"><label data-key="modal_correo">Correo</label><input id="plinCorreo" type="email" required /></div>
-        <div class="form-group"><label data-key="modal_celular">Celular</label><input id="plinCelular" type="tel" maxlength="9" required /></div>
-        <div class="form-group"><label data-key="modal_direccion">Dirección</label><input id="plinDireccion" required /></div>
-        <div class="modal-actions">
-          <button type="button" class="close-modal" data-modal="modalPlin" data-key="modal_cancelar">Cancelar</button>
-          <button type="submit" class="btn-submit-pago" data-key="modal_enviar">Enviar pedido</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="modalTarjeta">
-    <div class="modal-box">
-      <h3><i class="fab fa-cc-visa"></i> Tarjeta</h3>
-      <p class="modal-sub" data-key="modal_sub">Completa tus datos para coordinar el pago</p>
-      <form id="formTarjeta">
-        <div class="form-group"><label data-key="modal_nombre">Nombre completo</label><input id="tarjetaNombre" required /></div>
-        <div class="form-group"><label data-key="modal_correo">Correo</label><input id="tarjetaCorreo" type="email" required /></div>
-        <div class="form-group"><label data-key="modal_direccion">Dirección</label><input id="tarjetaDireccion" required /></div>
-        <div class="modal-actions">
-          <button type="button" class="close-modal" data-modal="modalTarjeta" data-key="modal_cancelar">Cancelar</button>
-          <button type="submit" class="btn-submit-pago" data-key="modal_enviar">Enviar pedido</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div class="modal-overlay" id="modalPaypal">
-    <div class="modal-box">
-      <h3><i class="fab fa-paypal"></i> PayPal</h3>
-      <p class="modal-sub" data-key="modal_sub">Completa tus datos para coordinar el pago</p>
-      <form id="formPaypal">
-        <div class="form-group"><label data-key="modal_nombre">Nombre completo</label><input id="paypalNombre" required /></div>
-        <div class="form-group"><label data-key="modal_correo">Correo</label><input id="paypalCorreo" type="email" required /></div>
-        <div class="form-group"><label data-key="modal_direccion">Dirección</label><input id="paypalDireccion" required /></div>
-        <div class="modal-actions">
-          <button type="button" class="close-modal" data-modal="modalPaypal" data-key="modal_cancelar">Cancelar</button>
-          <button type="submit" class="btn-submit-pago" data-key="modal_enviar">Enviar pedido</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ===== TOASTS ===== -->
-  <div id="toastContainer"></div>
-
-  <!-- ===== COOKIE BANNER ===== -->
-  <div class="cookie-banner" id="cookieBanner">
-    <p data-key="cookies_texto">Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra <a href="privacidad.html">política de privacidad</a>.</p>
-    <div class="cookie-actions">
-      <button class="settings" id="cookieSettings" data-key="cookies_configurar">Configurar</button>
-      <button class="reject" id="cookieReject" data-key="cookies_rechazar">Rechazar</button>
-      <button class="accept" id="cookieAccept" data-key="cookies_aceptar">Aceptar</button>
-    </div>
-  </div>
 
   <!-- ===== FOOTER ===== -->
   <footer>
@@ -545,7 +917,7 @@
       <div class="foot-grid">
         <div>
           <img class="foot-logo" src="../image/laguer-logo.png" alt="LAGUER" />
-          <p class="foot-desc" data-key="footer_desc">Tecnología, estilo y calidad en un solo lugar.</p>
+          <p class="foot-desc" data-i18n="footer_desc">Tecnología, estilo y calidad en un solo lugar.</p>
           <div class="pay-icons-footer">
             <span><i class="fab fa-cc-visa"></i> VISA</span>
             <span><i class="fab fa-cc-mastercard"></i> Mastercard</span>
@@ -555,7 +927,7 @@
             <span><i class="fab fa-cc-diners-club"></i> Diners</span>
           </div>
           <div class="footer-social">
-            <span data-key="footer_follow">Síguenos:</span>
+            <span data-i18n="siguenos">Síguenos:</span>
             <a href="#"><i class="fab fa-facebook-f"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
             <a href="#"><i class="fab fa-twitter"></i></a>
@@ -563,46 +935,187 @@
           </div>
         </div>
         <div class="foot-col">
-          <h5 data-key="footer_categories">Categorías</h5>
-          <a href="productos.html?cat=tecnologia" data-key="footer_tecnologia">Tecnología</a>
-          <a href="productos.html?cat=hogar" data-key="footer_hogar">Hogar</a>
-          <a href="productos.html?cat=deportes" data-key="footer_deportes">Deportes</a>
-          <a href="productos.html?cat=accesorios" data-key="footer_accesorios">Accesorios</a>
-          <a href="categorias.html" data-key="footer_ver_todas">Ver todas</a>
+          <h5 data-i18n="categorias">Categorías</h5>
+          <a href="productos.html?cat=tecnologia" data-i18n="tecnologia">Tecnología</a>
+          <a href="productos.html?cat=hogar" data-i18n="hogar">Hogar</a>
+          <a href="productos.html?cat=deportes" data-i18n="deportes">Deportes</a>
+          <a href="productos.html?cat=accesorios" data-i18n="accesorios">Accesorios</a>
+          <a href="categorias.html" data-i18n="ver_todas">Ver todas</a>
         </div>
         <div class="foot-col">
-          <h5 data-key="footer_help">Ayuda</h5>
-          <a href="pedidos.html" data-key="footer_track">Rastrear pedido</a>
-          <a href="ayuda.html" data-key="footer_returns">Cambios y devoluciones</a>
-          <a href="ayuda.html" data-key="footer_payment">Medios de pago</a>
-          <a href="ayuda.html" data-key="footer_faq">Preguntas frecuentes</a>
+          <h5 data-i18n="ayuda">Ayuda</h5>
+          <a href="pedidos.html" data-i18n="rastrear">Rastrear pedido</a>
+          <a href="ayuda.html" data-i18n="cambios">Cambios y devoluciones</a>
+          <a href="ayuda.html" data-i18n="medios_pago">Medios de pago</a>
+          <a href="ayuda.html" data-i18n="preguntas">Preguntas frecuentes</a>
         </div>
         <div class="foot-col">
-          <h5 data-key="footer_about">Nosotros</h5>
-          <a href="nosotros.html" data-key="footer_about_us">Sobre LAGUER</a>
-          <a href="contacto.html" data-key="footer_contact">Contacto</a>
-          <a href="terminos.html" data-key="footer_terms">Términos</a>
-          <a href="privacidad.html" data-key="footer_privacy">Privacidad</a>
+          <h5 data-i18n="nosotros">Nosotros</h5>
+          <a href="nosotros.html" data-i18n="sobre">Sobre LAGUER</a>
+          <a href="contacto.html" data-i18n="contacto">Contacto</a>
+          <a href="terminos.html" data-i18n="terminos">Términos</a>
+          <a href="privacidad.html" data-i18n="privacidad">Privacidad</a>
         </div>
       </div>
+
+      <!-- ===== Libro de Reclamaciones ===== -->
+      <div class="libro-reclamos-final">
+        <a href="libro-reclamaciones.html" aria-label="Libro de Reclamaciones">
+          <img src="../image/libro-recla.jfif" alt="Libro de Reclamaciones" loading="lazy" />
+        </a>
+      </div>
+
       <div class="beam-rule" style="margin:16px 0;"></div>
       <div class="foot-bottom">
         <span>© 2026 LAGUER. Todos los derechos reservados.</span>
-        <span data-key="hecho_con">Hecho con ♥ para todo el Perú</span>
+        <span data-i18n="hecho_con">Hecho con ♥ para todo el Perú</span>
       </div>
     </div>
   </footer>
 
-  <!-- ===== BOTTOM NAV ===== -->
+  <!-- ===== BOTTOM NAV (solo móvil) ===== -->
   <nav class="bottom-nav" id="bottomNav">
-    <a href="../index.html"><i class="fas fa-home"></i><span data-key="bottom_home">Inicio</span></a>
-    <a href="productos.html"><i class="fas fa-th-large"></i><span data-key="bottom_products">Productos</span></a>
-    <a href="carrito.html" id="bottomCartLink" class="active">
-      <i class="fas fa-shopping-cart"></i><span data-key="bottom_cart">Carrito</span>
+    <a href="../index.html"><i class="fas fa-home"></i><span data-i18n="inicio">Inicio</span></a>
+    <a href="productos.html"><i class="fas fa-th-large"></i><span data-i18n="productos">Productos</span></a>
+    <a href="carrito.html" class="active" id="bottomCartLink">
+      <i class="fas fa-shopping-cart"></i><span data-i18n="carrito">Carrito</span>
       <span class="badge-bottom" id="bottomCartBadge" style="display:none;">0</span>
     </a>
-    <a href="login.html"><i class="fas fa-user"></i><span data-key="bottom_profile">Perfil</span></a>
+    <a href="perfil.html"><i class="fas fa-user"></i><span data-i18n="perfil">Perfil</span></a>
   </nav>
+
+  <!-- ===== COOKIES BANNER ===== -->
+  <div class="cookie-banner" id="cookieBanner">
+    <p>
+      <span data-i18n="cookies_texto">Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra</span>
+      <a href="privacidad.html" data-i18n="politica_privacidad">política de privacidad</a>.
+    </p>
+    <div class="buttons">
+      <button class="btn-cookie reject" id="cookieReject" data-i18n="rechazar">Rechazar</button>
+      <button class="btn-cookie settings" id="cookieSettings" data-i18n="configurar">Configurar</button>
+      <button class="btn-cookie accept" id="cookieAccept" data-i18n="aceptar">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- ===== MODALES ===== -->
+  <!-- ============================================================ -->
+
+  <!-- Modal YAPE (con QR local) -->
+  <div class="modal-overlay" id="modalYape">
+    <div class="modal">
+      <div class="modal-header">
+        <h3><i class="fas fa-mobile-alt" style="color:#0047ab;"></i> Pago con Yape</h3>
+        <button class="close-modal" data-modal="modalYape">&times;</button>
+      </div>
+      <div class="qr-container">
+        <img src="../image/yape.jpeg" alt="Código QR Yape" />
+        <p>Escanear con Yape</p>
+      </div>
+      <form id="formYape">
+        <div class="form-group">
+          <label>Nombres completos</label>
+          <input type="text" id="yapeNombre" placeholder="Ej: Juan Pérez" required />
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" id="yapeCorreo" placeholder="juan@ejemplo.com" required />
+        </div>
+        <div class="form-group">
+          <label>Número de celular (Yape)</label>
+          <input type="tel" id="yapeCelular" placeholder="987654321" required />
+        </div>
+        <div class="form-group">
+          <label>Dirección de envío</label>
+          <input type="text" id="yapeDireccion" placeholder="Calle, número, distrito" required />
+        </div>
+        <button type="submit" class="submit-payment"><i class="fab fa-whatsapp"></i> Enviar pedido por WhatsApp</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal PLIN (con QR local) -->
+  <div class="modal-overlay" id="modalPlin">
+    <div class="modal">
+      <div class="modal-header">
+        <h3><i class="fas fa-mobile-alt" style="color:#00a859;"></i> Pago con Plin</h3>
+        <button class="close-modal" data-modal="modalPlin">&times;</button>
+      </div>
+      <div class="qr-container">
+        <img src="../image/plin.jpeg" alt="Código QR Plin" />
+        <p>Escanear con Plin</p>
+      </div>
+      <form id="formPlin">
+        <div class="form-group">
+          <label>Nombres completos</label>
+          <input type="text" id="plinNombre" placeholder="Ej: María Gómez" required />
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" id="plinCorreo" placeholder="maria@ejemplo.com" required />
+        </div>
+        <div class="form-group">
+          <label>Número de celular (Plin)</label>
+          <input type="tel" id="plinCelular" placeholder="987654321" required />
+        </div>
+        <div class="form-group">
+          <label>Dirección de envío</label>
+          <input type="text" id="plinDireccion" placeholder="Calle, número, distrito" required />
+        </div>
+        <button type="submit" class="submit-payment"><i class="fab fa-whatsapp"></i> Enviar pedido por WhatsApp</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal TARJETA (Visa/Mastercard) - sin QR, solo datos de contacto -->
+  <div class="modal-overlay" id="modalTarjeta">
+    <div class="modal">
+      <div class="modal-header">
+        <h3><i class="fab fa-cc-visa" style="color:#1a1f71;"></i> Pago con Tarjeta</h3>
+        <button class="close-modal" data-modal="modalTarjeta">&times;</button>
+      </div>
+      <form id="formTarjeta">
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" id="tarjetaNombre" placeholder="Tu nombre" required />
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" id="tarjetaCorreo" placeholder="tucorreo@ejemplo.com" required />
+        </div>
+        <div class="form-group">
+          <label>Dirección de envío</label>
+          <input type="text" id="tarjetaDireccion" placeholder="Calle, número, distrito" required />
+        </div>
+        <button type="submit" class="submit-payment"><i class="fab fa-whatsapp"></i> Confirmar pedido</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal PAYPAL - sin QR, solo datos de contacto -->
+  <div class="modal-overlay" id="modalPaypal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3><i class="fab fa-paypal" style="color:#0070ba;"></i> Pago con PayPal</h3>
+        <button class="close-modal" data-modal="modalPaypal">&times;</button>
+      </div>
+      <form id="formPaypal">
+        <div class="form-group">
+          <label>Correo de PayPal</label>
+          <input type="email" id="paypalCorreo" placeholder="tucuenta@paypal.com" required />
+        </div>
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" id="paypalNombre" placeholder="Tu nombre" required />
+        </div>
+        <div class="form-group">
+          <label>Dirección de envío</label>
+          <input type="text" id="paypalDireccion" placeholder="Calle, número, distrito" required />
+        </div>
+        <button type="submit" class="submit-payment"><i class="fab fa-whatsapp"></i> Enviar pedido por WhatsApp</button>
+      </form>
+    </div>
+  </div>
 
   <!-- ============================================================ -->
   <!-- ===== SCRIPTS ===== -->
@@ -611,358 +1124,51 @@
     (function() {
       'use strict';
 
-      // =============================================================
-      // 0. CONFIGURACIÓN
-      // =============================================================
-      const API_BASE = '/api';
-      const CART_KEY = 'laguerCart'; // carrito de invitado (localStorage), guardado por producto_id
-
+      // =======================================================================
+      // 1. CARRITO (localStorage)
+      // =======================================================================
+      const CART_KEY = 'laguerCart';
       const container = document.getElementById('cartContainer');
       const cartCountEl = document.getElementById('cartCount');
       const bottomCartBadge = document.getElementById('bottomCartBadge');
       const itemCountLabel = document.getElementById('itemCountLabel');
 
-      let currentUser = null;
-      try {
-        const userData = localStorage.getItem('laguerUser');
-        if (userData) currentUser = JSON.parse(userData);
-      } catch (e) { console.warn('No se pudo leer la sesión del usuario'); }
-
-      const isLoggedIn = !!(currentUser && currentUser.id);
-      let currentLang = 'es';
-      let currentCartData = []; // última versión renderizada del carrito
-
-      // =============================================================
-      // 1. TEMA OSCURO/CLARO + IDIOMA (mismo sistema que el resto del sitio)
-      // =============================================================
-      const settings = JSON.parse(localStorage.getItem('laguerSettings') || '{}');
-      currentLang = settings.lang || 'es';
-      const savedTheme = settings.theme || 'dark';
-      const body = document.body;
-      const themeToggle = document.getElementById('themeToggle');
-      const themeIcons = themeToggle.querySelectorAll('.tog-icon');
-
-      function applyTheme(theme) {
-        if (theme === 'light') {
-          body.classList.add('light-mode');
-          themeIcons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'light'));
-        } else {
-          body.classList.remove('light-mode');
-          themeIcons.forEach(icon => icon.classList.toggle('active', icon.dataset.theme === 'dark'));
-        }
-        const s = JSON.parse(localStorage.getItem('laguerSettings') || '{}');
-        s.theme = theme;
-        localStorage.setItem('laguerSettings', JSON.stringify(s));
-      }
-      applyTheme(savedTheme);
-      themeToggle.addEventListener('click', function() {
-        applyTheme(body.classList.contains('light-mode') ? 'dark' : 'light');
-      });
-
-      const langToggle = document.getElementById('langToggle');
-      const langOpts = langToggle.querySelectorAll('.lang-opt');
-
-      const translations = {
-        es: {
-          topbar_msg: '🚚 <b>Envíos a todo el Perú</b>', topbar_track: 'Rastrea tu pedido',
-          nav_tecnologia: 'Tecnología', nav_hogar: 'Hogar', nav_deportes: 'Deportes',
-          nav_accesorios: 'Accesorios', nav_ofertas: 'Ofertas', search_placeholder: 'Buscar productos…',
-          tu_carrito: 'Tu carrito',
-          carrito_vacio: 'Tu carrito está vacío',
-          explora_productos: '¡Explora nuestros productos y agrega lo que más te guste!',
-          ver_productos: 'Ver productos',
-          resumen: 'Resumen', subtotal: 'Subtotal', envio: 'Envío', total: 'Total',
-          metodos_pago: 'Métodos de pago', pagar_whatsapp: 'Pagar por WhatsApp',
-          contactar_whatsapp: 'Contactar por WhatsApp', vaciar_carrito: 'Vaciar carrito',
-          confirm_vaciar: '¿Vaciar todo el carrito?',
-          producto_singular: 'producto', producto_plural: 'productos',
-          stock_limite: 'Stock máximo alcanzado',
-          modal_sub: 'Completa tus datos para coordinar el pago',
-          modal_nombre: 'Nombre completo', modal_correo: 'Correo', modal_celular: 'Celular',
-          modal_direccion: 'Dirección', modal_cancelar: 'Cancelar', modal_enviar: 'Enviar pedido',
-          modal_completa: 'Completa todos los campos.',
-          toast_agregado: '✅ Producto agregado al carrito',
-          toast_error_agregar: '❌ No se pudo agregar el producto',
-          toast_eliminado: '🗑️ Producto eliminado',
-          toast_error_eliminar: '❌ No se pudo eliminar el producto',
-          toast_vaciado: '🧹 Carrito vaciado',
-          toast_error_vaciar: '❌ No se pudo vaciar el carrito',
-          toast_error_cargar: '❌ Error al cargar el carrito',
-          toast_error_actualizar: '❌ No se pudo actualizar la cantidad',
-          toast_migrado: 'productos de tu carrito de invitado se agregaron a tu cuenta',
-          carrito_vacio_alerta: 'El carrito está vacío',
-          cookies_texto: 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra <a href="privacidad.html">política de privacidad</a>.',
-          cookies_configurar: 'Configurar', cookies_rechazar: 'Rechazar', cookies_aceptar: 'Aceptar',
-          cookies_config_msg: 'Configuración de cookies: aquí puedes gestionar tus preferencias.',
-          footer_desc: 'Tecnología, estilo y calidad en un solo lugar.', footer_follow: 'Síguenos:',
-          footer_categories: 'Categorías', footer_tecnologia: 'Tecnología', footer_hogar: 'Hogar',
-          footer_deportes: 'Deportes', footer_accesorios: 'Accesorios', footer_ver_todas: 'Ver todas',
-          footer_help: 'Ayuda', footer_track: 'Rastrear pedido', footer_returns: 'Cambios y devoluciones',
-          footer_payment: 'Medios de pago', footer_faq: 'Preguntas frecuentes', footer_about: 'Nosotros',
-          footer_about_us: 'Sobre LAGUER', footer_contact: 'Contacto', footer_terms: 'Términos',
-          footer_privacy: 'Privacidad', hecho_con: 'Hecho con ♥ para todo el Perú',
-          bottom_home: 'Inicio', bottom_products: 'Productos', bottom_cart: 'Carrito', bottom_profile: 'Perfil'
-        },
-        en: {
-          topbar_msg: '🚚 <b>Shipping to all Peru</b>', topbar_track: 'Track your order',
-          nav_tecnologia: 'Technology', nav_hogar: 'Home', nav_deportes: 'Sports',
-          nav_accesorios: 'Accessories', nav_ofertas: 'Offers', search_placeholder: 'Search products…',
-          tu_carrito: 'Your cart',
-          carrito_vacio: 'Your cart is empty',
-          explora_productos: 'Explore our products and add your favorites!',
-          ver_productos: 'View products',
-          resumen: 'Summary', subtotal: 'Subtotal', envio: 'Shipping', total: 'Total',
-          metodos_pago: 'Payment methods', pagar_whatsapp: 'Pay by WhatsApp',
-          contactar_whatsapp: 'Contact via WhatsApp', vaciar_carrito: 'Empty cart',
-          confirm_vaciar: 'Empty the whole cart?',
-          producto_singular: 'item', producto_plural: 'items',
-          stock_limite: 'Maximum stock reached',
-          modal_sub: 'Fill in your details to arrange payment',
-          modal_nombre: 'Full name', modal_correo: 'Email', modal_celular: 'Phone',
-          modal_direccion: 'Address', modal_cancelar: 'Cancel', modal_enviar: 'Send order',
-          modal_completa: 'Please fill in all fields.',
-          toast_agregado: '✅ Product added to cart',
-          toast_error_agregar: "❌ Couldn't add the product",
-          toast_eliminado: '🗑️ Product removed',
-          toast_error_eliminar: "❌ Couldn't remove the product",
-          toast_vaciado: '🧹 Cart emptied',
-          toast_error_vaciar: "❌ Couldn't empty the cart",
-          toast_error_cargar: '❌ Error loading the cart',
-          toast_error_actualizar: "❌ Couldn't update quantity",
-          toast_migrado: 'items from your guest cart were added to your account',
-          carrito_vacio_alerta: 'The cart is empty',
-          cookies_texto: 'We use cookies to improve your experience. By continuing, you accept our <a href="privacidad.html">privacy policy</a>.',
-          cookies_configurar: 'Settings', cookies_rechazar: 'Reject', cookies_aceptar: 'Accept',
-          cookies_config_msg: 'Cookie settings: manage your preferences here.',
-          footer_desc: 'Technology, style and quality in one place.', footer_follow: 'Follow us:',
-          footer_categories: 'Categories', footer_tecnologia: 'Technology', footer_hogar: 'Home',
-          footer_deportes: 'Sports', footer_accesorios: 'Accessories', footer_ver_todas: 'View all',
-          footer_help: 'Help', footer_track: 'Track order', footer_returns: 'Returns & exchanges',
-          footer_payment: 'Payment methods', footer_faq: 'FAQ', footer_about: 'About',
-          footer_about_us: 'About LAGUER', footer_contact: 'Contact', footer_terms: 'Terms',
-          footer_privacy: 'Privacy', hecho_con: 'Made with ♥ for all Peru',
-          bottom_home: 'Home', bottom_products: 'Products', bottom_cart: 'Cart', bottom_profile: 'Profile'
-        }
-      };
-
-      function t(key) { return translations[currentLang][key] || key; }
-
-      function applyLanguage(lang) {
-        currentLang = lang;
-        langOpts.forEach(opt => opt.classList.toggle('active', opt.dataset.lang === lang));
-        const dict = translations[lang];
-        document.querySelectorAll('[data-key]').forEach(el => {
-          const key = el.dataset.key;
-          if (dict[key] === undefined) return;
-          if (el.tagName === 'INPUT') el.placeholder = dict[key];
-          else el.innerHTML = dict[key];
-        });
-        renderCart(currentCartData);
-        const s = JSON.parse(localStorage.getItem('laguerSettings') || '{}');
-        s.lang = lang;
-        localStorage.setItem('laguerSettings', JSON.stringify(s));
-      }
-      langToggle.addEventListener('click', function() {
-        applyLanguage(currentLang === 'es' ? 'en' : 'es');
-      });
-
-      // =============================================================
-      // 2. TOASTS
-      // =============================================================
-      function showToast(message, type = 'info') {
-        const toastContainer = document.getElementById('toastContainer');
-        const icons = { success: 'fa-check-circle', error: 'fa-times-circle', info: 'fa-info-circle' };
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.innerHTML = `<span><i class="fas ${icons[type] || icons.info}"></i></span><span>${message}</span>`;
-        toastContainer.appendChild(toast);
-        setTimeout(() => {
-          toast.classList.add('hide');
-          setTimeout(() => toast.remove(), 300);
-        }, 3500);
+      function getCart() {
+        try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+        catch { return []; }
       }
 
-      // =============================================================
-      // 3. HELPER DE API (coincide EXACTAMENTE con las Functions reales)
-      // =============================================================
-      async function apiFetch(path, options = {}) {
-        const resp = await fetch(`${API_BASE}${path}`, {
-          ...options,
-          headers: { 'Content-Type': 'application/json', ...(options.headers || {}) }
-        });
-        const data = await resp.json().catch(() => ({}));
-        if (!resp.ok || data.success === false) {
-          throw new Error(data.error || `Error ${resp.status}`);
-        }
-        return data;
-      }
-
-      // GET /api/cart?user_id=X  -> { success, items: [...] }
-      async function fetchCart() {
-        if (isLoggedIn) {
-          try {
-            const data = await apiFetch(`/cart?user_id=${currentUser.id}`);
-            return data.items || [];
-          } catch (err) {
-            console.error('Error al obtener carrito:', err);
-            showToast(t('toast_error_cargar'), 'error');
-            return [];
-          }
-        }
-        try {
-          return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-        } catch { return []; }
-      }
-
-      // POST /api/cart { user_id, producto_id, cantidad, action }
-      // sin "action" -> SUMA la cantidad. con action:'set' -> REEMPLAZA la cantidad.
-      async function addToCart(producto_id, cantidad = 1) {
-        if (isLoggedIn) {
-          try {
-            await apiFetch('/cart', {
-              method: 'POST',
-              body: JSON.stringify({ user_id: currentUser.id, producto_id, cantidad })
-            });
-            showToast(t('toast_agregado'), 'success');
-            return await fetchCart();
-          } catch (err) {
-            console.error('Error al agregar:', err);
-            showToast(t('toast_error_agregar'), 'error');
-            return null;
-          }
-        }
-        let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-        const existing = cart.find(item => item.id === producto_id);
-        if (existing) {
-          existing.quantity = (existing.quantity || 1) + cantidad;
-        } else {
-          try {
-            const productData = await apiFetch(`/products/${producto_id}`);
-            const p = productData.product || productData;
-            cart.push({ id: p.id, name: p.nombre, price: p.precio, image: p.imagen || null, quantity: cantidad });
-          } catch (err) {
-            console.warn('No se pudo obtener info del producto, se agrega con datos mínimos:', err);
-            cart.push({ id: producto_id, name: 'Producto', price: 0, image: null, quantity: cantidad });
-          }
-        }
+      function saveCart(cart) {
         localStorage.setItem(CART_KEY, JSON.stringify(cart));
-        showToast(t('toast_agregado'), 'success');
+        updateBadges(cart);
         return cart;
       }
 
-      // POST con action:'set' -> reemplaza la cantidad exacta de un producto
-      async function updateQuantity(producto_id, cantidad) {
-        if (isLoggedIn) {
-          try {
-            await apiFetch('/cart', {
-              method: 'POST',
-              body: JSON.stringify({ user_id: currentUser.id, producto_id, cantidad, action: 'set' })
-            });
-            return await fetchCart();
-          } catch (err) {
-            console.error('Error al actualizar cantidad:', err);
-            showToast(t('toast_error_actualizar'), 'error');
-            return null;
-          }
+      function updateBadges(cart) {
+        const totalItems = cart.reduce((acc, item) => acc + (item.quantity || 1), 0);
+        if (cartCountEl) cartCountEl.textContent = totalItems;
+        if (bottomCartBadge) {
+          bottomCartBadge.textContent = totalItems;
+          bottomCartBadge.style.display = totalItems === 0 ? 'none' : 'flex';
         }
-        let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-        const item = cart.find(i => i.id === producto_id);
-        if (!item) return null;
-        if (cantidad <= 0) {
-          cart = cart.filter(i => i.id !== producto_id);
-        } else {
-          item.quantity = cantidad;
-        }
-        localStorage.setItem(CART_KEY, JSON.stringify(cart));
-        return cart;
+        if (itemCountLabel) itemCountLabel.textContent = `(${totalItems} ${totalItems === 1 ? 'producto' : 'productos'})`;
       }
 
-      // DELETE /api/cart { user_id, producto_id } -> elimina un producto del carrito
-      async function removeItem(producto_id) {
-        if (isLoggedIn) {
-          try {
-            await apiFetch('/cart', {
-              method: 'DELETE',
-              body: JSON.stringify({ user_id: currentUser.id, producto_id })
-            });
-            showToast(t('toast_eliminado'), 'info');
-            return await fetchCart();
-          } catch (err) {
-            console.error('Error al eliminar:', err);
-            showToast(t('toast_error_eliminar'), 'error');
-            return null;
-          }
-        }
-        let cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-        cart = cart.filter(item => item.id !== producto_id);
-        localStorage.setItem(CART_KEY, JSON.stringify(cart));
-        showToast(t('toast_eliminado'), 'info');
-        return cart;
-      }
-
-      // DELETE /api/cart { user_id, all:true } -> vacía todo el carrito
-      async function clearCart() {
-        if (isLoggedIn) {
-          try {
-            await apiFetch('/cart', {
-              method: 'DELETE',
-              body: JSON.stringify({ user_id: currentUser.id, all: true })
-            });
-            showToast(t('toast_vaciado'), 'info');
-            return [];
-          } catch (err) {
-            console.error('Error al vaciar carrito:', err);
-            showToast(t('toast_error_vaciar'), 'error');
-            return null;
-          }
-        }
-        localStorage.removeItem(CART_KEY);
-        showToast(t('toast_vaciado'), 'info');
-        return [];
-      }
-
-      // Migra el carrito de invitado a la cuenta al iniciar sesión
-      async function migrateLocalCartToAPI() {
-        if (!isLoggedIn) return null;
-        const localCart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-        if (localCart.length === 0) return null;
-
-        let successCount = 0;
-        for (const item of localCart) {
-          try {
-            await apiFetch('/cart', {
-              method: 'POST',
-              body: JSON.stringify({ user_id: currentUser.id, producto_id: item.id, cantidad: item.quantity || 1 })
-            });
-            successCount++;
-          } catch (err) {
-            console.warn('Error al migrar item:', item, err);
-          }
-        }
-        localStorage.removeItem(CART_KEY);
-        if (successCount > 0) {
-          showToast(`✅ ${successCount} ${t('toast_migrado')}`, 'success');
-        }
-        return await fetchCart();
-      }
-
-      // =============================================================
-      // 4. RENDERIZAR CARRITO
-      // =============================================================
-      function renderCart(cart) {
-        currentCartData = cart || [];
-
+      // =======================================================================
+      // 2. RENDERIZAR CARRITO (con animaciones y detalles)
+      // =======================================================================
+      function renderCart() {
+        const cart = getCart();
         if (!cart || cart.length === 0) {
           container.innerHTML = `
-            <div class="empty-cart">
+            <div class="empty-cart fade-in">
               <i class="fas fa-cart-plus"></i>
-              <h3 data-key-runtime="titulo"></h3>
-              <p>${t('explora_productos')}</p>
-              <a href="productos.html" class="add-btn">${t('ver_productos')}</a>
-            </div>`;
-          container.querySelector('[data-key-runtime="titulo"]').textContent = t('carrito_vacio');
-          updateBadges(0);
-          itemCountLabel.textContent = `(0 ${t('producto_plural')})`;
+              <h3 data-i18n="carrito_vacio">Tu carrito está vacío</h3>
+              <p data-i18n="explora_productos">¡Explora nuestros productos y agrega lo que más te guste!</p>
+              <a href="productos.html" class="add-btn" data-i18n="ver_productos">Ver productos</a>
+            </div>
+          `;
+          updateBadges(cart);
           return;
         }
 
@@ -970,53 +1176,63 @@
         let subtotal = 0;
         const shipping = 20;
 
-        cart.forEach((item) => {
-          const producto_id = item.producto_id ?? item.id;
-          const qty = item.cantidad ?? item.quantity ?? 1;
-          const price = parseFloat(item.precio ?? item.price ?? 0);
-          const stock = item.stock;
+        cart.forEach((item, index) => {
+          const qty = item.quantity || 1;
+          const price = item.price || 0;
           const totalItem = price * qty;
           subtotal += totalItem;
-          const imgSrc = item.imagen || item.image || '../image/placeholder.png';
-          const name = item.nombre || item.name || 'Producto';
-          const atStockLimit = (stock !== undefined && stock !== null) && qty >= stock;
-
+          const imgSrc = item.image || '../image/placeholder.png';
+          let variantHtml = '';
+          if (item.color || item.size) {
+            variantHtml += `<div class="variant">`;
+            if (item.color) {
+              variantHtml += `<span class="color-dot" style="background:${item.color};"></span>`;
+            }
+            if (item.size) {
+              variantHtml += `<span>${item.size}</span>`;
+            }
+            variantHtml += `</div>`;
+          }
+          const delay = index * 0.08;
           itemsHtml += `
-            <div class="cart-item" data-producto-id="${producto_id}">
+            <div class="cart-item fade-in" data-index="${index}" style="animation-delay:${delay}s;">
               <div class="cart-item-img">
-                <img src="${imgSrc}" alt="${name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\\'fas fa-box\\'></i>'" />
+                <img src="${imgSrc}" alt="${item.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.innerHTML='<i class=\\'fas fa-box\\'></i>'" />
               </div>
               <div class="cart-item-info">
-                <h4>${name}</h4>
+                <h4>${item.name || 'Producto'}</h4>
                 <div class="price">S/ ${totalItem.toFixed(2)}</div>
-                ${atStockLimit ? `<div class="stock-warning">${t('stock_limite')}</div>` : ''}
+                ${variantHtml}
               </div>
               <div class="cart-item-actions">
-                <button class="qty-btn" data-action="decrease" data-id="${producto_id}">−</button>
+                <button class="qty-btn" data-action="decrease" data-index="${index}">−</button>
                 <span class="qty">${qty}</span>
-                <button class="qty-btn" data-action="increase" data-id="${producto_id}" ${atStockLimit ? 'disabled' : ''}>+</button>
-                <button class="remove-btn" data-action="remove" data-id="${producto_id}" title="Eliminar">
+                <button class="qty-btn" data-action="increase" data-index="${index}">+</button>
+                <button class="remove-btn" data-action="remove" data-index="${index}" title="Eliminar">
                   <i class="fas fa-trash"></i>
                 </button>
               </div>
-            </div>`;
+            </div>
+          `;
         });
 
         const total = subtotal + shipping;
-        const totalItems = cart.reduce((acc, item) => acc + (item.cantidad ?? item.quantity ?? 1), 0);
 
         container.innerHTML = `
           <div class="cart-grid">
             <div>${itemsHtml}</div>
             <div>
-              <div class="summary-card">
-                <h3><i class="fas fa-receipt"></i> ${t('resumen')}</h3>
-                <div class="summary-row"><span>${t('subtotal')}</span><span>S/ ${subtotal.toFixed(2)}</span></div>
-                <div class="summary-row"><span>${t('envio')}</span><span>S/ ${shipping.toFixed(2)}</span></div>
-                <div class="summary-row total"><span>${t('total')}</span><span class="amount">S/ ${total.toFixed(2)}</span></div>
+              <div class="summary-card fade-in" style="animation-delay:0.3s;">
+                <h3><i class="fas fa-receipt"></i> <span data-i18n="resumen">Resumen</span></h3>
+                <div class="summary-row"><span data-i18n="subtotal">Subtotal</span><span>S/ ${subtotal.toFixed(2)}</span></div>
+                <div class="summary-row"><span data-i18n="envio">Envío</span><span>S/ ${shipping.toFixed(2)}</span></div>
+                <div class="summary-row total">
+                  <span data-i18n="total">Total</span>
+                  <span class="amount">S/ ${total.toFixed(2)}</span>
+                </div>
 
                 <div class="payment-methods">
-                  <p><i class="fas fa-credit-card"></i> ${t('metodos_pago')}</p>
+                  <p><i class="fas fa-credit-card"></i> <span data-i18n="metodos_pago">Métodos de pago</span></p>
                   <div class="payment-icons">
                     <button data-method="yape"><i class="fas fa-mobile-alt"></i> Yape</button>
                     <button data-method="plin"><i class="fas fa-mobile-alt"></i> Plin</button>
@@ -1026,85 +1242,83 @@
                 </div>
 
                 <button class="btn-checkout" id="checkoutBtn">
-                  <i class="fab fa-whatsapp"></i> ${t('pagar_whatsapp')}
+                  <i class="fas fa-whatsapp"></i> <span data-i18n="pagar_whatsapp">Pagar por WhatsApp</span>
                 </button>
                 <a href="https://wa.me/51935419810?text=Hola%20LAGUER!%20Quiero%20realizar%20mi%20pedido" class="whatsapp-btn" target="_blank">
-                  <i class="fab fa-whatsapp"></i> ${t('contactar_whatsapp')}
+                  <i class="fab fa-whatsapp"></i> <span data-i18n="contactar_whatsapp">Contactar por WhatsApp</span>
                 </a>
-                <button class="btn-vaciar" id="btnVaciarCarrito">
-                  <i class="fas fa-trash"></i> ${t('vaciar_carrito')}
-                </button>
               </div>
             </div>
-          </div>`;
+          </div>
+        `;
 
-        updateBadges(totalItems);
-        itemCountLabel.textContent = `(${totalItems} ${totalItems === 1 ? t('producto_singular') : t('producto_plural')})`;
-
-        bindCartEvents();
-      }
-
-      function bindCartEvents() {
+        // ===== EVENTOS DE CANTIDAD =====
         container.querySelectorAll('.qty-btn, .remove-btn').forEach(btn => {
-          btn.addEventListener('click', async function(e) {
+          btn.addEventListener('click', function(e) {
             e.stopPropagation();
-            const producto_id = isLoggedIn ? Number(this.dataset.id) : this.dataset.id;
+            const index = parseInt(this.dataset.index, 10);
             const action = this.dataset.action;
-            const item = currentCartData.find(i => (i.producto_id ?? i.id) == producto_id);
-            if (!item) return;
-            const qty = item.cantidad ?? item.quantity ?? 1;
-
-            let updated = null;
+            if (isNaN(index)) return;
+            let cart = getCart();
             if (action === 'increase') {
-              updated = await updateQuantity(producto_id, qty + 1);
+              cart[index].quantity = (cart[index].quantity || 1) + 1;
+              saveCart(cart);
+              renderCart();
             } else if (action === 'decrease') {
-              updated = qty > 1 ? await updateQuantity(producto_id, qty - 1) : await removeItem(producto_id);
+              if ((cart[index].quantity || 1) > 1) {
+                cart[index].quantity = (cart[index].quantity || 1) - 1;
+                saveCart(cart);
+                renderCart();
+              } else {
+                cart.splice(index, 1);
+                saveCart(cart);
+                renderCart();
+              }
             } else if (action === 'remove') {
-              updated = await removeItem(producto_id);
+              cart.splice(index, 1);
+              saveCart(cart);
+              renderCart();
             }
-            if (updated) renderCart(updated);
           });
         });
 
+        // ===== ABRIR MODALES =====
         container.querySelectorAll('.payment-icons button').forEach(btn => {
           btn.addEventListener('click', function() {
-            const modalId = { yape: 'modalYape', plin: 'modalPlin', tarjeta: 'modalTarjeta', paypal: 'modalPaypal' }[this.dataset.method];
+            const method = this.dataset.method;
+            const modalId = {
+              'yape': 'modalYape',
+              'plin': 'modalPlin',
+              'tarjeta': 'modalTarjeta',
+              'paypal': 'modalPaypal'
+            }[method];
             if (modalId) document.getElementById(modalId).classList.add('active');
           });
         });
 
+        // ===== BOTÓN PAGAR DIRECTO =====
         document.getElementById('checkoutBtn')?.addEventListener('click', function() {
-          if (!currentCartData.length) { showToast(t('carrito_vacio_alerta'), 'error'); return; }
-          const resumen = currentCartData.map(item => `${item.nombre || item.name} x${item.cantidad || item.quantity || 1}`).join(', ');
-          const subtotal = currentCartData.reduce((acc, item) => acc + (parseFloat(item.precio ?? item.price ?? 0) * (item.cantidad ?? item.quantity ?? 1)), 0);
-          const total = subtotal + 20;
+          const cart = getCart();
+          if (cart.length === 0) { alert('El carrito está vacío'); return; }
+          const resumen = cart.map(item => `${item.name} x${item.quantity}`).join(', ');
+          const total = cart.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0) + 20;
           const msg = encodeURIComponent(`Hola LAGUER! Quiero realizar mi pedido:\n${resumen}\nTotal: S/ ${total.toFixed(2)}\nMis datos:\nNombre: \nDirección: \nCelular: `);
           window.open(`https://wa.me/51935419810?text=${msg}`, '_blank');
         });
 
-        document.getElementById('btnVaciarCarrito')?.addEventListener('click', async function() {
-          if (!confirm(t('confirm_vaciar'))) return;
-          const updated = await clearCart();
-          if (updated) renderCart(updated);
-        });
+        updateBadges(cart);
       }
 
-      function updateBadges(totalItems) {
-        if (cartCountEl) cartCountEl.textContent = totalItems || 0;
-        if (bottomCartBadge) {
-          bottomCartBadge.textContent = totalItems || 0;
-          bottomCartBadge.style.display = totalItems > 0 ? 'flex' : 'none';
-        }
-      }
-
-      // =============================================================
-      // 5. MODALES DE PAGO -> WHATSAPP
-      // =============================================================
+      // =======================================================================
+      // 3. MODALES: CERRAR Y ENVIAR
+      // =======================================================================
       document.querySelectorAll('.close-modal').forEach(btn => {
         btn.addEventListener('click', function() {
-          document.getElementById(this.dataset.modal).classList.remove('active');
+          const modalId = this.dataset.modal;
+          document.getElementById(modalId).classList.remove('active');
         });
       });
+
       document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', function(e) {
           if (e.target === this) this.classList.remove('active');
@@ -1112,15 +1326,34 @@
       });
 
       function sendOrderByWhatsApp(data, method) {
-        if (!currentCartData.length) { showToast(t('carrito_vacio_alerta'), 'error'); return; }
-        const resumen = currentCartData.map(item => `${item.nombre || item.name} x${item.cantidad || item.quantity || 1}`).join(', ');
-        const subtotal = currentCartData.reduce((acc, item) => acc + (parseFloat(item.precio ?? item.price ?? 0) * (item.cantidad ?? item.quantity ?? 1)), 0);
+        const cart = getCart();
+        if (cart.length === 0) { alert('El carrito está vacío'); return; }
+        const resumen = cart.map(item => `${item.name} x${item.quantity}`).join(', ');
+        const subtotal = cart.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0);
         const total = subtotal + 20;
-        const mensaje = `Hola LAGUER! Quiero realizar mi pedido:\n\n📦 Productos:\n${resumen}\n\n💰 Subtotal: S/ ${subtotal.toFixed(2)}\n🚚 Envío: S/ 20.00\n💵 Total: S/ ${total.toFixed(2)}\n\n📋 Datos del cliente:\n- Nombre: ${data.nombre}\n- Correo: ${data.correo}\n- Celular: ${data.celular || 'No especificado'}\n- Dirección: ${data.direccion}\n- Método de pago: ${method}`;
-        window.open(`https://wa.me/51935419810?text=${encodeURIComponent(mensaje)}`, '_blank');
+        const mensaje = `
+Hola LAGUER! Quiero realizar mi pedido:
+
+📦 Productos:
+${resumen}
+
+💰 Subtotal: S/ ${subtotal.toFixed(2)}
+🚚 Envío: S/ 20.00
+💵 Total: S/ ${total.toFixed(2)}
+
+📋 Datos del cliente:
+- Nombre: ${data.nombre}
+- Correo: ${data.correo}
+- Celular: ${data.celular || 'No especificado'}
+- Dirección: ${data.direccion}
+- Método de pago: ${method}
+        `.trim();
+        const msg = encodeURIComponent(mensaje);
+        window.open(`https://wa.me/51935419810?text=${msg}`, '_blank');
         document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
       }
 
+      // ===== FORMULARIOS =====
       document.getElementById('formYape')?.addEventListener('submit', function(e) {
         e.preventDefault();
         const data = {
@@ -1129,7 +1362,10 @@
           celular: document.getElementById('yapeCelular').value.trim(),
           direccion: document.getElementById('yapeDireccion').value.trim()
         };
-        if (!data.nombre || !data.correo || !data.celular || !data.direccion) { showToast(t('modal_completa'), 'error'); return; }
+        if (!data.nombre || !data.correo || !data.celular || !data.direccion) {
+          alert('Completa todos los campos.');
+          return;
+        }
         sendOrderByWhatsApp(data, 'Yape');
       });
 
@@ -1141,7 +1377,10 @@
           celular: document.getElementById('plinCelular').value.trim(),
           direccion: document.getElementById('plinDireccion').value.trim()
         };
-        if (!data.nombre || !data.correo || !data.celular || !data.direccion) { showToast(t('modal_completa'), 'error'); return; }
+        if (!data.nombre || !data.correo || !data.celular || !data.direccion) {
+          alert('Completa todos los campos.');
+          return;
+        }
         sendOrderByWhatsApp(data, 'Plin');
       });
 
@@ -1152,7 +1391,10 @@
           correo: document.getElementById('tarjetaCorreo').value.trim(),
           direccion: document.getElementById('tarjetaDireccion').value.trim()
         };
-        if (!data.nombre || !data.correo || !data.direccion) { showToast(t('modal_completa'), 'error'); return; }
+        if (!data.nombre || !data.correo || !data.direccion) {
+          alert('Completa todos los campos.');
+          return;
+        }
         sendOrderByWhatsApp({ ...data, celular: 'N/A' }, 'Tarjeta (Visa/Mastercard)');
       });
 
@@ -1163,13 +1405,16 @@
           correo: document.getElementById('paypalCorreo').value.trim(),
           direccion: document.getElementById('paypalDireccion').value.trim()
         };
-        if (!data.nombre || !data.correo || !data.direccion) { showToast(t('modal_completa'), 'error'); return; }
+        if (!data.nombre || !data.correo || !data.direccion) {
+          alert('Completa todos los campos.');
+          return;
+        }
         sendOrderByWhatsApp({ ...data, celular: 'N/A' }, 'PayPal');
       });
 
-      // =============================================================
-      // 6. BÚSQUEDA
-      // =============================================================
+      // =======================================================================
+      // 4. BÚSQUEDA (redirige)
+      // =======================================================================
       document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
         if (e.key === 'Enter') {
           const term = this.value.trim();
@@ -1177,41 +1422,195 @@
         }
       });
 
-      // =============================================================
-      // 7. COOKIES
-      // =============================================================
+      // =======================================================================
+      // 5. COOKIES
+      // =======================================================================
       (function() {
         const COOKIE_KEY = 'laguer_cookie_consent';
         const banner = document.getElementById('cookieBanner');
-        if (!localStorage.getItem(COOKIE_KEY)) setTimeout(() => banner.classList.add('show'), 500);
-        document.getElementById('cookieAccept')?.addEventListener('click', () => { localStorage.setItem(COOKIE_KEY, 'accepted'); banner.classList.remove('show'); });
-        document.getElementById('cookieReject')?.addEventListener('click', () => { localStorage.setItem(COOKIE_KEY, 'rejected'); banner.classList.remove('show'); });
-        document.getElementById('cookieSettings')?.addEventListener('click', () => showToast(t('cookies_config_msg'), 'info'));
+
+        function getCookieConsent() {
+          return localStorage.getItem(COOKIE_KEY);
+        }
+        function setCookieConsent(value) {
+          localStorage.setItem(COOKIE_KEY, value);
+          banner.classList.remove('show');
+        }
+
+        if (!getCookieConsent()) {
+          setTimeout(() => banner.classList.add('show'), 500);
+        }
+
+        document.getElementById('cookieAccept')?.addEventListener('click', function() {
+          setCookieConsent('accepted');
+        });
+        document.getElementById('cookieReject')?.addEventListener('click', function() {
+          setCookieConsent('rejected');
+        });
+        document.getElementById('cookieSettings')?.addEventListener('click', function() {
+          alert('Configuración de cookies: aquí puedes gestionar tus preferencias.');
+        });
       })();
 
-      // =============================================================
-      // 8. FAVORITOS BADGE
-      // =============================================================
-      const favs = JSON.parse(localStorage.getItem('laguerFavs')) || [];
-      const favBadge = document.getElementById('favCount');
-      if (favBadge) favBadge.textContent = favs.length;
+      // =======================================================================
+      // 6. TEMA OSCURO/CLARO
+      // =======================================================================
+      (function() {
+        const toggleBtn = document.getElementById('themeToggle');
+        const currentTheme = localStorage.getItem('laguer_theme') || 'dark';
 
-      // =============================================================
-      // 9. INICIALIZAR
-      // =============================================================
-      async function initCart() {
-        if (isLoggedIn) {
-          await migrateLocalCartToAPI();
-          renderCart(await fetchCart());
-        } else {
-          renderCart(await fetchCart());
+        if (currentTheme === 'light') {
+          document.body.classList.add('light-mode');
+          toggleBtn.innerHTML = '<i class="fas fa-sun"></i>';
         }
-      }
 
-      applyLanguage(currentLang);
-      initCart();
+        toggleBtn?.addEventListener('click', function() {
+          document.body.classList.toggle('light-mode');
+          const isLight = document.body.classList.contains('light-mode');
+          this.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+          localStorage.setItem('laguer_theme', isLight ? 'light' : 'dark');
+        });
+      })();
 
-      console.log('🛒 Carrito LAGUER conectado correctamente a la API real (D1)');
+      // =======================================================================
+      // 7. MULTI-IDIOMA
+      // =======================================================================
+      (function() {
+        const translations = {
+          es: {
+            'menu_tecnologia': 'Tecnología',
+            'menu_hogar': 'Hogar',
+            'menu_deportes': 'Deportes',
+            'menu_accesorios': 'Accesorios',
+            'menu_ofertas': 'Ofertas',
+            'buscar': 'Buscar productos…',
+            'tu_carrito': 'Tu carrito',
+            'carrito_vacio': 'Tu carrito está vacío',
+            'explora_productos': '¡Explora nuestros productos y agrega lo que más te guste!',
+            'ver_productos': 'Ver productos',
+            'resumen': 'Resumen',
+            'subtotal': 'Subtotal',
+            'envio': 'Envío',
+            'total': 'Total',
+            'metodos_pago': 'Métodos de pago',
+            'pagar_whatsapp': 'Pagar por WhatsApp',
+            'contactar_whatsapp': 'Contactar por WhatsApp',
+            'cookies_texto': 'Usamos cookies para mejorar tu experiencia. Al continuar, aceptas nuestra',
+            'politica_privacidad': 'política de privacidad',
+            'rechazar': 'Rechazar',
+            'configurar': 'Configurar',
+            'aceptar': 'Aceptar',
+            'inicio': 'Inicio',
+            'productos': 'Productos',
+            'carrito': 'Carrito',
+            'perfil': 'Perfil',
+            'footer_desc': 'Tecnología, estilo y calidad en un solo lugar.',
+            'siguenos': 'Síguenos:',
+            'categorias': 'Categorías',
+            'ayuda': 'Ayuda',
+            'nosotros': 'Nosotros',
+            'rastrear': 'Rastrear pedido',
+            'cambios': 'Cambios y devoluciones',
+            'medios_pago': 'Medios de pago',
+            'preguntas': 'Preguntas frecuentes',
+            'sobre': 'Sobre LAGUER',
+            'contacto': 'Contacto',
+            'terminos': 'Términos',
+            'privacidad': 'Privacidad',
+            'hecho_con': 'Hecho con ♥ para todo el Perú',
+            'ver_todas': 'Ver todas',
+            'tecnologia': 'Tecnología',
+            'hogar': 'Hogar',
+            'deportes': 'Deportes',
+            'accesorios': 'Accesorios'
+          },
+          en: {
+            'menu_tecnologia': 'Technology',
+            'menu_hogar': 'Home',
+            'menu_deportes': 'Sports',
+            'menu_accesorios': 'Accessories',
+            'menu_ofertas': 'Offers',
+            'buscar': 'Search products…',
+            'tu_carrito': 'Your cart',
+            'carrito_vacio': 'Your cart is empty',
+            'explora_productos': 'Explore our products and add your favorites!',
+            'ver_productos': 'View products',
+            'resumen': 'Summary',
+            'subtotal': 'Subtotal',
+            'envio': 'Shipping',
+            'total': 'Total',
+            'metodos_pago': 'Payment methods',
+            'pagar_whatsapp': 'Pay by WhatsApp',
+            'contactar_whatsapp': 'Contact via WhatsApp',
+            'cookies_texto': 'We use cookies to improve your experience. By continuing, you accept our',
+            'politica_privacidad': 'privacy policy',
+            'rechazar': 'Reject',
+            'configurar': 'Settings',
+            'aceptar': 'Accept',
+            'inicio': 'Home',
+            'productos': 'Products',
+            'carrito': 'Cart',
+            'perfil': 'Profile',
+            'footer_desc': 'Technology, style and quality in one place.',
+            'siguenos': 'Follow us:',
+            'categorias': 'Categories',
+            'ayuda': 'Help',
+            'nosotros': 'About',
+            'rastrear': 'Track order',
+            'cambios': 'Returns & exchanges',
+            'medios_pago': 'Payment methods',
+            'preguntas': 'FAQ',
+            'sobre': 'About LAGUER',
+            'contacto': 'Contact',
+            'terminos': 'Terms',
+            'privacidad': 'Privacy',
+            'hecho_con': 'Made with ♥ for all Peru',
+            'ver_todas': 'View all',
+            'tecnologia': 'Technology',
+            'hogar': 'Home',
+            'deportes': 'Sports',
+            'accesorios': 'Accessories'
+          }
+        };
+
+        const langSelector = document.getElementById('languageSelector');
+        let currentLang = localStorage.getItem('laguer_lang') || 'es';
+
+        function applyTranslations(lang) {
+          document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.dataset.i18n;
+            el.textContent = translations[lang]?.[key] || translations.es[key] || key;
+          });
+          document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const key = el.dataset.i18nPlaceholder;
+            el.placeholder = translations[lang]?.[key] || translations.es[key] || key;
+          });
+          langSelector.value = lang;
+          localStorage.setItem('laguer_lang', lang);
+        }
+
+        langSelector?.addEventListener('change', function() {
+          currentLang = this.value;
+          applyTranslations(currentLang);
+        });
+
+        applyTranslations(currentLang);
+      })();
+
+      // =======================================================================
+      // 8. INICIALIZAR
+      // =======================================================================
+      document.addEventListener('DOMContentLoaded', function() {
+        renderCart();
+        // Actualizar badge de favoritos (si existe)
+        const favs = JSON.parse(localStorage.getItem('laguerFavs')) || [];
+        const favCountEl = document.querySelector('.fav-count');
+        if (favCountEl) favCountEl.textContent = favs.length;
+        // Marcar carrito activo en bottom nav
+        document.querySelector('.bottom-nav a[href="carrito.html"]')?.classList.add('active');
+      });
+
+      console.log('🛒 Carrito LAGUER listo con todas las mejoras');
     })();
   </script>
 </body>
