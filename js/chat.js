@@ -3,7 +3,7 @@
    chat.js
 ========================================== */
 
-const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook-test/laguer-ai";
+const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ai";
 
 const chatBtn = document.getElementById("laguerChatBtn");
 const chat = document.getElementById("laguerChat");
