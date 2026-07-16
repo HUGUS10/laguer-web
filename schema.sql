@@ -90,6 +90,15 @@ CREATE TABLE IF NOT EXISTS inventario_movimientos (
   fecha DATETIME DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (producto_id) REFERENCES productos(id)
 );
+-- Única tabla nueva que necesita el bot de WhatsApp.
+-- Los pedidos y productos se guardan directamente en tus tablas
+-- existentes "pedidos" y "productos", no se duplica nada.
+
+CREATE TABLE IF NOT EXISTS conversaciones (
+  telefono TEXT PRIMARY KEY,
+  historial TEXT NOT NULL DEFAULT '[]',
+  actualizado DATETIME DEFAULT CURRENT_TIMESTAMP
+);
 
 -- Reclamos
 CREATE TABLE IF NOT EXISTS reclamos (

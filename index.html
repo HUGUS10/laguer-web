@@ -8,10 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
   <style>
-    /* ===== TODOS LOS ESTILOS (igual que en tu versión anterior) ===== */
-    /* (Mantén los mismos estilos que ya tenías, no los repito por brevedad) */
     :root {
       --bg: #05070b;
       --bg-soft: #0b1017;
@@ -1025,6 +1022,297 @@
       .section { padding: 24px 0; }
       .share-buttons { justify-content: center; }
     }
+
+    /* ===== CHAT MEJORADO ===== */
+    .laguer-chat-btn {
+      position: fixed;
+      bottom: 100px;
+      right: 16px;
+      z-index: 9999;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--red), var(--blue));
+      color: #fff;
+      font-size: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255,255,255,0.1);
+    }
+    .laguer-chat-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .laguer-chat {
+      position: fixed;
+      bottom: 170px;
+      right: 16px;
+      z-index: 9998;
+      width: 380px;
+      max-width: calc(100vw - 32px);
+      max-height: 560px;
+      height: 560px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      animation: chatSlideIn 0.3s ease;
+    }
+    .laguer-chat.open {
+      display: flex;
+    }
+
+    @keyframes chatSlideIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .laguer-chat-header {
+      background: linear-gradient(135deg, var(--red), var(--blue));
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .laguer-chat-header .laguer-chat-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+    .laguer-chat-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+    .laguer-chat-header small {
+      font-size: 11px;
+      color: rgba(255,255,255,0.8);
+      display: block;
+      margin-top: -2px;
+    }
+    .laguer-chat-header .laguer-chat-close {
+      margin-left: auto;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+    }
+    .laguer-chat-header .laguer-chat-close:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    .laguer-chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--bg-soft);
+    }
+    .laguer-chat-messages .message {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.5;
+      word-wrap: break-word;
+      animation: msgIn 0.3s ease;
+    }
+    .laguer-chat-messages .bot-message {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--white);
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .laguer-chat-messages .user-message {
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .laguer-chat-messages .typing-indicator {
+      align-self: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 16px;
+      color: var(--muted);
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .laguer-chat-messages .typing-indicator span {
+      animation: dotPulse 1.4s infinite;
+      font-size: 18px;
+      line-height: 1;
+    }
+    .laguer-chat-messages .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .laguer-chat-messages .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotPulse {
+      0%, 60%, 100% { opacity: 0.2; transform: translateY(0); }
+      30% { opacity: 1; transform: translateY(-4px); }
+    }
+
+    .laguer-chat-quick {
+      display: flex;
+      gap: 8px;
+      padding: 10px 16px;
+      overflow-x: auto;
+      flex-shrink: 0;
+      background: var(--bg-soft);
+      border-top: 1px solid var(--line);
+    }
+    .laguer-chat-quick button {
+      flex: 0 0 auto;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .laguer-chat-quick button:hover {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    .laguer-chat-input {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      background: var(--surface);
+      border-top: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+    .laguer-chat-input input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      color: var(--white);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: 0.2s;
+    }
+    .laguer-chat-input input:focus {
+      border-color: var(--blue);
+    }
+    .laguer-chat-input input::placeholder {
+      color: var(--muted);
+    }
+    .laguer-chat-input button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--red), var(--blue));
+      color: #fff;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .laguer-chat-input button:hover {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 600px) {
+      .laguer-chat {
+        bottom: 160px;
+        right: 8px;
+        max-width: calc(100vw - 16px);
+        height: 480px;
+        max-height: 70vh;
+        border-radius: 16px;
+      }
+      .laguer-chat-btn {
+        bottom: 100px;
+        right: 12px;
+        width: 54px;
+        height: 54px;
+        font-size: 24px;
+      }
+      .laguer-chat-messages .message {
+        max-width: 92%;
+        font-size: 13px;
+      }
+      .laguer-chat-quick button {
+        font-size: 11px;
+        padding: 5px 12px;
+      }
+      .laguer-chat-input input {
+        font-size: 13px;
+        padding: 8px 12px;
+      }
+      .laguer-chat-input button {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .laguer-chat {
+        bottom: 150px;
+        height: 420px;
+        max-height: 65vh;
+      }
+      .laguer-chat-header {
+        padding: 12px 16px;
+      }
+      .laguer-chat-header h3 {
+        font-size: 14px;
+      }
+      .laguer-chat-messages {
+        padding: 12px;
+      }
+      .laguer-chat-messages .message {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1065,7 +1353,6 @@
         <input type="text" id="searchInput" placeholder="Buscar productos…" data-i18n-placeholder="buscar" />
       </div>
       <div class="header-icons">
-        <!-- Ícono de usuario con redirección inteligente -->
         <a href="#" class="icon-btn" id="userIcon"><i class="fas fa-user"></i></a>
         <a href="html/favoritos.html" class="icon-btn fav-btn-header"><i class="fas fa-heart"></i><span class="fav-count" id="favCount">0</span></a>
         <a href="html/carrito.html" class="icon-btn"><i class="fas fa-shopping-cart"></i><span class="cart-count" id="cartCount">0</span></a>
@@ -1089,7 +1376,7 @@
     <img src="image/banner-pc.png" alt="LAGUER - Tecnología, estilo y calidad" />
   </div>
 
-  <!-- ===== OFERTAS MINI (dinámicas desde la API) ===== -->
+  <!-- ===== OFERTAS MINI ===== -->
   <section class="ofertas-mini">
     <div class="wrap">
       <div class="titulo"><i class="fas fa-bolt"></i> <span data-i18n="ofertas_destacadas">Ofertas destacadas</span></div>
@@ -1117,7 +1404,6 @@
         <button class="tab" data-filter="accesorios" data-i18n="accesorios">Accesorios</button>
       </div>
       <div class="grid" id="productGrid">
-        <!-- Los productos se cargarán desde la API -->
         <div style="grid-column:1/-1; text-align:center; padding:40px 0; color:var(--muted);">
           <i class="fas fa-spinner fa-spin" style="font-size:30px;"></i>
           <p style="margin-top:12px;">Cargando productos...</p>
@@ -1154,7 +1440,7 @@
     </div>
   </section>
 
-  <!-- ===== NEWSLETTER (CON TOAST) ===== -->
+  <!-- ===== NEWSLETTER ===== -->
   <section class="section" style="padding:20px 0 40px;">
     <div class="wrap">
       <div class="promo">
@@ -1239,10 +1525,6 @@
     <a href="#" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
   </div>
 
-  <a href="https://wa.me/51987654321?text=Hola%20LAGUER!%20Quiero%20más%20información" class="whatsapp-float" target="_blank" aria-label="WhatsApp">
-    <i class="fab fa-whatsapp"></i>
-  </a>
-
   <!-- ===== BOTTOM NAV (solo móvil) ===== -->
   <nav class="bottom-nav" id="bottomNav">
     <a href="index.html" class="active"><i class="fas fa-home"></i><span data-i18n="inicio">Inicio</span></a>
@@ -1275,6 +1557,52 @@
 
   <!-- ===== TOAST CONTAINER ===== -->
   <div class="toast-container" id="toastContainer"></div>
+
+  <!-- ========================================= -->
+  <!-- LAGUER AI CHAT MEJORADO -->
+  <!-- ========================================= -->
+  <button id="laguerChatBtn" class="laguer-chat-btn" aria-label="Abrir chat de ayuda">
+    <i class="fas fa-robot"></i>
+  </button>
+
+  <div id="laguerChat" class="laguer-chat">
+    <div class="laguer-chat-header">
+      <div class="laguer-chat-avatar">🤖</div>
+      <div>
+        <h3>LAGUER IA</h3>
+        <small>Siempre disponible</small>
+      </div>
+      <button class="laguer-chat-close" id="closeChat" aria-label="Cerrar chat">✕</button>
+    </div>
+
+    <div id="chatMessages" class="laguer-chat-messages">
+      <div class="message bot-message">
+        👋 Hola, soy el asistente virtual de <b>LAGUER</b>.<br><br>
+        ¿En qué puedo ayudarte?<br>
+        • Productos<br>
+        • Stock<br>
+        • Envíos<br>
+        • Métodos de pago<br>
+        • Garantías<br>
+        • Seguimiento de pedidos
+      </div>
+    </div>
+
+    <div class="laguer-chat-quick" id="chatQuickReplies">
+      <button type="button" data-msg="¿Cuáles son los métodos de pago?">Métodos de pago</button>
+      <button type="button" data-msg="¿Cómo son los envíos?">Envíos</button>
+      <button type="button" data-msg="¿Cómo rastreo mi pedido?">Rastrear pedido</button>
+      <button type="button" data-msg="¿Cuál es la garantía?">Garantía</button>
+      <button type="button" data-msg="¿Tienen stock de este producto?">Stock</button>
+    </div>
+
+    <div class="laguer-chat-input">
+      <input id="chatInput" type="text" placeholder="Escribe tu pregunta..." autocomplete="off" />
+      <button id="sendChat" aria-label="Enviar mensaje">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
 
   <!-- ============================================================ -->
   <!-- ===== SCRIPTS ===== -->
@@ -1389,7 +1717,6 @@
       function toggleFav(productId, btnElement) {
         const index = favs.findIndex(p => p.id === productId);
         if (index === -1) {
-          // Buscar el producto en los datos cargados (global)
           const prod = window.productsData?.find(p => p.id === productId);
           if (prod) {
             favs.push({ ...prod });
@@ -1431,6 +1758,7 @@
           if (!resp.ok) throw new Error('Error al obtener productos');
           const data = await resp.json();
           productsData = data.products || [];
+          window.productsData = productsData;
 
           if (productsData.length === 0) {
             grid.innerHTML = `
@@ -1499,7 +1827,6 @@
         });
         container.innerHTML = html;
 
-        // Eventos
         container.querySelectorAll('.add-to-cart').forEach(btn => {
           btn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -1531,7 +1858,7 @@
       }
 
       // =======================================================================
-      // OFERTAS MINI (desde productos)
+      // OFERTAS MINI
       // =======================================================================
       function renderMiniOfertas(products) {
         const container = document.getElementById('miniOfertas');
@@ -1708,7 +2035,6 @@
             'rechazar': 'Rechazar',
             'configurar': 'Configurar',
             'aceptar': 'Aceptar',
-            'ver_todas': 'Ver todas',
             'topbar_envios': 'Envíos a todo el Perú',
             'topbar_rastrear': 'Rastrea tu pedido'
           },
@@ -1765,7 +2091,6 @@
             'rechazar': 'Reject',
             'configurar': 'Settings',
             'aceptar': 'Accept',
-            'ver_todas': 'View all',
             'topbar_envios': 'Shipping to all Peru',
             'topbar_rastrear': 'Track your order'
           }
@@ -1873,6 +2198,135 @@
       });
 
       // =======================================================================
+      // CHAT MEJORADO - LÓGICA COMPLETA
+      // =======================================================================
+      const chatBtn = document.getElementById('laguerChatBtn');
+      const chatContainer = document.getElementById('laguerChat');
+      const closeBtn = document.getElementById('closeChat');
+      const chatMessages = document.getElementById('chatMessages');
+      const chatInput = document.getElementById('chatInput');
+      const sendBtn = document.getElementById('sendChat');
+      const quickBtns = document.querySelectorAll('#chatQuickReplies button');
+
+      // Respuestas inteligentes del bot
+      function getBotResponse(userMsg) {
+        const msg = userMsg.toLowerCase().trim();
+
+        // Palabras clave y respuestas
+        const keywords = {
+          'pago': '💳 Aceptamos **Visa**, **Mastercard**, **Yape**, **Plin**, **Amex** y **Diners Club**. Todos nuestros pagos son seguros y encriptados.',
+          'metodo': '💳 Aceptamos **Visa**, **Mastercard**, **Yape**, **Plin**, **Amex** y **Diners Club**. Todos nuestros pagos son seguros y encriptados.',
+          'envio': '🚚 Realizamos envíos a **todo el Perú** con seguimiento en tiempo real. El tiempo de entrega es de 3 a 7 días hábiles según tu ubicación.',
+          'rastrear': '📦 Puedes rastrear tu pedido en nuestra sección "Rastrear pedido" con el número de seguimiento que te enviamos por correo.',
+          'garantia': '🛡️ Todos nuestros productos cuentan con **garantía de autenticidad** y cobertura contra defectos de fábrica por 12 meses.',
+          'stock': '📦 Contamos con stock actualizado de todos los productos. Si ves un producto en nuestra web, está disponible para comprar.',
+          'devolucion': '🔄 Aceptamos cambios y devoluciones dentro de los primeros 15 días hábiles desde la compra. Producto sin uso y en su empaque original.',
+          'precio': '💰 Los precios son en **Soles (S/)** y ya incluyen todos los impuestos. Los descuentos aplican según las ofertas vigentes.',
+          'tiempo': '⏱️ Los pedidos se procesan en 24-48 horas hábiles y se entregan en 3-7 días hábiles a nivel nacional.',
+          'compra': '🛒 Para comprar, solo agrega el producto al carrito, selecciona tu método de pago y confirma tu pedido. ¡Es muy fácil!'
+        };
+
+        // Buscar coincidencia de palabras clave
+        for (const [key, response] of Object.entries(keywords)) {
+          if (msg.includes(key)) {
+            return response;
+          }
+        }
+
+        // Saludo
+        if (msg.match(/hola|buenas|saludos|hey|hi|hello/)) {
+          return '👋 ¡Hola! ¿Cómo puedo ayudarte? Puedes preguntarme sobre productos, envíos, pagos o cualquier otra cosa.';
+        }
+
+        // Despedida
+        if (msg.match(/gracias|gracias|thanks|bye|chao|adios/)) {
+          return '😊 ¡De nada! Estamos para servirte. ¿Necesitas algo más?';
+        }
+
+        // Respuesta por defecto
+        return '🤖 Gracias por tu consulta. ¿Podrías ser más específico? Puedo ayudarte con:\n• Métodos de pago\n• Envíos y entregas\n• Rastreo de pedidos\n• Garantías y devoluciones\n• Stock y precios';
+      }
+
+      // Agregar mensaje al chat
+      function addMessage(text, sender) {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message ${sender}-message`;
+        msgDiv.innerHTML = text.replace(/\n/g, '<br>');
+        chatMessages.appendChild(msgDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // Mostrar indicador de escritura
+      function showTyping() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'typing-indicator';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = '<span>●</span><span>●</span><span>●</span>';
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function removeTyping() {
+        const typing = document.getElementById('typingIndicator');
+        if (typing) typing.remove();
+      }
+
+      // Enviar mensaje
+      function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text) return;
+
+        addMessage(text, 'user');
+        chatInput.value = '';
+        showTyping();
+
+        // Simular demora del bot
+        setTimeout(() => {
+          removeTyping();
+          const response = getBotResponse(text);
+          addMessage(response, 'bot');
+        }, 600 + Math.random() * 400);
+      }
+
+      // Eventos del chat
+      chatBtn?.addEventListener('click', function() {
+        chatContainer.classList.toggle('open');
+        if (chatContainer.classList.contains('open')) {
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+      });
+
+      closeBtn?.addEventListener('click', function() {
+        chatContainer.classList.remove('open');
+      });
+
+      sendBtn?.addEventListener('click', sendMessage);
+
+      chatInput?.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      quickBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const msg = this.dataset.msg;
+          if (msg) {
+            chatInput.value = msg;
+            sendMessage();
+          }
+        });
+      });
+
+      // Cerrar chat con Escape
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && chatContainer.classList.contains('open')) {
+          chatContainer.classList.remove('open');
+        }
+      });
+
+      // =======================================================================
       // INICIALIZAR
       // =======================================================================
       document.addEventListener('DOMContentLoaded', function() {
@@ -1882,11 +2336,12 @@
         updateCartUI();
         updateFavUI();
         document.querySelector('.bottom-nav a[href="index.html"]')?.classList.add('active');
-        console.log('🚀 LAGUER · index con API D1 integrada');
+        console.log('🚀 LAGUER · index con API D1 integrada y chat mejorado');
       });
 
       // Exponer funciones globales
       window.addToCart = addToCart;
+      window.toggleFav = toggleFav;
       window.showToast = showToast;
       window.loadProducts = loadProducts;
       window.productsData = productsData;

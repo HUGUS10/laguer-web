@@ -1,11 +1,19 @@
 // ============================================================
-// _worker.js - Worker para LAGUER con D1 (solo API)
+// _worker.js - Worker para LAGUER con D1 (API + Bot de WhatsApp)
 // ============================================================
+
+const CLAUDE_MODEL = "claude-sonnet-4-6";
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const path = url.pathname;
+
+    // --- Webhook del bot de WhatsApp ---
+    if (path === '/webhook') {
+      if (request.method === 'GET') return handleWebhookVerify(request, env);
+      if (request.method === 'POST') return handleWebhookMessage(request, env);
+    }
 
     // Solo manejar rutas /api/*
     if (path.startsWith('/api/')) {
@@ -13,42 +21,265 @@ export default {
     }
 
     // Para cualquier otra ruta, dejar que Pages sirva el archivo estático
-    // En Pages, si no devolvemos nada, el request sigue su curso normal.
-    // Pero debemos devolver algo para que Pages lo maneje.
-    // La forma correcta es no interceptar la solicitud.
-    // Simplemente devolvemos undefined para que Pages continúe.
-    // Sin embargo, en un Worker de Pages, para que continúe, debemos usar
-    // `return` con un Response, pero podemos redirigir el request a los assets.
-    // La mejor práctica es: si no es API, devolver un Response que indique que
-    // Pages debe servir el archivo, pero en realidad Pages ya lo hace.
-    // Como Pages ya sirve los archivos, simplemente podemos devolver un 404
-    // para las rutas que no existen, pero para que las rutas existentes funcionen,
-    // necesitamos permitir que Pages las sirva. Así que para rutas no API,
-    // simplemente no hacemos nada y dejamos que Pages maneje la solicitud.
-    // En un Worker de Pages, si no interceptamos la solicitud, Pages la manejará.
-    // Pero como estamos en un Worker, debemos devolver un Response para
-    // que la solicitud no quede colgada. Podemos devolver un 404.
-    // Sin embargo, es mejor usar el patrón de "passthrough" con `env.ASSETS`.
-    // Aquí usaremos env.ASSETS para servir archivos estáticos.
     return serveStatic(request, env);
   }
 };
+
+// ============================================================
+// BOT DE WHATSAPP
+// ============================================================
+
+// Verificación del webhook (Meta hace un GET una sola vez al configurar)
+async function handleWebhookVerify(request, env) {
+  const url = new URL(request.url);
+  const mode = url.searchParams.get('hub.mode');
+  const token = url.searchParams.get('hub.verify_token');
+  const challenge = url.searchParams.get('hub.challenge');
+
+  if (mode === 'subscribe' && token === env.WHATSAPP_VERIFY_TOKEN) {
+    return new Response(challenge, { status: 200 });
+  }
+  return new Response('Forbidden', { status: 403 });
+}
+
+// Mensajes entrantes de WhatsApp
+async function handleWebhookMessage(request, env) {
+  try {
+    const body = await request.json();
+    const entry = body.entry?.[0];
+    const change = entry?.changes?.[0];
+    const message = change?.value?.messages?.[0];
+
+    if (!message) {
+      // eventos de "status" (entregado/leído), los ignoramos
+      return new Response('OK', { status: 200 });
+    }
+
+    const from = message.from; // número del cliente
+    const text = message.text?.body ?? '';
+
+    const reply = await handleIncomingMessage(env, from, text);
+    await sendWhatsAppMessage(env, from, reply);
+
+    return new Response('OK', { status: 200 });
+  } catch (err) {
+    console.error('Error procesando mensaje de WhatsApp:', err);
+    return new Response('OK', { status: 200 }); // 200 igual, para que Meta no reintente en loop
+  }
+}
+
+async function handleIncomingMessage(env, phone, userText) {
+  const db = env.DB;
+  const history = await getConversationHistory(db, phone);
+  const relevantProducts = await searchProducts(db, userText);
+  const systemPrompt = buildSystemPrompt(relevantProducts);
+
+  const messages = [...history, { role: 'user', content: userText }];
+
+  const claudeResponse = await callClaude(env, systemPrompt, messages);
+  const { replyText, toolResults } = await processClaudeResponse(db, phone, claudeResponse);
+
+  const newHistory = [
+    ...history,
+    { role: 'user', content: userText },
+    { role: 'assistant', content: replyText },
+  ].slice(-20); // últimos 20 mensajes, para no crecer infinito
+
+  await saveConversationHistory(db, phone, newHistory);
+
+  return replyText + (toolResults ? `\n\n${toolResults}` : '');
+}
+
+function buildSystemPrompt(products) {
+  const catalogText = products.length
+    ? products
+        .map(
+          (p) =>
+            `- ${p.nombre} (${p.categoria}) — S/ ${p.precio}${
+              p.descuento ? ` (${p.descuento}% dscto)` : ''
+            } — stock: ${p.stock}${p.descripcion ? ' — ' + p.descripcion : ''}`
+        )
+        .join('\n')
+    : 'No se encontraron productos relacionados en este momento.';
+
+  return `Eres el asistente de ventas de LAGUER, una tienda peruana online de tecnología, hogar, deporte y accesorios.
+
+Tu trabajo:
+- Responder de forma cálida, breve y directa, como un vendedor por WhatsApp (no un robot formal).
+- Ayudar al cliente a encontrar el producto que busca y resolver dudas de precio, stock o envío.
+- Si el cliente confirma que quiere comprar algo, usa la herramienta "crear_pedido" con los datos exactos del catálogo.
+- Los pagos se hacen por Yape, Plin, tarjeta o PayPal — si preguntan, menciona que eso se coordina al cerrar el pedido.
+- Si no tienes el producto que piden, sugiere alternativas del catálogo si aplica, sin inventar productos que no están en la lista.
+- Nunca inventes precios ni stock: usa solo el catálogo de abajo.
+
+CATÁLOGO RELEVANTE A ESTA CONSULTA:
+${catalogText}
+
+Responde siempre en español, tono peruano informal pero profesional. Mensajes cortos (es WhatsApp, no correo).`;
+}
+
+async function callClaude(env, systemPrompt, messages) {
+  const response = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': env.ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+    },
+    body: JSON.stringify({
+      model: CLAUDE_MODEL,
+      max_tokens: 500,
+      system: systemPrompt,
+      messages,
+      tools: [
+        {
+          name: 'crear_pedido',
+          description:
+            'Crea un pedido cuando el cliente confirma que quiere comprar uno o más productos del catálogo.',
+          input_schema: {
+            type: 'object',
+            properties: {
+              items: {
+                type: 'array',
+                items: {
+                  type: 'object',
+                  properties: {
+                    id: { type: 'number', description: 'id del producto en la tabla productos' },
+                    nombre: { type: 'string' },
+                    cantidad: { type: 'number' },
+                    precio: { type: 'number' },
+                  },
+                  required: ['nombre', 'cantidad', 'precio'],
+                },
+              },
+              direccion: { type: 'string', description: 'dirección de envío si el cliente la dio' },
+            },
+            required: ['items'],
+          },
+        },
+      ],
+    }),
+  });
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`Claude API error: ${response.status} ${errText}`);
+  }
+
+  return response.json();
+}
+
+async function processClaudeResponse(db, phone, claudeData) {
+  let replyText = '';
+  let toolResults = '';
+
+  for (const block of claudeData.content ?? []) {
+    if (block.type === 'text') {
+      replyText += block.text;
+    }
+    if (block.type === 'tool_use' && block.name === 'crear_pedido') {
+      const items = block.input?.items ?? [];
+      const direccion = block.input?.direccion ?? '';
+      const total = items.reduce((sum, it) => sum + it.cantidad * it.precio, 0);
+
+      await db
+        .prepare(
+          `INSERT INTO pedidos (cliente_nombre, cliente_email, total, estado, items, direccion, telefono)
+           VALUES (?, ?, ?, 'pending', ?, ?, ?)`
+        )
+        .bind(`Cliente WhatsApp ${phone}`, '', total, JSON.stringify(items), direccion, phone)
+        .run();
+
+      await db
+        .prepare('INSERT INTO registro_actividad (usuario, accion, detalles) VALUES (?, ?, ?)')
+        .bind(`Cliente WhatsApp ${phone}`, 'Nueva orden creada (bot)', `Pedido por S/ ${total.toFixed(2)}`)
+        .run();
+
+      toolResults = `✅ Pedido registrado por un total de S/ ${total.toFixed(
+        2
+      )}. En breve te contactamos para coordinar el pago (Yape, Plin, tarjeta o PayPal) y el envío.`;
+    }
+  }
+
+  if (!replyText) {
+    replyText = 'Gracias por escribirnos, en un momento te ayudamos 🙌';
+  }
+
+  return { replyText, toolResults };
+}
+
+/** --- D1 helpers (tablas reales: productos, conversaciones) --- */
+
+async function searchProducts(db, userText) {
+  const keywords = userText
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((w) => w.length > 3)
+    .slice(0, 5);
+
+  if (keywords.length === 0) return [];
+
+  const likeClauses = keywords.map(
+    () => '(LOWER(nombre) LIKE ? OR LOWER(categoria) LIKE ? OR LOWER(descripcion) LIKE ?)'
+  );
+  const query = `SELECT id, nombre, categoria, precio, stock, descripcion, descuento FROM productos WHERE ${likeClauses.join(
+    ' OR '
+  )} LIMIT 8`;
+  const params = keywords.flatMap((k) => [`%${k}%`, `%${k}%`, `%${k}%`]);
+
+  const result = await db.prepare(query).bind(...params).all();
+  return result.results ?? [];
+}
+
+async function getConversationHistory(db, phone) {
+  const row = await db.prepare('SELECT historial FROM conversaciones WHERE telefono = ?').bind(phone).first();
+  if (!row) return [];
+  try {
+    return JSON.parse(row.historial);
+  } catch {
+    return [];
+  }
+}
+
+async function saveConversationHistory(db, phone, history) {
+  await db
+    .prepare(
+      `INSERT INTO conversaciones (telefono, historial, actualizado)
+       VALUES (?, ?, CURRENT_TIMESTAMP)
+       ON CONFLICT(telefono) DO UPDATE SET historial = excluded.historial, actualizado = excluded.actualizado`
+    )
+    .bind(phone, JSON.stringify(history))
+    .run();
+}
+
+/** --- WhatsApp Cloud API --- */
+
+async function sendWhatsAppMessage(env, to, text) {
+  await fetch(`https://graph.facebook.com/v19.0/${env.WHATSAPP_PHONE_ID}/messages`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${env.WHATSAPP_TOKEN}`,
+    },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      to,
+      text: { body: text },
+    }),
+  });
+}
 
 // ============================================================
 // FUNCIÓN PARA SERVIR ARCHIVOS ESTÁTICOS (usando ASSETS)
 // ============================================================
 async function serveStatic(request, env) {
   try {
-    // En Pages, ASSETS contiene todos los archivos estáticos
     const response = await env.ASSETS.fetch(request);
-    // Si el archivo existe, devolverlo
     if (response.status !== 404) {
       return response;
     }
-    // Si no existe, devolver 404 personalizado
     return new Response('Página no encontrada', { status: 404 });
   } catch (error) {
-    // Si ASSETS falla, devolver error
     return new Response('Error al servir el archivo', { status: 500 });
   }
 }
@@ -471,8 +702,8 @@ async function handleApi(request, env) {
     // ==========================================================
     return error('Endpoint no encontrado', 404);
 
-  } catch (error) {
-    console.error('API Error:', error);
-    return error('Error interno del servidor: ' + error.message, 500);
+  } catch (err) {
+    console.error('API Error:', err);
+    return error('Error interno del servidor: ' + err.message, 500);
   }
 }
