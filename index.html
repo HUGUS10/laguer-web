@@ -1079,7 +1079,7 @@
       .share-buttons { justify-content: center; }
     }
 
-    /* ===== CHAT MEJORADO ===== */
+    /* ===== CHAT MEJORADO - FULL SCREEN EN MÓVIL ===== */
     .laguer-chat-btn {
       position: fixed;
       bottom: 100px;
@@ -1106,16 +1106,9 @@
 
     .laguer-chat {
       position: fixed;
-      bottom: 170px;
-      right: 16px;
       z-index: 9998;
-      width: 380px;
-      max-width: calc(100vw - 32px);
-      max-height: 560px;
-      height: 560px;
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 20px;
       display: none;
       flex-direction: column;
       overflow: hidden;
@@ -1129,6 +1122,71 @@
     @keyframes chatSlideIn {
       from { opacity: 0; transform: translateY(30px) scale(0.95); }
       to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* PC y tablets grandes */
+    @media (min-width: 769px) {
+      .laguer-chat {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 480px;
+        max-width: 90vw;
+        height: 600px;
+        max-height: 80vh;
+        border-radius: 24px;
+      }
+      .laguer-chat.open {
+        transform: translate(-50%, -50%) scale(1);
+      }
+      @keyframes chatSlideIn {
+        from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+        to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      }
+    }
+
+    /* Móviles y tablets pequeñas */
+    @media (max-width: 768px) {
+      .laguer-chat {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        max-height: 100vh;
+        border-radius: 0;
+        border: none;
+        animation: chatSlideInMobile 0.3s ease;
+      }
+      @keyframes chatSlideInMobile {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .laguer-chat-btn {
+        bottom: 100px;
+        right: 12px;
+        width: 54px;
+        height: 54px;
+        font-size: 24px;
+      }
+      .laguer-chat-messages .message {
+        max-width: 92%;
+        font-size: 13px;
+      }
+      .laguer-chat-quick button {
+        font-size: 11px;
+        padding: 5px 12px;
+      }
+      .laguer-chat-input input {
+        font-size: 13px;
+        padding: 8px 12px;
+      }
+      .laguer-chat-input button {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+      }
     }
 
     .laguer-chat-header {
@@ -1314,47 +1372,7 @@
       transform: scale(1.05);
     }
 
-    @media (max-width: 600px) {
-      .laguer-chat {
-        bottom: 160px;
-        right: 8px;
-        max-width: calc(100vw - 16px);
-        height: 480px;
-        max-height: 70vh;
-        border-radius: 16px;
-      }
-      .laguer-chat-btn {
-        bottom: 100px;
-        right: 12px;
-        width: 54px;
-        height: 54px;
-        font-size: 24px;
-      }
-      .laguer-chat-messages .message {
-        max-width: 92%;
-        font-size: 13px;
-      }
-      .laguer-chat-quick button {
-        font-size: 11px;
-        padding: 5px 12px;
-      }
-      .laguer-chat-input input {
-        font-size: 13px;
-        padding: 8px 12px;
-      }
-      .laguer-chat-input button {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-      }
-    }
-
     @media (max-width: 400px) {
-      .laguer-chat {
-        bottom: 150px;
-        height: 420px;
-        max-height: 65vh;
-      }
       .laguer-chat-header {
         padding: 12px 16px;
       }
@@ -2313,360 +2331,123 @@
       document.getElementById('closeSocial')?.addEventListener('click', function() {
         document.getElementById('socialBubble').classList.toggle('hidden');
       });
-// ============================================================
-// LAGUER IA CHAT + N8N WEBHOOK
-// ============================================================
 
-const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ai";
-
-
-const chatBtn = document.getElementById("laguerChatBtn");
-const chatContainer = document.getElementById("laguerChat");
-
-const closeChat = document.getElementById("closeChat");
-
-const chatMessages = document.getElementById("chatMessages");
-
-const chatInput = document.getElementById("chatInput");
-
-const sendChat = document.getElementById("sendChat");
-
-const quickButtons = document.querySelectorAll(
-    ".laguer-chat-quick button"
-);
-
-
-// memoria conversación
-let chatHistory = JSON.parse(
-    localStorage.getItem("laguer_chat_history")
-) || [];
-
-
-
-// ============================================================
-// ABRIR CHAT
-// ============================================================
-
-
-chatBtn?.addEventListener("click",()=>{
-
-    chatContainer.classList.toggle("open");
-
-});
-
-
-
-// ============================================================
-// CERRAR CHAT
-// ============================================================
-
-closeChat?.addEventListener("click",()=>{
-
-    chatContainer.classList.remove("open");
-
-});
-
-
-
-// ============================================================
-// MOSTRAR MENSAJES
-// ============================================================
-
-
-function addChatMessage(message,type="bot"){
-
-
-    const div=document.createElement("div");
-
-
-    div.className=
-    "message "+
-    (type==="user" 
-    ? "user-message"
-    :"bot-message");
-
-
-    div.innerHTML=
-    message
-    .replace(/\n/g,"<br>");
-
-
-    chatMessages.appendChild(div);
-
-
-    chatMessages.scrollTop =
-    chatMessages.scrollHeight;
-
-
-}
-
-
-
-// ============================================================
-// ESCRIBIENDO...
-// ============================================================
-
-
-function typing(){
-
-
-const div=document.createElement("div");
-
-
-div.id="typing";
-
-
-div.className="message bot-message";
-
-
-div.innerHTML=
-`
-<span>
-🤖 LAGUER IA está escribiendo...
-</span>
-`;
-
-chatMessages.appendChild(div);
-
-
-chatMessages.scrollTop =
-chatMessages.scrollHeight;
-
-
-}
-
-
-
-function removeTyping(){
-
-const t=document.getElementById("typing");
-
-if(t)
-t.remove();
-
-}
-
-
-
-// ============================================================
-// ENVIAR A N8N
-// ============================================================
-
-
-async function sendMessage(){
-
-
-const text =
-chatInput.value.trim();
-
-
-
-if(!text)
-return;
-
-
-
-addChatMessage(text,"user");
-
-
-
-chatHistory.push({
-
-role:"user",
-
-content:text
-
-});
-
-
-
-localStorage.setItem(
-"laguer_chat_history",
-JSON.stringify(chatHistory)
-);
-
-
-
-chatInput.value="";
-
-
-typing();
-
-
-
-try{
-
-
-const response =
-await fetch(
-N8N_WEBHOOK,
-{
-
-
-method:"POST",
-
-
-headers:{
-
-"Content-Type":"application/json"
-
-},
-
-
-body:JSON.stringify({
-
-mensaje:text,
-
-
-historial:chatHistory,
-
-
-pagina:"LAGUER WEB",
-
-
-cliente:"visitante",
-
-
-fecha:new Date()
-
-})
-
-
-});
-
-
-
-const data =
-await response.json();
-
-
-
-removeTyping();
-
-
-
-let answer =
-data.respuesta ||
-data.output ||
-data.message ||
-"No pude obtener respuesta.";
-
-
-
-addChatMessage(
-answer,
-"bot"
-);
-
-
-
-chatHistory.push({
-
-role:"assistant",
-
-content:answer
-
-});
-
-
-
-localStorage.setItem(
-"laguer_chat_history",
-JSON.stringify(chatHistory)
-);
-
-
-
-}
-
-catch(error){
-
-
-
-console.error(
-"LAGUER IA ERROR:",
-error
-);
-
-
-
-removeTyping();
-
-
-
-addChatMessage(
-
-"⚠️ No puedo conectarme al asistente en este momento. Intenta nuevamente.",
-
-"bot"
-
-);
-
-
-
-}
-
-
-
-}
-
-
-
-
-// ============================================================
-// BOTÓN ENVIAR
-// ============================================================
-
-
-sendChat?.addEventListener(
-"click",
-sendMessage
-);
-
-
-
-// ENTER PARA ENVIAR
-
-chatInput?.addEventListener(
-"keypress",
-(e)=>{
-
-if(e.key==="Enter"){
-
-sendMessage();
-
-}
-
-});
-
-
-
-
-// ============================================================
-// RESPUESTAS RÁPIDAS
-// ============================================================
-
-
-quickButtons.forEach(btn=>{
-
-
-btn.addEventListener(
-"click",
-()=>{
-
-
-chatInput.value =
-btn.dataset.msg;
-
-
-sendMessage();
-
-
-});
-
-
-});
-
+      // ============================================================
+      // LAGUER IA CHAT + N8N WEBHOOK
+      // ============================================================
+
+      const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ai";
+
+      const chatBtn = document.getElementById("laguerChatBtn");
+      const chatContainer = document.getElementById("laguerChat");
+      const closeChat = document.getElementById("closeChat");
+      const chatMessages = document.getElementById("chatMessages");
+      const chatInput = document.getElementById("chatInput");
+      const sendChat = document.getElementById("sendChat");
+      const quickButtons = document.querySelectorAll(".laguer-chat-quick button");
+
+      // memoria conversación
+      let chatHistory = JSON.parse(localStorage.getItem("laguer_chat_history")) || [];
+
+      // ============================================================
+      // ABRIR CHAT
+      // ============================================================
+      chatBtn?.addEventListener("click",()=>{
+        chatContainer.classList.toggle("open");
+      });
+
+      // ============================================================
+      // CERRAR CHAT
+      // ============================================================
+      closeChat?.addEventListener("click",()=>{
+        chatContainer.classList.remove("open");
+      });
+
+      // ============================================================
+      // MOSTRAR MENSAJES
+      // ============================================================
+      function addChatMessage(message,type="bot"){
+        const div=document.createElement("div");
+        div.className="message "+(type==="user" ? "user-message" : "bot-message");
+        div.innerHTML=message.replace(/\n/g,"<br>");
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // ============================================================
+      // ESCRIBIENDO...
+      // ============================================================
+      function typing(){
+        const div=document.createElement("div");
+        div.id="typing";
+        div.className="message bot-message";
+        div.innerHTML=`<span>🤖 LAGUER IA está escribiendo...</span>`;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function removeTyping(){
+        const t=document.getElementById("typing");
+        if(t) t.remove();
+      }
+
+      // ============================================================
+      // ENVIAR A N8N
+      // ============================================================
+      async function sendMessage(){
+        const text = chatInput.value.trim();
+        if(!text) return;
+
+        addChatMessage(text,"user");
+        chatHistory.push({role:"user",content:text});
+        localStorage.setItem("laguer_chat_history",JSON.stringify(chatHistory));
+        chatInput.value="";
+        typing();
+
+        try{
+          const response = await fetch(N8N_WEBHOOK,{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+              mensaje:text,
+              historial:chatHistory,
+              pagina:"LAGUER WEB",
+              cliente:"visitante",
+              fecha:new Date()
+            })
+          });
+
+          const data = await response.json();
+          removeTyping();
+          let answer = data.respuesta || data.output || data.message || "No pude obtener respuesta.";
+          addChatMessage(answer,"bot");
+          chatHistory.push({role:"assistant",content:answer});
+          localStorage.setItem("laguer_chat_history",JSON.stringify(chatHistory));
+        }
+        catch(error){
+          console.error("LAGUER IA ERROR:",error);
+          removeTyping();
+          addChatMessage("⚠️ No puedo conectarme al asistente en este momento. Intenta nuevamente.","bot");
+        }
+      }
+
+      // ============================================================
+      // BOTÓN ENVIAR
+      // ============================================================
+      sendChat?.addEventListener("click", sendMessage);
+      chatInput?.addEventListener("keypress", (e)=>{
+        if(e.key==="Enter") sendMessage();
+      });
+
+      // ============================================================
+      // RESPUESTAS RÁPIDAS
+      // ============================================================
+      quickButtons.forEach(btn=>{
+        btn.addEventListener("click",()=>{
+          chatInput.value = btn.dataset.msg;
+          sendMessage();
+        });
+      });
 
       // =======================================================================
       // INICIALIZAR
@@ -2678,7 +2459,7 @@ sendMessage();
         updateCartUI();
         updateFavUI();
         document.querySelector('.bottom-nav a[href="index.html"]')?.classList.add('active');
-        console.log('🚀 LAGUER · index con API D1 integrada y chat mejorado');
+        console.log('🚀 LAGUER · index con API D1 integrada y chat N8N');
       });
 
       // Exponer funciones globales
