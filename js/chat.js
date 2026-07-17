@@ -1,181 +1,200 @@
 /* ==========================================
    LAGUER AI CHAT
-   chat.js
-   Conexión n8n + Firebase
+   Frontend
+   Cloudflare API + n8n + D1
 ========================================== */
 
 
-// WEBHOOK PRODUCCIÓN N8N
-const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ia";
+const API_CHAT="/api/chat";
 
 
-// ELEMENTOS DEL CHAT
-const chatBtn = document.getElementById("laguerChatBtn");
-const chat = document.getElementById("laguerChat");
-const closeBtn = document.getElementById("closeChat");
-const sendBtn = document.getElementById("sendChat");
-const input = document.getElementById("chatInput");
-const messages = document.getElementById("chatMessages");
+// ELEMENTOS
+
+const chatBtn =
+document.getElementById("laguerChatBtn");
+
+const chatBox =
+document.getElementById("laguerChat");
+
+const closeBtn =
+document.getElementById("closeChat");
+
+const sendBtn =
+document.getElementById("sendChat");
+
+const input =
+document.getElementById("chatInput");
+
+const messages =
+document.getElementById("chatMessages");
+
+
 
 
 // MEMORIA CHAT
-let conversation = [];
+
+let conversation =
+JSON.parse(
+localStorage.getItem("laguer_chat")
+)
+|| [];
 
 
-// ===============================
+
+
+// USUARIO LOGIN D1
+
+function getUser(){
+
+
+return JSON.parse(
+
+localStorage.getItem("laguerUser")
+
+)
+|| null;
+
+
+}
+
+
+
+
 // ABRIR CHAT
-// ===============================
 
 if(chatBtn){
 
-    chatBtn.addEventListener("click",()=>{
 
-        chat.classList.add("active");
+chatBtn.onclick=()=>{
 
-        if(input){
-            input.focus();
-        }
 
-    });
+chatBox.classList.add("active");
+
+
+if(input)
+input.focus();
+
+
+};
+
 
 }
 
 
 
-// ===============================
-// CERRAR CHAT
-// ===============================
+// CERRAR
 
 if(closeBtn){
 
-    closeBtn.addEventListener("click",()=>{
 
-        chat.classList.remove("active");
+closeBtn.onclick=()=>{
 
-    });
+
+chatBox.classList.remove("active");
+
+
+};
+
 
 }
 
 
 
-// ===============================
-// ENTER ENVIAR
-// ===============================
+
+
+// ENTER
 
 if(input){
 
-    input.addEventListener("keypress",(e)=>{
 
-        if(e.key === "Enter"){
+input.addEventListener(
+"keypress",
+(e)=>{
 
-            sendMessage();
 
-        }
+if(e.key==="Enter"){
 
-    });
+
+sendMessage();
+
+
+}
+
+
+}
+
+);
+
 
 }
 
 
 
-// ===============================
+
 // BOTON ENVIAR
-// ===============================
+
 
 if(sendBtn){
 
-    sendBtn.addEventListener("click",sendMessage);
+
+sendBtn.onclick=sendMessage;
+
 
 }
 
 
 
-// ===============================
+
+// ==========================================
 // ENVIAR MENSAJE
-// ===============================
-
-function sendMessage(){
+// ==========================================
 
 
-    const text = input.value.trim();
+async function sendMessage(){
 
 
-    if(!text) return;
+const text =
+input.value.trim();
 
 
 
-    addUser(text);
-
-
-    input.value = "";
-
-
-    typing();
-
-
-    fetchAI(text);
-
-
-}
+if(!text)return;
 
 
 
 
-// ===============================
-// MENSAJE USUARIO
-// ===============================
-
-function addUser(text){
-
-
-    const div=document.createElement("div");
-
-
-    div.className="user-message";
-
-
-    div.textContent=text;
-
-
-    messages.appendChild(div);
-
-
-    scrollBottom();
-
-
-}
+addMessage(
+text,
+"user"
+);
 
 
 
-
-// ===============================
-// MENSAJE BOT
-// ===============================
-
-function addBot(text){
+input.value="";
 
 
-    removeTyping();
+
+showTyping();
 
 
-    const div=document.createElement("div");
+
+conversation.push({
+
+role:"user",
+
+content:text
+
+});
 
 
-    div.className="bot-message";
+
+saveConversation();
 
 
-    div.innerHTML = text
-    .replace(/\n/g,"<br>")
-    .replace(
-        /(https:\/\/wa\.me\/[0-9]+)/g,
-        '<a href="$1" target="_blank" class="whatsapp-link">💬 WhatsApp</a>'
-    );
 
 
-    messages.appendChild(div);
+await sendAI(text);
 
-
-    scrollBottom();
 
 
 }
@@ -184,204 +203,124 @@ function addBot(text){
 
 
 
-// ===============================
-// BOT ESCRIBIENDO
-// ===============================
 
-function typing(){
-
-
-    removeTyping();
+// ==========================================
+// CONECTAR API
+// ==========================================
 
 
-    const div=document.createElement("div");
+async function sendAI(text){
 
-
-    div.className="typing";
-
-
-    div.id="typing";
-
-
-    div.innerHTML=`
-
-        <span></span>
-        <span></span>
-        <span></span>
-
-    `;
-
-
-    messages.appendChild(div);
-
-
-    scrollBottom();
-
-
-}
-
-
-
-
-// ===============================
-// QUITAR ESCRIBIENDO
-// ===============================
-
-function removeTyping(){
-
-
-    const t=document.getElementById("typing");
-
-
-    if(t){
-
-        t.remove();
-
-    }
-
-
-}
-
-
-
-
-// ===============================
-// SCROLL
-// ===============================
-
-function scrollBottom(){
-
-
-    if(messages){
-
-        messages.scrollTop = messages.scrollHeight;
-
-    }
-
-}
-
-
-
-
-// ===============================
-// CONEXIÓN N8N
-// ===============================
-
-async function fetchAI(question){
 
 
 try{
 
 
-    conversation.push({
 
-        role:"user",
+const user =
+getUser();
 
-        content:question
 
-    });
 
 
+const response =
+await fetch(
 
-    const response = await fetch(N8N_WEBHOOK,{
+API_CHAT,
 
+{
 
-        method:"POST",
 
+method:"POST",
 
-        headers:{
 
+headers:{
 
-            "Content-Type":"application/json"
 
-        },
+"Content-Type":"application/json"
 
 
-        body:JSON.stringify({
+},
 
 
-            mensaje:question,
 
+body:JSON.stringify({
 
-            historial:conversation,
 
 
-            source:"laguer",
+mensaje:text,
 
 
-            page:window.location.pathname,
+email:user?.email || null,
 
 
-            url:window.location.href,
+usuario:user,
 
 
-            userAgent:navigator.userAgent,
+historial:conversation,
 
 
-            language:navigator.language
+url:window.location.href
 
 
-        })
+})
 
 
-    });
+}
 
+);
 
 
 
-    if(!response.ok){
 
 
-        throw new Error(
-            "Error n8n: "+response.status
-        );
+const data =
+await response.json();
 
 
-    }
 
 
+removeTyping();
 
 
-    const data = await response.json();
 
 
 
-    console.log(
-        "Respuesta n8n:",
-        data
-    );
+const answer =
 
 
+data.respuesta ||
 
+"Gracias por escribir a LAGUER.";
 
-    const answer =
 
-        data.respuesta ||
 
-        data.reply ||
 
-        data.response ||
+conversation.push({
 
-        data.answer ||
 
-        "No encontré información.";
+role:"assistant",
 
 
+content:answer
 
 
+});
 
-    conversation.push({
 
-        role:"assistant",
 
-        content:answer
+saveConversation();
 
-    });
 
 
 
+addMessage(
 
-    addBot(answer);
+answer,
+
+"bot"
+
+);
 
 
 
@@ -390,24 +329,164 @@ try{
 }catch(error){
 
 
-    console.error(
-        "Error:",
-        error
-    );
+
+console.error(
+"CHAT ERROR:",
+error
+);
 
 
 
-    removeTyping();
+removeTyping();
 
 
 
-    addBot(
-        "⚠️ No puedo conectar con LAGUER IA.<br>Verifica el servidor."
-    );
+addMessage(
+
+"⚠️ El asesor LAGUER no está disponible.",
+
+"bot"
+
+);
+
 
 
 }
 
+
+}
+
+
+
+
+
+
+
+// ==========================================
+// PINTAR MENSAJES
+// ==========================================
+
+
+function addMessage(text,type){
+
+
+
+const div =
+document.createElement("div");
+
+
+
+div.className =
+
+type==="user"
+
+?
+
+"user-message"
+
+:
+
+"bot-message";
+
+
+
+
+
+div.innerHTML =
+text
+.replace(/\n/g,"<br>");
+
+
+
+
+messages.appendChild(div);
+
+
+
+messages.scrollTop =
+messages.scrollHeight;
+
+
+
+}
+
+
+
+
+
+
+
+// ==========================================
+// ESCRIBIENDO
+// ==========================================
+
+
+function showTyping(){
+
+
+removeTyping();
+
+
+const div =
+document.createElement("div");
+
+
+div.id="typing";
+
+
+div.className="typing";
+
+
+div.innerHTML="● ● ●";
+
+
+
+messages.appendChild(div);
+
+
+}
+
+
+
+
+
+
+function removeTyping(){
+
+
+const t =
+document.getElementById("typing");
+
+
+if(t)
+t.remove();
+
+
+
+}
+
+
+
+
+
+
+
+// ==========================================
+// GUARDAR CHAT
+// ==========================================
+
+
+function saveConversation(){
+
+
+
+localStorage.setItem(
+
+"laguer_chat",
+
+JSON.stringify(conversation)
+
+);
 
 
 }
