@@ -3,7 +3,7 @@
 // Cloudflare Pages Worker + D1 + n8n IA
 // ============================================================
 
-const N8N_WEBHOOK = "https://TU-N8N-DOMINIO/webhook/laguer-ia";
+const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ia";
 
 export default {
   async fetch(request, env) {
@@ -23,26 +23,27 @@ export default {
     }
 
     // ============================================================
-    // API
+    // API - Todas las rutas /api/*
     // ============================================================
     if (path.startsWith("/api/")) {
       return handleApi(request, env);
     }
 
     // ============================================================
-    // ARCHIVOS DE LA WEB
+    // ARCHIVOS ESTÁTICOS
     // ============================================================
     return serveStatic(request, env);
   }
 };
 
 // ============================================================
-// CHAT IA LAGUER
-// WEB -> CLOUDFLARE -> N8N -> GEMINI
+// CHAT IA - Conecta con n8n
 // ============================================================
 async function chatIA(request, env) {
   try {
     const body = await request.json();
+
+    console.log("📨 Mensaje recibido:", body.mensaje);
 
     const respuesta = await fetch(N8N_WEBHOOK, {
       method: "POST",
@@ -53,38 +54,37 @@ async function chatIA(request, env) {
         mensaje: body.mensaje,
         usuario: body.usuario || null,
         productos: await getProducts(env.DB),
-        historial: body.historial || [],
-        empresa: "LAGUER"
+        historial: body.historial || []
       })
     });
 
+    if (!respuesta.ok) {
+      throw new Error(`n8n respondió con error: ${respuesta.status}`);
+    }
+
     const data = await respuesta.json();
+    console.log("✅ Respuesta de n8n recibida");
 
     return jsonResponse({
-      respuesta: data.respuesta || data.output || "Sin respuesta de IA"
+      respuesta: data.respuesta || data.output || "Lo siento, no pude procesar tu consulta."
     });
   } catch (error) {
-    console.error(error);
+    console.error("❌ Error en chatIA:", error);
     return jsonResponse({
-      error: "Error conectando con LAGUER IA"
+      error: "Error conectando con el asistente",
+      detalle: error.message
     }, 500);
   }
 }
 
 // ============================================================
-// PRODUCTOS PARA IA
+// OBTENER PRODUCTOS PARA CONTEXTO
 // ============================================================
 async function getProducts(db) {
   try {
     const { results } = await db
       .prepare(`
-        SELECT 
-          id,
-          nombre,
-          categoria,
-          precio,
-          stock,
-          descripcion
+        SELECT id, nombre, categoria, precio, stock, descripcion
         FROM productos
         ORDER BY id DESC
         LIMIT 50
@@ -92,6 +92,7 @@ async function getProducts(db) {
       .all();
     return results || [];
   } catch (e) {
+    console.error("Error obteniendo productos:", e);
     return [];
   }
 }
@@ -117,7 +118,7 @@ async function verifyWhatsApp(request, env) {
 async function whatsappMessage(request, env) {
   try {
     const body = await request.json();
-    console.log("WhatsApp:", body);
+    console.log("📱 WhatsApp:", body);
     return new Response("OK", { status: 200 });
   } catch (e) {
     return new Response("OK", { status: 200 });
@@ -125,7 +126,7 @@ async function whatsappMessage(request, env) {
 }
 
 // ============================================================
-// API ROUTER
+// API ROUTER PRINCIPAL
 // ============================================================
 async function handleApi(request, env) {
   const url = new URL(request.url);
@@ -142,16 +143,16 @@ async function handleApi(request, env) {
     });
   }
 
-  // ===============================
-  // CHAT
-  // ===============================
+  // ============================================================
+  // CHAT - Endpoint principal
+  // ============================================================
   if (path === "chat" && request.method === "POST") {
     return chatIA(request, env);
   }
 
-  // ===============================
+  // ============================================================
   // PRODUCTOS
-  // ===============================
+  // ============================================================
   if (path === "products" && request.method === "GET") {
     try {
       const search = url.searchParams.get("search") || "";
@@ -177,37 +178,9 @@ async function handleApi(request, env) {
     }
   }
 
-  // CREAR PRODUCTO ADMIN
-  if (path === "products" && request.method === "POST") {
-    try {
-      const data = await request.json();
-      const result = await env.DB
-        .prepare(`
-          INSERT INTO productos
-          (nombre, categoria, precio, stock, imagen, descripcion, en_oferta, descuento, sku)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `)
-        .bind(
-          data.nombre,
-          data.categoria || "",
-          data.precio,
-          data.stock || 0,
-          data.imagen || "",
-          data.descripcion || "",
-          data.en_oferta || 0,
-          data.descuento || 0,
-          data.sku || ""
-        )
-        .run();
-      return jsonResponse({ success: true, id: result.meta.last_row_id });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  // ===============================
+  // ============================================================
   // REGISTRO USUARIO
-  // ===============================
+  // ============================================================
   if (path === "register" && request.method === "POST") {
     try {
       const data = await request.json();
@@ -226,17 +199,10 @@ async function handleApi(request, env) {
 
       const result = await env.DB
         .prepare(`
-          INSERT INTO users
-          (nombre, email, password, telefono, dni)
+          INSERT INTO users (nombre, email, password, telefono, dni)
           VALUES (?, ?, ?, ?, ?)
         `)
-        .bind(
-          data.nombre,
-          data.email,
-          data.password,
-          data.telefono || "",
-          data.dni || ""
-        )
+        .bind(data.nombre, data.email, data.password, data.telefono || "", data.dni || "")
         .run();
 
       return jsonResponse({
@@ -249,9 +215,9 @@ async function handleApi(request, env) {
     }
   }
 
-  // ===============================
+  // ============================================================
   // LOGIN
-  // ===============================
+  // ============================================================
   if (path === "login" && request.method === "POST") {
     try {
       const data = await request.json();
@@ -273,33 +239,14 @@ async function handleApi(request, env) {
     }
   }
 
-  // ===============================
-  // LISTAR USUARIOS ADMIN
-  // ===============================
-  if (path === "users" && request.method === "GET") {
-    try {
-      const { results } = await env.DB
-        .prepare(`
-          SELECT id, nombre, email, rol, telefono, dni, fecha_registro
-          FROM users
-          ORDER BY id DESC
-        `)
-        .all();
-      return jsonResponse({ users: results });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  // ===============================
+  // ============================================================
   // PEDIDOS
-  // ===============================
-  // LISTAR PEDIDOS
+  // ============================================================
   if (path === "orders" && request.method === "GET") {
     try {
       const estado = url.searchParams.get("estado") || "";
       let query = `SELECT * FROM pedidos`;
-      let params = [];
+      const params = [];
       if (estado) {
         query += ` WHERE estado = ?`;
         params.push(estado);
@@ -313,7 +260,6 @@ async function handleApi(request, env) {
     }
   }
 
-  // CREAR PEDIDO
   if (path === "orders" && request.method === "POST") {
     try {
       const data = await request.json();
@@ -341,7 +287,7 @@ async function handleApi(request, env) {
         )
         .run();
 
-      // RESTAR STOCK
+      // Restar stock
       for (const item of data.items) {
         await env.DB
           .prepare(`UPDATE productos SET stock = stock - ? WHERE id = ?`)
@@ -355,39 +301,9 @@ async function handleApi(request, env) {
     }
   }
 
-  // CAMBIAR ESTADO PEDIDO
-  if (path.startsWith("orders/") && request.method === "PUT") {
-    try {
-      const id = path.split("/")[1];
-      const data = await request.json();
-      await env.DB
-        .prepare(`UPDATE pedidos SET estado = ? WHERE id = ?`)
-        .bind(data.estado, id)
-        .run();
-      return jsonResponse({ success: true });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  // ELIMINAR PEDIDO
-  if (path.startsWith("orders/") && request.method === "DELETE") {
-    try {
-      const id = path.split("/")[1];
-      await env.DB
-        .prepare(`DELETE FROM pedidos WHERE id = ?`)
-        .bind(id)
-        .run();
-      return jsonResponse({ success: true });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  // ===============================
+  // ============================================================
   // CARRITO
-  // ===============================
-  // VER CARRITO USUARIO
+  // ============================================================
   if (path.startsWith("cart/") && request.method === "GET") {
     try {
       const userId = path.split("/")[1];
@@ -406,7 +322,6 @@ async function handleApi(request, env) {
     }
   }
 
-  // AGREGAR AL CARRITO
   if (path === "cart" && request.method === "POST") {
     try {
       const data = await request.json();
@@ -432,24 +347,9 @@ async function handleApi(request, env) {
     }
   }
 
-  // BORRAR CARRITO
-  if (path.startsWith("cart/") && request.method === "DELETE") {
-    try {
-      const id = path.split("/")[1];
-      await env.DB
-        .prepare(`DELETE FROM carrito WHERE id = ?`)
-        .bind(id)
-        .run();
-      return jsonResponse({ success: true });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  // ===============================
+  // ============================================================
   // FAVORITOS
-  // ===============================
-  // LISTAR FAVORITOS
+  // ============================================================
   if (path.startsWith("favorites/") && request.method === "GET") {
     try {
       const userId = path.split("/")[1];
@@ -468,7 +368,6 @@ async function handleApi(request, env) {
     }
   }
 
-  // AGREGAR FAVORITO
   if (path === "favorites" && request.method === "POST") {
     try {
       const data = await request.json();
@@ -482,61 +381,9 @@ async function handleApi(request, env) {
     }
   }
 
-  // ===============================
-  // INVENTARIO
-  // ===============================
-  if (path === "inventory/movement" && request.method === "POST") {
-    try {
-      const data = await request.json();
-      const producto = await env.DB
-        .prepare(`SELECT * FROM productos WHERE id = ?`)
-        .bind(data.producto_id)
-        .first();
-
-      if (!producto) {
-        return jsonResponse({ error: "Producto no existe" }, 404);
-      }
-
-      let nuevoStock;
-      if (data.tipo === "entrada") {
-        nuevoStock = producto.stock + data.cantidad;
-      } else {
-        nuevoStock = producto.stock - data.cantidad;
-      }
-
-      if (nuevoStock < 0) {
-        return jsonResponse({ error: "Stock insuficiente" }, 400);
-      }
-
-      await env.DB
-        .prepare(`UPDATE productos SET stock = ? WHERE id = ?`)
-        .bind(nuevoStock, data.producto_id)
-        .run();
-
-      await env.DB
-        .prepare(`
-          INSERT INTO inventario_movimientos
-          (producto_id, tipo, cantidad, motivo, stock_resultante)
-          VALUES (?, ?, ?, ?, ?)
-        `)
-        .bind(
-          data.producto_id,
-          data.tipo,
-          data.cantidad,
-          data.motivo || "",
-          nuevoStock
-        )
-        .run();
-
-      return jsonResponse({ success: true, stock: nuevoStock });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  // ===============================
-  // DASHBOARD ADMIN
-  // ===============================
+  // ============================================================
+  // DASHBOARD
+  // ============================================================
   if (path === "dashboard" && request.method === "GET") {
     try {
       const [orders, products, users, sales, pending, stock] = await Promise.all([
@@ -561,198 +408,14 @@ async function handleApi(request, env) {
     }
   }
 
-  // ===============================
-  // ACTIVIDAD DEL SISTEMA
-  // ===============================
-  if (path === "activity" && request.method === "GET") {
-    try {
-      const { results } = await env.DB
-        .prepare(`SELECT * FROM registro_actividad ORDER BY fecha DESC LIMIT 50`)
-        .all();
-      return jsonResponse({ activities: results });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  // ===============================
-  // MENSAJES ADMIN
-  // ===============================
-  if (path === "messages" && request.method === "GET") {
-    try {
-      const { results } = await env.DB
-        .prepare(`SELECT * FROM mensajes ORDER BY fecha DESC`)
-        .all();
-      return jsonResponse({ messages: results });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  if (path === "messages" && request.method === "POST") {
-    try {
-      const data = await request.json();
-      await env.DB
-        .prepare(`INSERT INTO mensajes (titulo, contenido, tipo, autor) VALUES (?, ?, ?, ?)`)
-        .bind(
-          data.titulo,
-          data.contenido || "",
-          data.tipo || "nota",
-          data.autor || "Administrador"
-        )
-        .run();
-      return jsonResponse({ success: true });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  if (path.startsWith("messages/") && request.method === "PUT") {
-    try {
-      const id = path.split("/")[1];
-      await env.DB
-        .prepare(`UPDATE mensajes SET leido = 1 WHERE id = ?`)
-        .bind(id)
-        .run();
-      return jsonResponse({ success: true });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  // ===============================
-  // RECLAMOS
-  // ===============================
-  if (path === "reclamos" && request.method === "POST") {
-    try {
-      const data = await request.json();
-      const codigo = "RCL-" + Date.now().toString().slice(-6);
-
-      await env.DB
-        .prepare(`
-          INSERT INTO reclamos
-          (codigo, tipo_doc, num_doc, nombres, apellidos, email, telefono, pedido, motivo, descripcion, monto)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `)
-        .bind(
-          codigo,
-          data.tipo_doc || "",
-          data.num_doc || "",
-          data.nombres,
-          data.apellidos,
-          data.email,
-          data.telefono,
-          data.pedido || "",
-          data.motivo,
-          data.descripcion,
-          data.monto || 0
-        )
-        .run();
-
-      return jsonResponse({ success: true, codigo });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  if (path === "reclamos" && request.method === "GET") {
-    try {
-      const { results } = await env.DB
-        .prepare(`SELECT * FROM reclamos ORDER BY fecha DESC`)
-        .all();
-      return jsonResponse({ reclamos: results });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  // ===============================
-  // MIGRACION DATOS
-  // ===============================
-  if (path === "migrate" && request.method === "POST") {
-    try {
-      const data = await request.json();
-
-      // PRODUCTOS
-      if (data.products) {
-        for (const p of data.products) {
-          await env.DB
-            .prepare(`
-              INSERT OR REPLACE INTO productos
-              (id, nombre, categoria, precio, stock, imagen, descripcion)
-              VALUES (?, ?, ?, ?, ?, ?, ?)
-            `)
-            .bind(
-              p.id || null,
-              p.nombre,
-              p.categoria || "",
-              p.precio,
-              p.stock || 0,
-              p.imagen || "",
-              p.descripcion || ""
-            )
-            .run();
-        }
-      }
-
-      // USUARIOS
-      if (data.users) {
-        for (const u of data.users) {
-          await env.DB
-            .prepare(`
-              INSERT OR REPLACE INTO users
-              (id, nombre, email, password, rol, telefono, dni)
-              VALUES (?, ?, ?, ?, ?, ?, ?)
-            `)
-            .bind(
-              u.id || null,
-              u.nombre,
-              u.email,
-              u.password,
-              u.rol || "user",
-              u.telefono || "",
-              u.dni || ""
-            )
-            .run();
-        }
-      }
-
-      // PEDIDOS
-      if (data.orders) {
-        for (const o of data.orders) {
-          await env.DB
-            .prepare(`
-              INSERT OR REPLACE INTO pedidos
-              (id, cliente_nombre, cliente_email, total, estado, items, fecha)
-              VALUES (?, ?, ?, ?, ?, ?, ?)
-            `)
-            .bind(
-              o.id || null,
-              o.cliente_nombre,
-              o.cliente_email || "",
-              o.total,
-              o.estado || "pending",
-              JSON.stringify(o.items || []),
-              o.fecha || new Date().toISOString()
-            )
-            .run();
-        }
-      }
-
-      return jsonResponse({ success: true, message: "Migración completada" });
-    } catch (e) {
-      return jsonResponse({ error: e.message }, 500);
-    }
-  }
-
-  // ===============================
+  // ============================================================
   // 404
-  // ===============================
+  // ============================================================
   return jsonResponse({ error: "Endpoint no encontrado" }, 404);
 }
 
 // ============================================================
-// JSON RESPONSE
+// UTILIDADES
 // ============================================================
 function jsonResponse(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -765,9 +428,6 @@ function jsonResponse(data, status = 200) {
   });
 }
 
-// ============================================================
-// SERVIR PAGINA
-// ============================================================
 async function serveStatic(request, env) {
   return env.ASSETS.fetch(request);
 }
