@@ -1,9 +1,9 @@
-export async function onRequestPost(context){
+export async function onRequestPost(context) {
 
-const {request,env}=context;
+const {request, env}=context;
 
 
-try{
+try {
 
 
 const body = await request.json();
@@ -13,18 +13,16 @@ const mensaje = body.mensaje || "";
 
 const usuario = body.usuario || null;
 
+const historial = body.historial || [];
 
 
-// =============================
+
 // BUSCAR PRODUCTOS EN D1
-// =============================
-
 
 const productos = await env.laguer_db
 .prepare(`
 SELECT 
 nombre,
-categoria,
 precio,
 stock,
 descripcion
@@ -37,42 +35,12 @@ LIMIT 5
 
 
 
-let datosUsuario=null;
 
 
-
-// =============================
-// BUSCAR USUARIO
-// =============================
-
-
-if(usuario?.email){
-
-
-datosUsuario = await env.laguer_db
-.prepare(`
-SELECT 
-nombre,
-email,
-telefono,
-direccion
-FROM users
-WHERE email=?
-`)
-.bind(usuario.email)
-.first();
-
-
-}
-
-
-
-// =============================
 // ENVIAR A N8N
-// =============================
 
 
-const n8nResponse = await fetch(
+const respuesta = await fetch(
 "https://hugolaban.app.n8n.cloud/webhook/laguer-ia",
 {
 
@@ -87,25 +55,24 @@ body:JSON.stringify({
 
 mensaje,
 
-usuario:datosUsuario,
+usuario,
 
 productos:productos.results,
+
+historial,
 
 empresa:"LAGUER"
 
 
 })
 
+
 });
 
 
-const ia = await n8nResponse.json();
 
+const ia = await respuesta.json();
 
-
-// =============================
-// RESPUESTA A CHAT.JS
-// =============================
 
 
 return Response.json({
@@ -116,11 +83,12 @@ ia.output ||
 ia.message ||
 "Estoy procesando tu consulta"
 
+
 });
 
 
-}
 
+}
 
 catch(error){
 
