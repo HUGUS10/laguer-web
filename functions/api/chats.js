@@ -1,38 +1,29 @@
-// =====================================================
-// LAGUER AI CHAT
-// Cloudflare Pages Function
-// D1 + n8n + Gemini
-// =====================================================
+// ===============================================
+// LAGUER AI CHAT API
+// Cloudflare Functions + D1 + n8n + Gemini
+// functions/api/chat.js
+// ===============================================
 
 
-export async function onRequestPost(context){
+export async function onRequestPost(context) {
 
 
-const {request,env}=context;
+const {request, env} = context;
 
 
-try{
+try {
+
 
 
 const body = await request.json();
 
 
-const mensaje =
-(body.mensaje || "").trim();
 
+const mensaje = body.mensaje || "";
 
-const historial =
-body.historial || [];
+const usuario = body.usuario || null;
 
-
-
-const email =
-
-body.usuario?.email ||
-
-body.email ||
-
-null;
+const historial = body.historial || [];
 
 
 
@@ -42,106 +33,40 @@ return Response.json({
 
 error:"Mensaje vacío"
 
-},{
-status:400
-});
+},{status:400});
 
 }
 
 
 
-// =====================================================
-// BUSCAR PRODUCTOS EN D1
-// =====================================================
 
-
-const productos =
-
-await env.laguer_db
-
-.prepare(
-
-`
-SELECT
-
-id,
-nombre,
-categoria,
-precio,
-stock,
-imagen,
-descripcion,
-en_oferta,
-descuento,
-sku
-
-FROM productos
-
-WHERE 
-nombre LIKE ?
-OR descripcion LIKE ?
-OR categoria LIKE ?
-
-LIMIT 10
-
-`
-
-)
-
-.bind(
-
-`%${mensaje}%`,
-`%${mensaje}%`,
-`%${mensaje}%`
-
-)
-
-.all();
-
-
-
-
-
-// =====================================================
+// ===============================================
 // BUSCAR USUARIO EN D1
-// =====================================================
+// ===============================================
 
 
-let usuario=null;
+let userData=null;
 
 
 
-if(email){
+if(usuario?.email){
 
 
-usuario =
-
+userData =
 await env.laguer_db
-
 .prepare(
-
 `
-SELECT
-
-id,
+SELECT 
 nombre,
 email,
-rol,
 telefono,
-direccion
-
+direccion,
+rol
 FROM users
-
 WHERE email=?
-
-LIMIT 1
-
 `
-
 )
-
-.bind(email)
-
+.bind(usuario.email)
 .first();
 
 
@@ -150,14 +75,45 @@ LIMIT 1
 
 
 
+// ===============================================
+// BUSCAR PRODUCTOS
+// ===============================================
 
-// =====================================================
+
+const productos =
+await env.laguer_db
+.prepare(
+`
+SELECT
+nombre,
+categoria,
+precio,
+stock,
+descripcion,
+imagen,
+descuento
+FROM productos
+WHERE 
+nombre LIKE ?
+OR categoria LIKE ?
+LIMIT 10
+`
+)
+.bind(
+`%${mensaje}%`,
+`%${mensaje}%`
+)
+.all();
+
+
+
+
+// ===============================================
 // ENVIAR CONTEXTO A N8N
-// =====================================================
+// ===============================================
 
 
-const n8n =
-
+const n8nResponse =
 await fetch(
 
 "https://hugolaban.app.n8n.cloud/webhook/laguer-ia",
@@ -175,22 +131,22 @@ headers:{
 
 body:JSON.stringify({
 
+empresa:"LAGUER",
+
 
 mensaje,
 
 
-usuario,
+usuario:userData,
 
 
-productos:
-productos.results || [],
+productos:productos.results || [],
 
 
 historial,
 
 
-empresa:"LAGUER"
-
+pagina:request.headers.get("referer") || ""
 
 })
 
@@ -202,10 +158,71 @@ empresa:"LAGUER"
 
 
 
+if(!n8nResponse.ok){
 
-const respuestaN8N =
 
-await n8n.json();
+throw new Error(
+"N8N no respondió correctamente"
+);
+
+
+}
+
+
+
+
+const ia =
+await n8nResponse.json();
+
+
+
+
+
+const respuesta =
+
+ia.respuesta ||
+
+ia.output ||
+
+ia.message ||
+
+"Estoy aquí para ayudarte con LAGUER.";
+
+
+
+
+
+
+// ===============================================
+// GUARDAR CONVERSACIÓN EN D1
+// ===============================================
+
+
+await env.laguer_db
+.prepare(
+
+`
+INSERT INTO chat_history
+(
+email,
+mensaje,
+respuesta
+)
+VALUES
+(?,?,?)
+`
+
+)
+.bind(
+
+usuario?.email || "visitante",
+
+mensaje,
+
+respuesta
+
+)
+.run();
 
 
 
@@ -214,17 +231,7 @@ await n8n.json();
 
 return Response.json({
 
-respuesta:
-
-respuestaN8N.respuesta ||
-
-respuestaN8N.output ||
-
-respuestaN8N.message ||
-
-"Estoy procesando tu consulta"
-
-
+respuesta
 
 });
 
@@ -232,8 +239,9 @@ respuestaN8N.message ||
 
 
 
+}
 
-}catch(error){
+catch(error){
 
 
 console.error(
@@ -248,10 +256,12 @@ return Response.json({
 error:error.message
 
 },
-{
-status:500
-});
 
+{
+
+status:500
+
+});
 
 
 }
