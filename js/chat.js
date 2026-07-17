@@ -1,88 +1,84 @@
 /* ==========================================
-   LAGUER AI CHAT FRONTEND
-   js/chat.js
+ LAGUER AI CHAT
+ js/chat.js
 ========================================== */
 
 
-const API_CHAT = "/api/chat";
+const API_CHAT="/api/chat";
 
 
-const chatBtn =
-document.getElementById("laguerChatBtn");
+const chatBtn=document.getElementById(
+"laguerChatBtn"
+);
 
-const chatBox =
-document.getElementById("laguerChat");
+const chatBox=document.getElementById(
+"laguerChat"
+);
 
-const closeBtn =
-document.getElementById("closeChat");
+const closeBtn=document.getElementById(
+"closeChat"
+);
 
-const sendBtn =
-document.getElementById("sendChat");
+const sendBtn=document.getElementById(
+"sendChat"
+);
 
-const input =
-document.getElementById("chatInput");
+const input=document.getElementById(
+"chatInput"
+);
 
-const messages =
-document.getElementById("chatMessages");
+const messages=document.getElementById(
+"chatMessages"
+);
 
 
-
-// MEMORIA LOCAL
 
 let conversation =
 JSON.parse(
 localStorage.getItem("laguer_chat")
-) || [];
+)||[];
 
 
 
-// USUARIO LOGIN
 
 function getUser(){
 
 return JSON.parse(
 localStorage.getItem("laguerUser")
-) || null;
+)||null;
 
 }
 
 
 
-// ABRIR CHAT
 
-if(chatBtn){
 
-chatBtn.onclick=()=>{
+chatBtn?.addEventListener(
+"click",
+()=>{
 
 chatBox.classList.add("active");
 
 input.focus();
 
-};
-
-}
+});
 
 
 
-// CERRAR CHAT
 
-if(closeBtn){
-
-closeBtn.onclick=()=>{
+closeBtn?.addEventListener(
+"click",
+()=>{
 
 chatBox.classList.remove("active");
 
-};
-
-}
+});
 
 
 
-// ENTER
 
-if(input){
 
-input.addEventListener(
+input?.addEventListener(
 "keydown",
 (e)=>{
 
@@ -94,17 +90,17 @@ sendMessage();
 
 });
 
-}
 
 
 
-// BOTON ENVIAR
 
-if(sendBtn){
+sendBtn?.addEventListener(
+"click",
+sendMessage
+);
 
-sendBtn.onclick=sendMessage;
 
-}
+
 
 
 
@@ -112,8 +108,7 @@ sendBtn.onclick=sendMessage;
 async function sendMessage(){
 
 
-const text =
-input.value.trim();
+const text=input.value.trim();
 
 
 if(!text)return;
@@ -144,26 +139,8 @@ content:text
 
 
 
-saveConversation();
-
-
-
-await askLaguer(text);
-
-
-}
-
-
-
-
-async function askLaguer(text){
-
 
 try{
-
-
-const user=getUser();
-
 
 
 const response =
@@ -183,13 +160,15 @@ body:JSON.stringify({
 
 mensaje:text,
 
-usuario:user,
+usuario:getUser(),
 
 historial:conversation
+
 
 })
 
 });
+
 
 
 
@@ -204,7 +183,7 @@ removeTyping();
 
 const answer =
 data.respuesta ||
-"Disculpa, no pude responder.";
+"Sin respuesta";
 
 
 
@@ -218,7 +197,13 @@ content:answer
 
 
 
-saveConversation();
+localStorage.setItem(
+
+"laguer_chat",
+
+JSON.stringify(conversation)
+
+);
 
 
 
@@ -231,30 +216,27 @@ answer,
 
 }
 
-catch(error){
-
-
-console.error(
-"CHAT ERROR",
-error
-);
-
+catch(e){
 
 
 removeTyping();
 
 
-
 addMessage(
-"⚠️ Error de conexión con LAGUER IA",
+"⚠️ Error conectando con LAGUER IA",
 "bot"
 );
 
 
+console.error(e);
+
+
 }
 
 
 }
+
+
 
 
 
@@ -262,8 +244,9 @@ addMessage(
 function addMessage(text,type){
 
 
-const div =
-document.createElement("div");
+const div=document.createElement(
+"div"
+);
 
 
 div.className =
@@ -276,18 +259,14 @@ type==="user"
 
 
 div.innerHTML =
-text.replace(
-/\n/g,
-"<br>"
-);
+text.replace(/\n/g,"<br>");
 
 
 
 messages.appendChild(div);
 
 
-
-messages.scrollTop =
+messages.scrollTop=
 messages.scrollHeight;
 
 
@@ -299,17 +278,16 @@ messages.scrollHeight;
 function showTyping(){
 
 
-const div =
-document.createElement("div");
+const div=document.createElement(
+"div"
+);
 
 
 div.id="typing";
 
 div.className="typing";
 
-
-div.innerHTML =
-"● ● ●";
+div.innerHTML="● ● ●";
 
 
 messages.appendChild(div);
@@ -323,30 +301,12 @@ messages.appendChild(div);
 function removeTyping(){
 
 
-const t =
-document.getElementById(
+const t=document.getElementById(
 "typing"
 );
 
 
 if(t)t.remove();
-
-
-}
-
-
-
-
-function saveConversation(){
-
-
-localStorage.setItem(
-
-"laguer_chat",
-
-JSON.stringify(conversation)
-
-);
 
 
 }

@@ -1,7 +1,15 @@
 name = "laguer-web"
-pages_build_output_dir = "."
+
+compatibility_date = "2026-07-17"
+
+
+pages_build_output_dir = "./"
+
 
 [[d1_databases]]
+
 binding = "DB"
-database_name = "laguer-db"
+
+database_name = "laguer_db"
+
 database_id = "023dbfc9-4cce-4905-8f5d-9c2a54c9c296"
