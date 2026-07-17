@@ -1,28 +1,129 @@
-export async function onRequestPost(context) {
+// ============================================
+// REGISTER.JS PARA PAGES - VERSIÓN CORREGIDA
+// ============================================
+
+export async function onRequest(context) {
+  const { request, env } = context;
+  
+  // Solo permitir POST
+  if (request.method !== 'POST') {
+    return new Response(JSON.stringify({
+      success: false,
+      error: `Método ${request.method} no permitido. Usa POST.`
+    }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
   try {
-    const { nombre, email, password } = await context.request.json();
-
-    if (!nombre || !email || !password) {
-      return Response.json({ success: false, error: 'Faltan campos' }, { status: 400 });
+    // 1. LEER Y VALIDAR BODY
+    let body;
+    try {
+      body = await request.json();
+    } catch (e) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'JSON inválido en el body'
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
-    if (password.length < 6) {
-      return Response.json({ success: false, error: 'La contraseña debe tener al menos 6 caracteres' }, { status: 400 });
+    console.log('📝 Datos recibidos:', body);
+
+    // 2. VALIDAR CAMPOS
+    const { fullName, email, phone } = body;
+    
+    if (!fullName || fullName.trim() === '') {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'El nombre completo es requerido'
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
-    // Verificar si el correo ya existe
-    const existing = await context.env.DB.prepare('SELECT id FROM users WHERE email = ?').bind(email).first();
-    if (existing) {
-      return Response.json({ success: false, error: 'Este correo ya está registrado' }, { status: 409 });
+    if (!email || !email.includes('@')) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Email válido es requerido'
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
     }
 
-    // Insertar nuevo usuario
-    await context.env.DB.prepare('INSERT INTO users (nombre, email, password, rol) VALUES (?, ?, ?, ?)')
-      .bind(nombre, email, password, 'user')
-      .run();
+    if (!phone || phone.trim() === '') {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'El teléfono es requerido'
+      }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
 
-    return Response.json({ success: true, message: 'Usuario registrado correctamente' });
+    // 3. VERIFICAR EMAIL EXISTENTE
+    const existingUser = await env.DB.prepare(
+      "SELECT email FROM users WHERE email = ?"
+    )
+    .bind(email.toLowerCase().trim())
+    .first();
+
+    if (existingUser) {
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Este email ya está registrado'
+      }), {
+        status: 409,
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
+    // 4. INSERTAR NUEVO USUARIO
+    const result = await env.DB.prepare(
+      "INSERT INTO users (nombre, email, telefono) VALUES (?, ?, ?)"
+    )
+    .bind(
+      fullName.trim(),
+      email.toLowerCase().trim(),
+      phone.trim()
+    )
+    .run();
+
+    console.log('✅ Usuario registrado:', result);
+
+    // 5. RESPUESTA EXITOSA
+    return new Response(JSON.stringify({
+      success: true,
+      message: '¡Registro exitoso!',
+      data: {
+        id: result.meta?.last_row_id || null,
+        nombre: fullName.trim(),
+        email: email.toLowerCase().trim(),
+        telefono: phone.trim()
+      }
+    }), {
+      status: 201,
+      headers: { 
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      }
+    });
+
   } catch (error) {
-    return Response.json({ success: false, error: 'Error del servidor' }, { status: 500 });
+    console.error('❌ Error en registro:', error);
+    
+    return new Response(JSON.stringify({
+      success: false,
+      error: 'Error interno del servidor',
+      details: error.message
+    }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 }

@@ -2458,6 +2458,60 @@
         if(e.key==="Enter") sendMessage();
       });
 
+      // ============================================
+// CÓDIGO FRONTEND ACTUALIZADO
+// ============================================
+async function registrarUsuario() {
+  // Obtener datos del formulario
+  const fullName = document.getElementById('fullName')?.value || 'Ivis';
+  const email = document.getElementById('email')?.value || 'ivis@gmail.com';
+  const phone = document.getElementById('phone')?.value || '963258741';
+  
+  try {
+    const response = await fetch('/api/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fullName: fullName,
+        email: email,
+        phone: phone
+      })
+    });
+    
+    // Leer la respuesta como texto primero
+    const textResponse = await response.text();
+    
+    // Intentar parsear como JSON
+    let data;
+    try {
+      data = JSON.parse(textResponse);
+    } catch (e) {
+      console.error('Respuesta no es JSON:', textResponse);
+      throw new Error('El servidor respondió con datos inválidos');
+    }
+    
+    if (response.ok) {
+      console.log('✅ Registro exitoso:', data);
+      alert('¡Registro completado!');
+    } else {
+      console.error('❌ Error en registro:', data);
+      alert('Error: ' + (data.error || 'Error desconocido'));
+    }
+    
+  } catch (error) {
+    console.error('❌ Error de red:', error);
+    alert('Error de conexión: ' + error.message);
+  }
+}
+
+// Asignar al botón de registro
+document.querySelector('form')?.addEventListener('submit', (e) => {
+  e.preventDefault();
+  registrarUsuario();
+});
+
       // ============================================================
       // RESPUESTAS RÁPIDAS
       // ============================================================
