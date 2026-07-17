@@ -1,14 +1,11 @@
 /* ==========================================
-   LAGUER AI CHAT
-   Frontend
-   Cloudflare API + n8n + D1
+   LAGUER AI CHAT FRONTEND
+   js/chat.js
 ========================================== */
 
 
-const API_CHAT="/api/chat";
+const API_CHAT = "/api/chat";
 
-
-// ELEMENTOS
 
 const chatBtn =
 document.getElementById("laguerChatBtn");
@@ -30,33 +27,24 @@ document.getElementById("chatMessages");
 
 
 
-
-// MEMORIA CHAT
+// MEMORIA LOCAL
 
 let conversation =
 JSON.parse(
 localStorage.getItem("laguer_chat")
-)
-|| [];
+) || [];
 
 
 
-
-// USUARIO LOGIN D1
+// USUARIO LOGIN
 
 function getUser(){
 
-
 return JSON.parse(
-
 localStorage.getItem("laguerUser")
-
-)
-|| null;
-
+) || null;
 
 }
-
 
 
 
@@ -64,41 +52,29 @@ localStorage.getItem("laguerUser")
 
 if(chatBtn){
 
-
 chatBtn.onclick=()=>{
-
 
 chatBox.classList.add("active");
 
-
-if(input)
 input.focus();
 
-
 };
-
 
 }
 
 
 
-// CERRAR
+// CERRAR CHAT
 
 if(closeBtn){
 
-
 closeBtn.onclick=()=>{
-
 
 chatBox.classList.remove("active");
 
-
 };
 
-
 }
-
-
 
 
 
@@ -106,48 +82,31 @@ chatBox.classList.remove("active");
 
 if(input){
 
-
 input.addEventListener(
-"keypress",
+"keydown",
 (e)=>{
-
 
 if(e.key==="Enter"){
 
-
 sendMessage();
 
-
 }
 
+});
 
 }
-
-);
-
-
-}
-
 
 
 
 // BOTON ENVIAR
 
-
 if(sendBtn){
 
-
 sendBtn.onclick=sendMessage;
-
 
 }
 
 
-
-
-// ==========================================
-// ENVIAR MENSAJE
-// ==========================================
 
 
 async function sendMessage(){
@@ -157,9 +116,7 @@ const text =
 input.value.trim();
 
 
-
 if(!text)return;
-
 
 
 
@@ -167,7 +124,6 @@ addMessage(
 text,
 "user"
 );
-
 
 
 input.value="";
@@ -192,9 +148,7 @@ saveConversation();
 
 
 
-
-await sendAI(text);
-
+await askLaguer(text);
 
 
 }
@@ -202,75 +156,40 @@ await sendAI(text);
 
 
 
-
-
-// ==========================================
-// CONECTAR API
-// ==========================================
-
-
-async function sendAI(text){
-
+async function askLaguer(text){
 
 
 try{
 
 
-
-const user =
-getUser();
-
+const user=getUser();
 
 
 
 const response =
 await fetch(
-
 API_CHAT,
-
 {
-
 
 method:"POST",
 
-
 headers:{
-
 
 "Content-Type":"application/json"
 
-
 },
-
-
 
 body:JSON.stringify({
 
-
-
 mensaje:text,
-
-
-email:user?.email || null,
-
 
 usuario:user,
 
-
-historial:conversation,
-
-
-url:window.location.href
-
+historial:conversation
 
 })
 
-
-}
-
-);
-
-
+});
 
 
 
@@ -279,31 +198,21 @@ await response.json();
 
 
 
-
 removeTyping();
 
 
 
-
-
 const answer =
-
-
 data.respuesta ||
-
-"Gracias por escribir a LAGUER.";
-
+"Disculpa, no pude responder.";
 
 
 
 conversation.push({
 
-
 role:"assistant",
 
-
 content:answer
-
 
 });
 
@@ -313,25 +222,20 @@ saveConversation();
 
 
 
-
 addMessage(
-
 answer,
-
 "bot"
-
 );
 
 
 
+}
 
-
-}catch(error){
-
+catch(error){
 
 
 console.error(
-"CHAT ERROR:",
+"CHAT ERROR",
 error
 );
 
@@ -342,60 +246,40 @@ removeTyping();
 
 
 addMessage(
-
-"⚠️ El asesor LAGUER no está disponible.",
-
+"⚠️ Error de conexión con LAGUER IA",
 "bot"
-
 );
 
 
-
 }
 
 
 }
 
 
-
-
-
-
-
-// ==========================================
-// PINTAR MENSAJES
-// ==========================================
 
 
 function addMessage(text,type){
-
 
 
 const div =
 document.createElement("div");
 
 
-
 div.className =
-
 type==="user"
-
 ?
-
 "user-message"
-
 :
-
 "bot-message";
 
 
 
-
-
 div.innerHTML =
-text
-.replace(/\n/g,"<br>");
-
+text.replace(
+/\n/g,
+"<br>"
+);
 
 
 
@@ -407,24 +291,12 @@ messages.scrollTop =
 messages.scrollHeight;
 
 
-
 }
 
 
 
 
-
-
-
-// ==========================================
-// ESCRIBIENDO
-// ==========================================
-
-
 function showTyping(){
-
-
-removeTyping();
 
 
 const div =
@@ -433,12 +305,11 @@ document.createElement("div");
 
 div.id="typing";
 
-
 div.className="typing";
 
 
-div.innerHTML="● ● ●";
-
+div.innerHTML =
+"● ● ●";
 
 
 messages.appendChild(div);
@@ -449,18 +320,16 @@ messages.appendChild(div);
 
 
 
-
-
 function removeTyping(){
 
 
 const t =
-document.getElementById("typing");
+document.getElementById(
+"typing"
+);
 
 
-if(t)
-t.remove();
-
+if(t)t.remove();
 
 
 }
@@ -468,16 +337,7 @@ t.remove();
 
 
 
-
-
-
-// ==========================================
-// GUARDAR CHAT
-// ==========================================
-
-
 function saveConversation(){
-
 
 
 localStorage.setItem(
