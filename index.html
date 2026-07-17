@@ -1614,51 +1614,112 @@
   <!-- ===== TOAST CONTAINER ===== -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- ========================================= -->
-  <!-- LAGUER AI CHAT MEJORADO -->
-  <!-- ========================================= -->
-  <button id="laguerChatBtn" class="laguer-chat-btn" aria-label="Abrir chat de ayuda">
-    <i class="fas fa-robot"></i>
-  </button>
+<!-- ========================================= -->
+<!-- LAGUER AI CHAT N8N -->
+<!-- ========================================= -->
 
-  <div id="laguerChat" class="laguer-chat">
+<button id="laguerChatBtn" class="laguer-chat-btn">
+    <i class="fas fa-robot"></i>
+</button>
+
+
+<div id="laguerChat" class="laguer-chat">
+
     <div class="laguer-chat-header">
-      <div class="laguer-chat-avatar">🤖</div>
-      <div>
-        <h3>LAGUER IA</h3>
-        <small>Siempre disponible</small>
-      </div>
-      <button class="laguer-chat-close" id="closeChat" aria-label="Cerrar chat">✕</button>
+
+        <div class="laguer-chat-avatar">
+            🤖
+        </div>
+
+        <div>
+            <h3>LAGUER IA</h3>
+            <small>Asistente inteligente</small>
+        </div>
+
+
+        <button id="closeChat" class="laguer-chat-close">
+            ✕
+        </button>
+
     </div>
+
 
     <div id="chatMessages" class="laguer-chat-messages">
-      <div class="message bot-message">
-        👋 Hola, soy el asistente virtual de <b>LAGUER</b>.<br><br>
-        ¿En qué puedo ayudarte?<br>
-        • Productos<br>
-        • Stock<br>
-        • Envíos<br>
-        • Métodos de pago<br>
-        • Garantías<br>
-        • Seguimiento de pedidos
-      </div>
+
+
+        <div class="message bot-message">
+
+            👋 Hola soy <b>LAGUER IA</b>
+
+            <br><br>
+
+            Puedo ayudarte con:
+
+            <br>
+            🛒 Productos
+            <br>
+            📦 Stock
+            <br>
+            🚚 Envíos
+            <br>
+            💳 Pagos
+            <br>
+            🛡 Garantías
+            <br>
+            📍 Pedidos
+
+        </div>
+
+
     </div>
 
-    <div class="laguer-chat-quick" id="chatQuickReplies">
-      <button type="button" data-msg="¿Cuáles son los métodos de pago?">Métodos de pago</button>
-      <button type="button" data-msg="¿Cómo son los envíos?">Envíos</button>
-      <button type="button" data-msg="¿Cómo rastreo mi pedido?">Rastrear pedido</button>
-      <button type="button" data-msg="¿Cuál es la garantía?">Garantía</button>
-      <button type="button" data-msg="¿Tienen stock de este producto?">Stock</button>
+
+    <div class="laguer-chat-quick">
+
+        <button data-msg="Busca productos disponibles">
+            Productos
+        </button>
+
+
+        <button data-msg="Qué métodos de pago tienen">
+            Pagos
+        </button>
+
+
+        <button data-msg="Cómo funcionan los envíos">
+            Envíos
+        </button>
+
+
+        <button data-msg="Quiero rastrear mi pedido">
+            Pedido
+        </button>
+
+
     </div>
+
+
 
     <div class="laguer-chat-input">
-      <input id="chatInput" type="text" placeholder="Escribe tu pregunta..." autocomplete="off" />
-      <button id="sendChat" aria-label="Enviar mensaje">
-        <i class="fas fa-paper-plane"></i>
-      </button>
+
+
+        <input 
+        id="chatInput"
+        type="text"
+        placeholder="Escribe tu pregunta..."
+        autocomplete="off"
+        >
+
+
+        <button id="sendChat">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+
+
     </div>
-  </div>
+
+
+</div>
 
   <!-- ============================================================ -->
   <!-- ===== SCRIPTS ===== -->
@@ -2252,135 +2313,360 @@
       document.getElementById('closeSocial')?.addEventListener('click', function() {
         document.getElementById('socialBubble').classList.toggle('hidden');
       });
+// ============================================================
+// LAGUER IA CHAT + N8N WEBHOOK
+// ============================================================
 
-      // =======================================================================
-      // CHAT MEJORADO - LÓGICA COMPLETA
-      // =======================================================================
-      const chatBtn = document.getElementById('laguerChatBtn');
-      const chatContainer = document.getElementById('laguerChat');
-      const closeBtn = document.getElementById('closeChat');
-      const chatMessages = document.getElementById('chatMessages');
-      const chatInput = document.getElementById('chatInput');
-      const sendBtn = document.getElementById('sendChat');
-      const quickBtns = document.querySelectorAll('#chatQuickReplies button');
+const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ai";
 
-      // Respuestas inteligentes del bot
-      function getBotResponse(userMsg) {
-        const msg = userMsg.toLowerCase().trim();
 
-        // Palabras clave y respuestas
-        const keywords = {
-          'pago': '💳 Aceptamos **Visa**, **Mastercard**, **Yape**, **Plin**, **Amex** y **Diners Club**. Todos nuestros pagos son seguros y encriptados.',
-          'metodo': '💳 Aceptamos **Visa**, **Mastercard**, **Yape**, **Plin**, **Amex** y **Diners Club**. Todos nuestros pagos son seguros y encriptados.',
-          'envio': '🚚 Realizamos envíos a **todo el Perú** con seguimiento en tiempo real. El tiempo de entrega es de 3 a 7 días hábiles según tu ubicación.',
-          'rastrear': '📦 Puedes rastrear tu pedido en nuestra sección "Rastrear pedido" con el número de seguimiento que te enviamos por correo.',
-          'garantia': '🛡️ Todos nuestros productos cuentan con **garantía de autenticidad** y cobertura contra defectos de fábrica por 12 meses.',
-          'stock': '📦 Contamos con stock actualizado de todos los productos. Si ves un producto en nuestra web, está disponible para comprar.',
-          'devolucion': '🔄 Aceptamos cambios y devoluciones dentro de los primeros 15 días hábiles desde la compra. Producto sin uso y en su empaque original.',
-          'precio': '💰 Los precios son en **Soles (S/)** y ya incluyen todos los impuestos. Los descuentos aplican según las ofertas vigentes.',
-          'tiempo': '⏱️ Los pedidos se procesan en 24-48 horas hábiles y se entregan en 3-7 días hábiles a nivel nacional.',
-          'compra': '🛒 Para comprar, solo agrega el producto al carrito, selecciona tu método de pago y confirma tu pedido. ¡Es muy fácil!'
-        };
+const chatBtn = document.getElementById("laguerChatBtn");
+const chatContainer = document.getElementById("laguerChat");
 
-        // Buscar coincidencia de palabras clave
-        for (const [key, response] of Object.entries(keywords)) {
-          if (msg.includes(key)) {
-            return response;
-          }
-        }
+const closeChat = document.getElementById("closeChat");
 
-        // Saludo
-        if (msg.match(/hola|buenas|saludos|hey|hi|hello/)) {
-          return '👋 ¡Hola! ¿Cómo puedo ayudarte? Puedes preguntarme sobre productos, envíos, pagos o cualquier otra cosa.';
-        }
+const chatMessages = document.getElementById("chatMessages");
 
-        // Despedida
-        if (msg.match(/gracias|gracias|thanks|bye|chao|adios/)) {
-          return '😊 ¡De nada! Estamos para servirte. ¿Necesitas algo más?';
-        }
+const chatInput = document.getElementById("chatInput");
 
-        // Respuesta por defecto
-        return '🤖 Gracias por tu consulta. ¿Podrías ser más específico? Puedo ayudarte con:\n• Métodos de pago\n• Envíos y entregas\n• Rastreo de pedidos\n• Garantías y devoluciones\n• Stock y precios';
-      }
+const sendChat = document.getElementById("sendChat");
 
-      // Agregar mensaje al chat
-      function addMessage(text, sender) {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `message ${sender}-message`;
-        msgDiv.innerHTML = text.replace(/\n/g, '<br>');
-        chatMessages.appendChild(msgDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
+const quickButtons = document.querySelectorAll(
+    ".laguer-chat-quick button"
+);
 
-      // Mostrar indicador de escritura
-      function showTyping() {
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'typing-indicator';
-        typingDiv.id = 'typingIndicator';
-        typingDiv.innerHTML = '<span>●</span><span>●</span><span>●</span>';
-        chatMessages.appendChild(typingDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }
 
-      function removeTyping() {
-        const typing = document.getElementById('typingIndicator');
-        if (typing) typing.remove();
-      }
+// memoria conversación
+let chatHistory = JSON.parse(
+    localStorage.getItem("laguer_chat_history")
+) || [];
 
-      // Enviar mensaje
-      function sendMessage() {
-        const text = chatInput.value.trim();
-        if (!text) return;
 
-        addMessage(text, 'user');
-        chatInput.value = '';
-        showTyping();
 
-        // Simular demora del bot
-        setTimeout(() => {
-          removeTyping();
-          const response = getBotResponse(text);
-          addMessage(response, 'bot');
-        }, 600 + Math.random() * 400);
-      }
+// ============================================================
+// ABRIR CHAT
+// ============================================================
 
-      // Eventos del chat
-      chatBtn?.addEventListener('click', function() {
-        chatContainer.classList.toggle('open');
-        if (chatContainer.classList.contains('open')) {
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-      });
 
-      closeBtn?.addEventListener('click', function() {
-        chatContainer.classList.remove('open');
-      });
+chatBtn?.addEventListener("click",()=>{
 
-      sendBtn?.addEventListener('click', sendMessage);
+    chatContainer.classList.toggle("open");
 
-      chatInput?.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
+});
 
-      quickBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
-          const msg = this.dataset.msg;
-          if (msg) {
-            chatInput.value = msg;
-            sendMessage();
-          }
-        });
-      });
 
-      // Cerrar chat con Escape
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && chatContainer.classList.contains('open')) {
-          chatContainer.classList.remove('open');
-        }
-      });
+
+// ============================================================
+// CERRAR CHAT
+// ============================================================
+
+closeChat?.addEventListener("click",()=>{
+
+    chatContainer.classList.remove("open");
+
+});
+
+
+
+// ============================================================
+// MOSTRAR MENSAJES
+// ============================================================
+
+
+function addChatMessage(message,type="bot"){
+
+
+    const div=document.createElement("div");
+
+
+    div.className=
+    "message "+
+    (type==="user" 
+    ? "user-message"
+    :"bot-message");
+
+
+    div.innerHTML=
+    message
+    .replace(/\n/g,"<br>");
+
+
+    chatMessages.appendChild(div);
+
+
+    chatMessages.scrollTop =
+    chatMessages.scrollHeight;
+
+
+}
+
+
+
+// ============================================================
+// ESCRIBIENDO...
+// ============================================================
+
+
+function typing(){
+
+
+const div=document.createElement("div");
+
+
+div.id="typing";
+
+
+div.className="message bot-message";
+
+
+div.innerHTML=
+`
+<span>
+🤖 LAGUER IA está escribiendo...
+</span>
+`;
+
+chatMessages.appendChild(div);
+
+
+chatMessages.scrollTop =
+chatMessages.scrollHeight;
+
+
+}
+
+
+
+function removeTyping(){
+
+const t=document.getElementById("typing");
+
+if(t)
+t.remove();
+
+}
+
+
+
+// ============================================================
+// ENVIAR A N8N
+// ============================================================
+
+
+async function sendMessage(){
+
+
+const text =
+chatInput.value.trim();
+
+
+
+if(!text)
+return;
+
+
+
+addChatMessage(text,"user");
+
+
+
+chatHistory.push({
+
+role:"user",
+
+content:text
+
+});
+
+
+
+localStorage.setItem(
+"laguer_chat_history",
+JSON.stringify(chatHistory)
+);
+
+
+
+chatInput.value="";
+
+
+typing();
+
+
+
+try{
+
+
+const response =
+await fetch(
+N8N_WEBHOOK,
+{
+
+
+method:"POST",
+
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+
+body:JSON.stringify({
+
+mensaje:text,
+
+
+historial:chatHistory,
+
+
+pagina:"LAGUER WEB",
+
+
+cliente:"visitante",
+
+
+fecha:new Date()
+
+})
+
+
+});
+
+
+
+const data =
+await response.json();
+
+
+
+removeTyping();
+
+
+
+let answer =
+data.respuesta ||
+data.output ||
+data.message ||
+"No pude obtener respuesta.";
+
+
+
+addChatMessage(
+answer,
+"bot"
+);
+
+
+
+chatHistory.push({
+
+role:"assistant",
+
+content:answer
+
+});
+
+
+
+localStorage.setItem(
+"laguer_chat_history",
+JSON.stringify(chatHistory)
+);
+
+
+
+}
+
+catch(error){
+
+
+
+console.error(
+"LAGUER IA ERROR:",
+error
+);
+
+
+
+removeTyping();
+
+
+
+addChatMessage(
+
+"⚠️ No puedo conectarme al asistente en este momento. Intenta nuevamente.",
+
+"bot"
+
+);
+
+
+
+}
+
+
+
+}
+
+
+
+
+// ============================================================
+// BOTÓN ENVIAR
+// ============================================================
+
+
+sendChat?.addEventListener(
+"click",
+sendMessage
+);
+
+
+
+// ENTER PARA ENVIAR
+
+chatInput?.addEventListener(
+"keypress",
+(e)=>{
+
+if(e.key==="Enter"){
+
+sendMessage();
+
+}
+
+});
+
+
+
+
+// ============================================================
+// RESPUESTAS RÁPIDAS
+// ============================================================
+
+
+quickButtons.forEach(btn=>{
+
+
+btn.addEventListener(
+"click",
+()=>{
+
+
+chatInput.value =
+btn.dataset.msg;
+
+
+sendMessage();
+
+
+});
+
+
+});
+
 
       // =======================================================================
       // INICIALIZAR
