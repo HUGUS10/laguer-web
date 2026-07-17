@@ -1883,7 +1883,6 @@
             </div>
           `;
 
-          // ✅ CAMBIADO: usa productos.json en lugar de /api/products
           const resp = await fetch('./productos.json');
           if (!resp.ok) throw new Error('Error al obtener productos');
           const data = await resp.json();
@@ -2328,11 +2327,11 @@
       });
 
       // ============================================================
-      // LAGUER SOPORTE (CHAT) + N8N WEBHOOK
+      // LAGUER SOPORTE (CHAT) - ✅ VÍA CLOUDFLARE WORKER
       // ============================================================
 
-      // ✅ CORREGIDO: URL correcta del webhook
-      const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ia";
+      // ✅ Usa Cloudflare Worker como proxy para evitar CORS
+      const CHAT_API = "/api/chat";
 
       const chatLauncher = document.getElementById("laguerChatLauncher");
       const chatBtn = document.getElementById("laguerChatBtn");
@@ -2409,7 +2408,7 @@
       }
 
       // ============================================================
-      // ENVIAR A N8N - ✅ CORREGIDO: usa la URL correcta
+      // ENVIAR MENSAJE - ✅ VÍA CLOUDFLARE WORKER (NO DIRECTAMENTE A N8N)
       // ============================================================
       async function sendMessage(){
         const text = chatInput.value.trim();
@@ -2422,24 +2421,24 @@
         typing();
 
         try{
-          // ✅ CORREGIDO: usa la URL correcta de n8n
-          const response = await fetch(N8N_WEBHOOK,{
+          // ✅ Envía a Cloudflare Worker, NO directamente a n8n
+          const response = await fetch(CHAT_API, {
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({
               mensaje:text,
-              historial:chatHistory,
-              pagina:"LAGUER WEB",
-              cliente:"visitante",
-              fecha:new Date().toISOString()
+              historial:chatHistory
             })
           });
 
-          if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
+          if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${response.statusText}`);
+          }
 
           const data = await response.json();
           removeTyping();
-          let answer = data.respuesta || data.output || data.message || "No pude obtener respuesta en este momento.";
+          
+          const answer = data.respuesta || "No pude obtener respuesta en este momento.";
           addChatMessage(answer,"bot");
           chatHistory.push({role:"assistant",content:answer});
           localStorage.setItem("laguer_chat_history",JSON.stringify(chatHistory));
@@ -2479,7 +2478,7 @@
         updateCartUI();
         updateFavUI();
         document.querySelector('.bottom-nav a[href="index.html"]')?.classList.add('active');
-        console.log('🚀 LAGUER · index con productos.json local y soporte n8n');
+        console.log('🚀 LAGUER · index con productos.json local y chat vía Cloudflare Worker');
       });
 
       // Exponer funciones globales
