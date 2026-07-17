@@ -1079,119 +1079,97 @@
       .share-buttons { justify-content: center; }
     }
 
-    /* ===== CHAT MEJORADO - FULL SCREEN EN MÓVIL ===== */
-    .laguer-chat-btn {
+    /* ===== CHAT DE SOPORTE (widget centrado en todos los dispositivos) ===== */
+    .laguer-chat-launcher {
       position: fixed;
       bottom: 100px;
       right: 16px;
       z-index: 9999;
-      width: 60px;
-      height: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .laguer-chat-btn {
+      width: 58px;
+      height: 58px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--red), var(--blue));
+      background: linear-gradient(135deg, var(--blue), var(--green));
       color: #fff;
-      font-size: 28px;
+      font-size: 23px;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 10px 28px rgba(0,0,0,.4);
       cursor: pointer;
-      transition: all 0.3s ease;
-      border: 2px solid rgba(255,255,255,0.1);
+      transition: transform .25s ease, box-shadow .25s ease;
+      border: 2px solid rgba(255,255,255,.12);
     }
     .laguer-chat-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+      transform: scale(1.08);
+      box-shadow: 0 14px 36px rgba(0,0,0,.55);
     }
+    .laguer-chat-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      color: var(--white);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      padding: 4px 11px;
+      border-radius: 999px;
+      white-space: nowrap;
+      box-shadow: 0 4px 14px rgba(0,0,0,.35);
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+    .laguer-chat-launcher.chat-open .laguer-chat-label {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .laguer-chat-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(2,4,7,.6);
+      backdrop-filter: blur(3px);
+      z-index: 9997;
+    }
+    .laguer-chat-overlay.open { display: block; }
 
     .laguer-chat {
       position: fixed;
-      z-index: 9998;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(.96);
+      width: min(94vw, 420px);
+      height: min(82vh, 620px);
       background: var(--surface);
       border: 1px solid var(--line);
+      border-radius: 22px;
       display: none;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-      animation: chatSlideIn 0.3s ease;
+      box-shadow: 0 30px 80px rgba(0,0,0,.6);
+      z-index: 9998;
+      opacity: 0;
     }
     .laguer-chat.open {
       display: flex;
+      animation: chatSlideIn .28s ease forwards;
     }
-
     @keyframes chatSlideIn {
-      from { opacity: 0; transform: translateY(30px) scale(0.95); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      from { opacity: 0; transform: translate(-50%, -50%) scale(.94); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
     }
-
-    /* PC y tablets grandes */
-    @media (min-width: 769px) {
-      .laguer-chat {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 480px;
-        max-width: 90vw;
-        height: 600px;
-        max-height: 80vh;
-        border-radius: 24px;
-      }
-      .laguer-chat.open {
-        transform: translate(-50%, -50%) scale(1);
-      }
-      @keyframes chatSlideIn {
-        from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-        to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      }
-    }
-
-    /* Móviles y tablets pequeñas */
-    @media (max-width: 768px) {
-      .laguer-chat {
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        width: 100vw;
-        height: 100vh;
-        max-height: 100vh;
-        border-radius: 0;
-        border: none;
-        animation: chatSlideInMobile 0.3s ease;
-      }
-      @keyframes chatSlideInMobile {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-      .laguer-chat-btn {
-        bottom: 100px;
-        right: 12px;
-        width: 54px;
-        height: 54px;
-        font-size: 24px;
-      }
-      .laguer-chat-messages .message {
-        max-width: 92%;
-        font-size: 13px;
-      }
-      .laguer-chat-quick button {
-        font-size: 11px;
-        padding: 5px 12px;
-      }
-      .laguer-chat-input input {
-        font-size: 13px;
-        padding: 8px 12px;
-      }
-      .laguer-chat-input button {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-      }
+    @media (max-width: 480px) {
+      .laguer-chat { width: 94vw; height: 88vh; border-radius: 18px; }
     }
 
     .laguer-chat-header {
-      background: linear-gradient(135deg, var(--red), var(--blue));
-      padding: 16px 20px;
+      background: linear-gradient(120deg, var(--blue-dark), var(--blue), var(--green));
+      padding: 16px 18px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -1199,37 +1177,49 @@
       border-bottom: 1px solid var(--line);
     }
     .laguer-chat-header .laguer-chat-avatar {
-      width: 40px;
-      height: 40px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.18);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 22px;
+      font-size: 19px;
       flex-shrink: 0;
+      color: #fff;
     }
     .laguer-chat-header h3 {
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 700;
       color: #fff;
       margin: 0;
     }
     .laguer-chat-header small {
-      font-size: 11px;
-      color: rgba(255,255,255,0.8);
-      display: block;
-      margin-top: -2px;
+      font-size: 11.5px;
+      color: rgba(255,255,255,0.85);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 1px;
+    }
+    .laguer-chat-header small::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #3ee06a;
+      box-shadow: 0 0 0 2px rgba(255,255,255,.25);
+      display: inline-block;
     }
     .laguer-chat-header .laguer-chat-close {
       margin-left: auto;
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.18);
       border: none;
       color: #fff;
       width: 32px;
       height: 32px;
       border-radius: 50%;
-      font-size: 18px;
+      font-size: 16px;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -1253,7 +1243,7 @@
       max-width: 85%;
       padding: 10px 14px;
       border-radius: 14px;
-      font-size: 14px;
+      font-size: 13.5px;
       line-height: 1.5;
       word-wrap: break-word;
       animation: msgIn 0.3s ease;
@@ -1357,10 +1347,10 @@
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--red), var(--blue));
+      background: linear-gradient(135deg, var(--blue), var(--green));
       color: #fff;
       border: none;
-      font-size: 18px;
+      font-size: 17px;
       cursor: pointer;
       transition: 0.2s;
       display: flex;
@@ -1633,29 +1623,33 @@
   <div class="toast-container" id="toastContainer"></div>
 
 <!-- ========================================= -->
-<!-- LAGUER AI CHAT N8N -->
+<!-- LAGUER SOPORTE IA (n8n) -->
 <!-- ========================================= -->
 
-<button id="laguerChatBtn" class="laguer-chat-btn">
-    <i class="fas fa-robot"></i>
-</button>
+<div class="laguer-chat-launcher" id="laguerChatLauncher">
+  <button id="laguerChatBtn" class="laguer-chat-btn" aria-label="Abrir soporte">
+    <i class="fas fa-comment-dots"></i>
+  </button>
+  <span class="laguer-chat-label">Soporte IA</span>
+</div>
 
+<div class="laguer-chat-overlay" id="laguerChatOverlay"></div>
 
-<div id="laguerChat" class="laguer-chat">
+<div id="laguerChat" class="laguer-chat" role="dialog" aria-modal="true" aria-label="Soporte LAGUER">
 
     <div class="laguer-chat-header">
 
         <div class="laguer-chat-avatar">
-            🤖
+            <i class="fas fa-headset"></i>
         </div>
 
         <div>
-            <h3>LAGUER IA</h3>
-            <small>Asistente inteligente</small>
+            <h3>Soporte LAGUER</h3>
+            <small>En línea ahora</small>
         </div>
 
 
-        <button id="closeChat" class="laguer-chat-close">
+        <button id="closeChat" class="laguer-chat-close" aria-label="Cerrar">
             ✕
         </button>
 
@@ -1667,7 +1661,7 @@
 
         <div class="message bot-message">
 
-            👋 Hola soy <b>LAGUER IA</b>
+            👋 ¡Hola! Bienvenido a <b>LAGUER</b>
 
             <br><br>
 
@@ -1729,7 +1723,7 @@
         >
 
 
-        <button id="sendChat">
+        <button id="sendChat" aria-label="Enviar">
             <i class="fas fa-paper-plane"></i>
         </button>
 
@@ -2333,12 +2327,14 @@
       });
 
       // ============================================================
-      // LAGUER IA CHAT + N8N WEBHOOK
+      // LAGUER SOPORTE (CHAT) + N8N WEBHOOK
       // ============================================================
 
       const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ai";
 
+      const chatLauncher = document.getElementById("laguerChatLauncher");
       const chatBtn = document.getElementById("laguerChatBtn");
+      const chatOverlay = document.getElementById("laguerChatOverlay");
       const chatContainer = document.getElementById("laguerChat");
       const closeChat = document.getElementById("closeChat");
       const chatMessages = document.getElementById("chatMessages");
@@ -2350,17 +2346,36 @@
       let chatHistory = JSON.parse(localStorage.getItem("laguer_chat_history")) || [];
 
       // ============================================================
-      // ABRIR CHAT
+      // ABRIR / CERRAR CHAT
       // ============================================================
-      chatBtn?.addEventListener("click",()=>{
-        chatContainer.classList.toggle("open");
+      function openChat(){
+        chatContainer.classList.add("open");
+        chatOverlay.classList.add("open");
+        chatLauncher.classList.add("chat-open");
+        setTimeout(() => chatInput?.focus(), 200);
+      }
+
+      function closeChatWindow(){
+        chatContainer.classList.remove("open");
+        chatOverlay.classList.remove("open");
+        chatLauncher.classList.remove("chat-open");
+      }
+
+      chatBtn?.addEventListener("click", () => {
+        if (chatContainer.classList.contains("open")) {
+          closeChatWindow();
+        } else {
+          openChat();
+        }
       });
 
-      // ============================================================
-      // CERRAR CHAT
-      // ============================================================
-      closeChat?.addEventListener("click",()=>{
-        chatContainer.classList.remove("open");
+      closeChat?.addEventListener("click", closeChatWindow);
+      chatOverlay?.addEventListener("click", closeChatWindow);
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && chatContainer.classList.contains("open")) {
+          closeChatWindow();
+        }
       });
 
       // ============================================================
@@ -2380,8 +2395,8 @@
       function typing(){
         const div=document.createElement("div");
         div.id="typing";
-        div.className="message bot-message";
-        div.innerHTML=`<span>🤖 LAGUER IA está escribiendo...</span>`;
+        div.className="typing-indicator";
+        div.innerHTML=`<span>•</span><span>•</span><span>•</span>`;
         chatMessages.appendChild(div);
         chatMessages.scrollTop = chatMessages.scrollHeight;
       }
@@ -2413,21 +2428,23 @@
               historial:chatHistory,
               pagina:"LAGUER WEB",
               cliente:"visitante",
-              fecha:new Date()
+              fecha:new Date().toISOString()
             })
           });
 
+          if (!response.ok) throw new Error("Respuesta no válida del servidor");
+
           const data = await response.json();
           removeTyping();
-          let answer = data.respuesta || data.output || data.message || "No pude obtener respuesta.";
+          let answer = data.respuesta || data.output || data.message || "No pude obtener respuesta en este momento.";
           addChatMessage(answer,"bot");
           chatHistory.push({role:"assistant",content:answer});
           localStorage.setItem("laguer_chat_history",JSON.stringify(chatHistory));
         }
         catch(error){
-          console.error("LAGUER IA ERROR:",error);
+          console.error("LAGUER Soporte ERROR:",error);
           removeTyping();
-          addChatMessage("⚠️ No puedo conectarme al asistente en este momento. Intenta nuevamente.","bot");
+          addChatMessage("⚠️ No puedo conectarme al asistente en este momento. Intenta nuevamente en unos segundos.","bot");
         }
       }
 
@@ -2459,7 +2476,7 @@
         updateCartUI();
         updateFavUI();
         document.querySelector('.bottom-nav a[href="index.html"]')?.classList.add('active');
-        console.log('🚀 LAGUER · index con API D1 integrada y chat N8N');
+        console.log('🚀 LAGUER · index con API D1 integrada y soporte n8n');
       });
 
       // Exponer funciones globales
