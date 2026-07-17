@@ -1,12 +1,12 @@
 // ============================================================
 // _worker.js - LAGUER STORE
-// Cloudflare Pages Worker + D1 + n8n IA (con fallback)
+// Cloudflare Pages Worker + D1 + n8n IA
 // ============================================================
 
 const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ia";
 
 // ============================================================
-// RESPUESTAS LOCALES (fallback cuando n8n falla)
+// RESPUESTAS LOCALES (fallback)
 // ============================================================
 const LOCAL_RESPONSES = {
   "hola": "¡Hola! 👋 Bienvenido a LAGUER. ¿En qué puedo ayudarte?",
@@ -15,6 +15,8 @@ const LOCAL_RESPONSES = {
   "envíos": "Realizamos envíos a todo el Perú con seguimiento en tiempo real. El costo varía según tu ubicación.",
   "pedido": "Para rastrear tu pedido, necesito el número de seguimiento. ¿Tienes tu código de rastreo?",
   "garantía": "Todos nuestros productos tienen garantía de autenticidad. Si tienes problemas, contáctanos.",
+  "zapatillas": "¡Sí! Tenemos zapatillas deportivas, casuales y de moda. ¿Buscas alguna marca en específico?",
+  "descuentos": "Actualmente tenemos ofertas especiales en tecnología y accesorios. Visita nuestra sección de ofertas para ver todos los descuentos.",
   "default": "Gracias por contactar a LAGUER. Puedo ayudarte con: Productos, Stock, Envíos, Pagos, Garantías y Pedidos. ¿Qué necesitas?"
 };
 
@@ -48,7 +50,7 @@ export default {
     }
 
     // ============================================================
-    // CHAT - Con fallback local
+    // CHAT - CON n8n PRIORITARIO
     // ============================================================
     if (path === "/api/chat" && request.method === "POST") {
       try {
@@ -62,10 +64,14 @@ export default {
           });
         }
 
-        // Intentar conectar con n8n (timeout 10 segundos)
+        // ============================================================
+        // 1. PRIMERO: Intentar con n8n (15 segundos de timeout)
+        // ============================================================
         try {
+          console.log("🔄 Intentando conectar con n8n...");
+          
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 10000);
+          const timeoutId = setTimeout(() => controller.abort(), 15000);
 
           const respuesta = await fetch(N8N_WEBHOOK, {
             method: "POST",
@@ -84,17 +90,24 @@ export default {
 
           if (respuesta.ok) {
             const data = await respuesta.json();
+            console.log("✅ n8n respondió correctamente");
+            
             const botResponse = data.respuesta || data.output || getLocalResponse(body.mensaje);
             return jsonResponse({
               respuesta: botResponse,
               source: "n8n"
             });
+          } else {
+            console.log(`⚠️ n8n error ${respuesta.status}, usando fallback local`);
           }
         } catch (e) {
-          console.log("⚠️ n8n no disponible, usando respuesta local");
+          console.log("⚠️ n8n no disponible:", e.message);
         }
 
-        // FALLBACK: respuesta local
+        // ============================================================
+        // 2. FALLBACK: Respuesta local
+        // ============================================================
+        console.log("🔄 Usando respuesta local");
         return jsonResponse({
           respuesta: getLocalResponse(body.mensaje),
           source: "local"
