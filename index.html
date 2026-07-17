@@ -1869,7 +1869,7 @@
       }
 
       // =======================================================================
-      // RENDERIZAR PRODUCTOS DESDE LA API
+      // RENDERIZAR PRODUCTOS DESDE productos.json
       // =======================================================================
       let productsData = [];
 
@@ -1883,7 +1883,8 @@
             </div>
           `;
 
-          const resp = await fetch('/api/products');
+          // ✅ CAMBIADO: usa productos.json en lugar de /api/products
+          const resp = await fetch('./productos.json');
           if (!resp.ok) throw new Error('Error al obtener productos');
           const data = await resp.json();
           productsData = data.products || [];
@@ -2330,7 +2331,8 @@
       // LAGUER SOPORTE (CHAT) + N8N WEBHOOK
       // ============================================================
 
-      const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ai";
+      // ✅ CORREGIDO: URL correcta del webhook
+      const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ia";
 
       const chatLauncher = document.getElementById("laguerChatLauncher");
       const chatBtn = document.getElementById("laguerChatBtn");
@@ -2407,7 +2409,7 @@
       }
 
       // ============================================================
-      // ENVIAR A N8N
+      // ENVIAR A N8N - ✅ CORREGIDO: usa la URL correcta
       // ============================================================
       async function sendMessage(){
         const text = chatInput.value.trim();
@@ -2420,6 +2422,7 @@
         typing();
 
         try{
+          // ✅ CORREGIDO: usa la URL correcta de n8n
           const response = await fetch(N8N_WEBHOOK,{
             method:"POST",
             headers:{"Content-Type":"application/json"},
@@ -2432,7 +2435,7 @@
             })
           });
 
-          if (!response.ok) throw new Error("Respuesta no válida del servidor");
+          if (!response.ok) throw new Error(`Error ${response.status}: ${response.statusText}`);
 
           const data = await response.json();
           removeTyping();
@@ -2442,7 +2445,7 @@
           localStorage.setItem("laguer_chat_history",JSON.stringify(chatHistory));
         }
         catch(error){
-          console.error("LAGUER Soporte ERROR:",error);
+          console.error("LAGUER Soporte ERROR:", error);
           removeTyping();
           addChatMessage("⚠️ No puedo conectarme al asistente en este momento. Intenta nuevamente en unos segundos.","bot");
         }
@@ -2476,7 +2479,7 @@
         updateCartUI();
         updateFavUI();
         document.querySelector('.bottom-nav a[href="index.html"]')?.classList.add('active');
-        console.log('🚀 LAGUER · index con API D1 integrada y soporte n8n');
+        console.log('🚀 LAGUER · index con productos.json local y soporte n8n');
       });
 
       // Exponer funciones globales
