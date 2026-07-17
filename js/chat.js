@@ -1,12 +1,12 @@
 /* ==========================================
    LAGUER AI CHAT
    chat.js
-   Conexión n8n + Firebase + WhatsApp
+   Conexión n8n + Firebase
 ========================================== */
 
 
 // WEBHOOK PRODUCCIÓN N8N
-const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ai";
+const N8N_WEBHOOK = "https://hugolaban.app.n8n.cloud/webhook/laguer-ia";
 
 
 // ELEMENTOS DEL CHAT
@@ -18,25 +18,34 @@ const input = document.getElementById("chatInput");
 const messages = document.getElementById("chatMessages");
 
 
-// MEMORIA DE CONVERSACIÓN
+// MEMORIA CHAT
 let conversation = [];
 
 
+// ===============================
 // ABRIR CHAT
+// ===============================
+
 if(chatBtn){
 
     chatBtn.addEventListener("click",()=>{
 
         chat.classList.add("active");
 
-        input.focus();
+        if(input){
+            input.focus();
+        }
 
     });
 
 }
 
 
+
+// ===============================
 // CERRAR CHAT
+// ===============================
+
 if(closeBtn){
 
     closeBtn.addEventListener("click",()=>{
@@ -48,12 +57,16 @@ if(closeBtn){
 }
 
 
-// ENTER PARA ENVIAR
+
+// ===============================
+// ENTER ENVIAR
+// ===============================
+
 if(input){
 
     input.addEventListener("keypress",(e)=>{
 
-        if(e.key==="Enter"){
+        if(e.key === "Enter"){
 
             sendMessage();
 
@@ -64,7 +77,11 @@ if(input){
 }
 
 
-// BOTÓN ENVIAR
+
+// ===============================
+// BOTON ENVIAR
+// ===============================
+
 if(sendBtn){
 
     sendBtn.addEventListener("click",sendMessage);
@@ -73,11 +90,14 @@ if(sendBtn){
 
 
 
+// ===============================
 // ENVIAR MENSAJE
+// ===============================
+
 function sendMessage(){
 
 
-    const text=input.value.trim();
+    const text = input.value.trim();
 
 
     if(!text) return;
@@ -87,7 +107,7 @@ function sendMessage(){
     addUser(text);
 
 
-    input.value="";
+    input.value = "";
 
 
     typing();
@@ -96,13 +116,15 @@ function sendMessage(){
     fetchAI(text);
 
 
-
 }
 
 
 
 
+// ===============================
 // MENSAJE USUARIO
+// ===============================
+
 function addUser(text){
 
 
@@ -126,7 +148,10 @@ function addUser(text){
 
 
 
+// ===============================
 // MENSAJE BOT
+// ===============================
+
 function addBot(text){
 
 
@@ -139,13 +164,11 @@ function addBot(text){
     div.className="bot-message";
 
 
-    // Permitir saltos de línea y enlaces WhatsApp
-
     div.innerHTML = text
     .replace(/\n/g,"<br>")
     .replace(
         /(https:\/\/wa\.me\/[0-9]+)/g,
-        '<a href="$1" target="_blank" class="whatsapp-link">💬 Abrir WhatsApp</a>'
+        '<a href="$1" target="_blank" class="whatsapp-link">💬 WhatsApp</a>'
     );
 
 
@@ -161,7 +184,10 @@ function addBot(text){
 
 
 
-// ANIMACIÓN ESCRIBIENDO
+// ===============================
+// BOT ESCRIBIENDO
+// ===============================
+
 function typing(){
 
 
@@ -197,7 +223,10 @@ function typing(){
 
 
 
-// QUITAR ANIMACIÓN
+// ===============================
+// QUITAR ESCRIBIENDO
+// ===============================
+
 function removeTyping(){
 
 
@@ -210,182 +239,174 @@ function removeTyping(){
 
     }
 
+
 }
 
 
 
 
-// BAJAR CHAT
+// ===============================
+// SCROLL
+// ===============================
+
 function scrollBottom(){
 
 
-    messages.scrollTop = messages.scrollHeight;
+    if(messages){
 
+        messages.scrollTop = messages.scrollHeight;
+
+    }
 
 }
 
 
 
 
+// ===============================
+// CONEXIÓN N8N
+// ===============================
 
-// CONEXIÓN CON N8N
 async function fetchAI(question){
 
 
+try{
 
-    try{
 
+    conversation.push({
 
-        conversation.push({
+        role:"user",
 
-            role:"user",
+        content:question
 
-            content:question
+    });
 
-        });
 
 
+    const response = await fetch(N8N_WEBHOOK,{
 
 
+        method:"POST",
 
-        const response = await fetch(N8N_WEBHOOK,{
 
+        headers:{
 
-            method:"POST",
 
+            "Content-Type":"application/json"
 
-            headers:{
+        },
 
 
-                "Content-Type":"application/json"
+        body:JSON.stringify({
 
 
-            },
+            mensaje:question,
 
 
-            body:JSON.stringify({
+            historial:conversation,
 
 
+            source:"laguer",
 
-                message:question,
 
+            page:window.location.pathname,
 
-                history:conversation,
 
+            url:window.location.href,
 
-                source:"laguer",
 
+            userAgent:navigator.userAgent,
 
-                page:window.location.pathname,
 
+            language:navigator.language
 
-                url:window.location.href,
 
+        })
 
-                userAgent:navigator.userAgent,
 
+    });
 
-                language:navigator.language
 
 
 
-            })
+    if(!response.ok){
 
 
-
-        });
-
-
-
-
-
-        if(!response.ok){
-
-
-            throw new Error(
-                "Error conexión n8n: "+response.status
-            );
-
-
-        }
-
-
-
-
-
-        const data = await response.json();
-
-
-
-
-
-        console.log("Respuesta n8n:",data);
-
-
-
-
-
-        // RESPUESTA DEL N8N
-
-        const answer =
-
-            data.respuesta ||
-
-            data.reply ||
-
-            data.response ||
-
-            data.answer ||
-
-            "No encontré información.";
-
-
-
-
-
-        conversation.push({
-
-
-            role:"assistant",
-
-
-            content:answer
-
-
-
-        });
-
-
-
-
-
-        addBot(answer);
-
-
-
-
-
-    }catch(error){
-
-
-
-        console.error(error);
-
-
-
-        removeTyping();
-
-
-
-        addBot(
-
-        "⚠️ No pude conectarme con el asistente LAGUER.<br>Inténtalo nuevamente."
-
+        throw new Error(
+            "Error n8n: "+response.status
         );
 
 
-
     }
+
+
+
+
+    const data = await response.json();
+
+
+
+    console.log(
+        "Respuesta n8n:",
+        data
+    );
+
+
+
+
+    const answer =
+
+        data.respuesta ||
+
+        data.reply ||
+
+        data.response ||
+
+        data.answer ||
+
+        "No encontré información.";
+
+
+
+
+
+    conversation.push({
+
+        role:"assistant",
+
+        content:answer
+
+    });
+
+
+
+
+    addBot(answer);
+
+
+
+
+
+}catch(error){
+
+
+    console.error(
+        "Error:",
+        error
+    );
+
+
+
+    removeTyping();
+
+
+
+    addBot(
+        "⚠️ No puedo conectar con LAGUER IA.<br>Verifica el servidor."
+    );
+
+
+}
 
 
 
