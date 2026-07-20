@@ -186,9 +186,15 @@
       display: flex;
       align-items: center;
       gap: 16px;
-      height: 60px;
+      height: 80px;
     }
-    .logo-mark { height: 32px; flex-shrink: 0; }
+    .logo-mark { 
+      height: 100px; 
+      flex-shrink: 5; 
+      display: flex; 
+      align-items: center; 
+      transition: transform .9s ease; }
+    .logo-mark:hover { transform: scale(1.04); }
     .logo-mark img { height: 100%; width: auto; }
 
     .main-nav {
@@ -650,7 +656,10 @@
       gap: 30px;
       margin-bottom: 30px;
     }
-    .foot-logo { height: 30px; margin-bottom: 10px; }
+    .foot-logo { 
+      height: 152px; 
+      margin-bottom: 4px; }
+
     .foot-desc { color: var(--muted); font-size: 13px; line-height: 1.6; max-width: 260px; }
     .pay-icons-footer {
       display: flex;
@@ -1047,8 +1056,8 @@
         padding: 8px 16px;
       }
       .search-box input { font-size: 15px; }
-      .header-row { gap: 10px; height: 56px; }
-      .logo-mark { height: 28px; }
+      .header-row { gap: 10px; height: 66px; }
+      .logo-mark { height: 90px; }
       .icon-btn { width: 34px; height: 34px; }
       .icon-btn i { font-size: 16px; }
       .grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
@@ -2327,10 +2336,9 @@
       });
 
       // ============================================================
-      // LAGUER SOPORTE (CHAT) - ✅ VÍA CLOUDFLARE WORKER
+      // LAGUER SOPORTE (CHAT) - VÍA CLOUDFLARE WORKER
       // ============================================================
 
-      // ✅ Usa Cloudflare Worker como proxy para evitar CORS
       const CHAT_API = "/api/chat";
 
       const chatLauncher = document.getElementById("laguerChatLauncher");
@@ -2408,7 +2416,7 @@
       }
 
       // ============================================================
-      // ENVIAR MENSAJE - ✅ VÍA CLOUDFLARE WORKER (NO DIRECTAMENTE A N8N)
+      // ENVIAR MENSAJE - VÍA CLOUDFLARE WORKER (NO DIRECTAMENTE A N8N)
       // ============================================================
       async function sendMessage(){
         const text = chatInput.value.trim();
@@ -2421,7 +2429,6 @@
         typing();
 
         try{
-          // ✅ Envía a Cloudflare Worker, NO directamente a n8n
           const response = await fetch(CHAT_API, {
             method:"POST",
             headers:{"Content-Type":"application/json"},
@@ -2457,60 +2464,6 @@
       chatInput?.addEventListener("keypress", (e)=>{
         if(e.key==="Enter") sendMessage();
       });
-
-      // ============================================
-// CÓDIGO FRONTEND ACTUALIZADO
-// ============================================
-async function registrarUsuario() {
-  // Obtener datos del formulario
-  const fullName = document.getElementById('fullName')?.value || 'Ivis';
-  const email = document.getElementById('email')?.value || 'ivis@gmail.com';
-  const phone = document.getElementById('phone')?.value || '963258741';
-  
-  try {
-    const response = await fetch('/api/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        fullName: fullName,
-        email: email,
-        phone: phone
-      })
-    });
-    
-    // Leer la respuesta como texto primero
-    const textResponse = await response.text();
-    
-    // Intentar parsear como JSON
-    let data;
-    try {
-      data = JSON.parse(textResponse);
-    } catch (e) {
-      console.error('Respuesta no es JSON:', textResponse);
-      throw new Error('El servidor respondió con datos inválidos');
-    }
-    
-    if (response.ok) {
-      console.log('✅ Registro exitoso:', data);
-      alert('¡Registro completado!');
-    } else {
-      console.error('❌ Error en registro:', data);
-      alert('Error: ' + (data.error || 'Error desconocido'));
-    }
-    
-  } catch (error) {
-    console.error('❌ Error de red:', error);
-    alert('Error de conexión: ' + error.message);
-  }
-}
-
-// Asignar al botón de registro
-document.querySelector('form')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  registrarUsuario();
-});
 
       // ============================================================
       // RESPUESTAS RÁPIDAS
