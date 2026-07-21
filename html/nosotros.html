@@ -128,7 +128,7 @@
       gap: 16px;
       height: 60px;
     }
-    .logo-mark { height: 32px; flex-shrink: 0; }
+    .logo-mark { height: 100px; flex-shrink: 0; }
     .logo-mark img { height: 100%; width: auto; }
 
     .main-nav {
@@ -282,6 +282,24 @@
       line-height: 1.7;
       margin-bottom: 12px;
     }
+    .about-text .subhead {
+      color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 20px 0 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .about-text .subhead::before {
+      content: "";
+      width: 4px;
+      height: 16px;
+      border-radius: 2px;
+      background: linear-gradient(180deg, var(--red), var(--green), var(--blue));
+    }
     .about-text .valores {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -296,16 +314,41 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      transition: border-color .2s, transform .2s;
+    }
+    .about-text .valores .item:hover {
+      border-color: var(--line-2);
+      transform: translateY(-2px);
     }
     .about-text .valores .item i { font-size: 20px; }
     .about-text .valores .item span { font-weight: 600; }
 
-    .about-image img {
+    .about-image {
+      position: relative;
       border-radius: var(--radius);
       border: 1px solid var(--line);
-      padding: 20px;
-      background: var(--surface);
-      max-width: 100%;
+      padding: 48px 32px;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(238,29,37,.14), transparent 55%),
+        radial-gradient(circle at 75% 75%, rgba(24,158,224,.14), transparent 55%),
+        var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .about-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, var(--red) 0 33%, var(--green) 33% 66%, var(--blue) 66% 100%);
+      opacity: .9;
+      height: 3px;
+      top: 0;
+    }
+    .about-image img {
+      max-width: 70%;
+      filter: drop-shadow(0 12px 24px rgba(0,0,0,.35));
     }
 
     .team-grid {
@@ -321,24 +364,24 @@
       border-radius: var(--radius);
       padding: 20px;
       text-align: center;
-      transition: 0.2s;
+      transition: transform .2s, border-color .2s;
     }
     .team-card:hover {
       transform: translateY(-4px);
-      border-color: rgba(255,255,255,0.15);
+      border-color: var(--line-2);
     }
     .team-card .avatar {
       width: 80px;
       height: 80px;
       border-radius: 50%;
       background: var(--bg-soft);
-      border: 2px solid var(--blue);
+      border: 2px solid var(--avatar-color, var(--blue));
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 12px;
       font-size: 32px;
-      color: var(--blue);
+      color: var(--avatar-color, var(--blue));
     }
     .team-card h4 { font-size: 16px; }
     .team-card p { color: var(--muted); font-size: 13px; }
@@ -471,7 +514,7 @@
       gap: 30px;
       margin-bottom: 30px;
     }
-    .foot-logo { height: 30px; margin-bottom: 10px; }
+    .foot-logo { height: 100px; margin-bottom: 10px; }
     .foot-desc { color: var(--muted); font-size: 13px; line-height: 1.6; max-width: 260px; }
     .pay-icons-footer {
       display: flex;
@@ -604,6 +647,18 @@
     }
 
     /* ============================================================
+       ACCESIBILIDAD: FOCO VISIBLE
+       ============================================================ */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    /* ============================================================
        RESPONSIVE
        ============================================================ */
     @media (max-width: 980px) {
@@ -622,7 +677,8 @@
       .icon-btn { width: 34px; height: 34px; }
       .icon-btn i { font-size: 16px; }
       .about-grid { grid-template-columns: 1fr; }
-      .team-grid { grid-template-columns: repeat(2, 1fr); }
+      .about-image { padding: 32px 24px; }
+      .about-image img { max-width: 50%; }
       .foot-grid { grid-template-columns: 1fr 1fr; }
       .cookie-banner { flex-direction: column; text-align: center; padding: 16px; }
       .cookie-banner .buttons { justify-content: center; }
@@ -635,7 +691,11 @@
       .bottom-nav a span { font-size: 9px; }
       .foot-grid { grid-template-columns: 1fr; gap: 20px; }
       .about-text .valores { grid-template-columns: 1fr; }
-      .team-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr; max-width: 320px; }
+    }
+
+    @media (min-width: 601px) and (max-width: 980px) {
+      .team-grid { grid-template-columns: repeat(3, 1fr); max-width: 100%; }
     }
   </style>
 </head>
@@ -715,6 +775,10 @@
           <h2 data-i18n="nosotros_mision">Más que una tienda, una experiencia</h2>
           <p data-i18n="nosotros_texto1">LAGUER nació con la misión de acercar la tecnología, el estilo y la calidad a cada hogar peruano. Ofrecemos productos cuidadosamente seleccionados para mejorar tu vida diaria, con un compromiso firme con la excelencia y la satisfacción del cliente.</p>
           <p data-i18n="nosotros_texto2">Desde nuestros inicios, hemos trabajado para construir una comunidad de personas que valoran la innovación, el diseño y la confianza. Nuestro equipo está conformado por apasionados que creen que cada compra es una oportunidad para hacer la diferencia.</p>
+          <p class="subhead" data-i18n="nosotros_texto3">Nuestra Misión</p>
+          <p data-i18n="nosotros_texto4">Acercar la innovación a las personas mediante productos tecnológicos y soluciones inteligentes que simplifiquen, mejoren y potencien su vida diaria.</p>
+          <p class="subhead" data-i18n="nosotros_texto5">Nuestra Visión</p>
+          <p data-i18n="nosotros_texto6">Convertirnos en la plataforma líder de innovación digital en Latinoamérica, reconocida por ofrecer productos de vanguardia, experiencias excepcionales y un ecosistema tecnológico accesible para todos.</p>
           <div class="valores">
             <div class="item"><i class="fas fa-star" style="color:var(--blue);"></i><span data-i18n="valor_calidad">Calidad</span></div>
             <div class="item"><i class="fas fa-handshake" style="color:var(--green);"></i><span data-i18n="valor_confianza">Confianza</span></div>
@@ -730,17 +794,17 @@
       <h3 style="text-align:center; margin-top:50px;" data-i18n="nosotros_equipo">Nuestro equipo</h3>
       <div class="team-grid">
         <div class="team-card">
-          <div class="avatar"><i class="fas fa-user-tie"></i></div>
+          <div class="avatar" style="--avatar-color: var(--blue);"><i class="fas fa-user-tie"></i></div>
           <h4>Hugo L.</h4>
           <p data-i18n="team_ceo">CEO & Fundador</p>
         </div>
         <div class="team-card">
-          <div class="avatar"><i class="fas fa-user-cog" style="color:var(--green); border-color:var(--green);"></i></div>
+          <div class="avatar" style="--avatar-color: var(--green);"><i class="fas fa-user-cog"></i></div>
           <h4>María G.</h4>
           <p data-i18n="team_operaciones">Directora de Operaciones</p>
         </div>
         <div class="team-card">
-          <div class="avatar"><i class="fas fa-user-graduate" style="color:var(--red); border-color:var(--red);"></i></div>
+          <div class="avatar" style="--avatar-color: var(--red);"><i class="fas fa-user-graduate"></i></div>
           <h4>Carlos R.</h4>
           <p data-i18n="team_producto">Jefe de Producto</p>
         </div>
@@ -891,6 +955,10 @@
           'nosotros_mision': 'Más que una tienda, una experiencia',
           'nosotros_texto1': 'LAGUER nació con la misión de acercar la tecnología, el estilo y la calidad a cada hogar peruano. Ofrecemos productos cuidadosamente seleccionados para mejorar tu vida diaria, con un compromiso firme con la excelencia y la satisfacción del cliente.',
           'nosotros_texto2': 'Desde nuestros inicios, hemos trabajado para construir una comunidad de personas que valoran la innovación, el diseño y la confianza. Nuestro equipo está conformado por apasionados que creen que cada compra es una oportunidad para hacer la diferencia.',
+          'nosotros_texto3': 'Nuestra Misión',
+          'nosotros_texto4': 'Acercar la innovación a las personas mediante productos tecnológicos y soluciones inteligentes que simplifiquen, mejoren y potencien su vida diaria.',
+          'nosotros_texto5': 'Nuestra Visión',
+          'nosotros_texto6': 'Convertirnos en la plataforma líder de innovación digital en Latinoamérica, reconocida por ofrecer productos de vanguardia, experiencias excepcionales y un ecosistema tecnológico accesible para todos.',
           'valor_calidad': 'Calidad',
           'valor_confianza': 'Confianza',
           'valor_innovacion': 'Innovación',
@@ -938,6 +1006,10 @@
           'nosotros_mision': 'More than a store, an experience',
           'nosotros_texto1': 'LAGUER was born with the mission of bringing technology, style and quality to every Peruvian home. We offer carefully selected products to improve your daily life, with a firm commitment to excellence and customer satisfaction.',
           'nosotros_texto2': 'Since our beginnings, we have worked to build a community of people who value innovation, design and trust. Our team is made up of passionate people who believe that every purchase is an opportunity to make a difference.',
+          'nosotros_texto3': 'Our Mission',
+          'nosotros_texto4': 'Bringing innovation to people through technology products and smart solutions that simplify, improve and enhance their daily life.',
+          'nosotros_texto5': 'Our Vision',
+          'nosotros_texto6': 'To become the leading digital innovation platform in Latin America, recognized for offering cutting-edge products, exceptional experiences and an accessible tech ecosystem for everyone.',
           'valor_calidad': 'Quality',
           'valor_confianza': 'Trust',
           'valor_innovacion': 'Innovation',
